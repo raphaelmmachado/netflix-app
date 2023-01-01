@@ -1,11 +1,10 @@
 import { GetStaticProps } from "next";
 import Head from "next/head";
-import styles from "../styles/Home.module.css";
-
+import { DataProps, Trending } from "../typing";
 import Header from "../components/header/Header";
 import TrendingComp from "../components/body/TrendingComp";
 
-export default function Home({ trending }: any) {
+export default function Home({ trending }: DataProps) {
   return (
     <>
       <Head>
@@ -16,15 +15,20 @@ export default function Home({ trending }: any) {
       </Head>
 
       <Header />
+
       <TrendingComp results={trending.results} />
     </>
   );
 }
 export const getStaticProps: GetStaticProps = async (content) => {
-  const res = await fetch("http://localhost:3000/api/trending");
-  const { data } = await res.json();
-  const trending = data;
+  const trending = await getTrendingMovies();
   return {
     props: { trending }, // will be passed to the page component as props
   };
+};
+
+const getTrendingMovies = async () => {
+  const res = await fetch("http://localhost:3000/api/trending");
+  const { data } = await res.json();
+  return data;
 };

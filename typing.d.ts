@@ -1,3 +1,16 @@
+// MY INTERFACE FOR FETCHING DATA
+export interface DataProps {
+  trending: Trending;
+}
+export interface ITrendingComp {
+  results: Result[];
+}
+export interface IMovieSlider {
+  results: Result[];
+  poster?: string;
+}
+
+// INTERFACES GENERATED FROM JSON OBJECT
 export interface Trending {
   page: number;
   results: Result[];
