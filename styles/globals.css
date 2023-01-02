@@ -147,6 +147,7 @@ select {
 .backdrop-image {
   position: relative;
   isolation: isolate;
+  object-fit: "cover";
 }
 .backdrop-image::after {
   content: "";
@@ -155,4 +156,13 @@ select {
   inset: 0;
   z-index: -1;
   opacity: 0.5;
+}
+
+@layer components {
+  .backdrop-image {
+    @apply bg-cover bg-center bg-no-repeat;
+  }
+  .icon {
+    @apply text-white h-5 w-5;
+  }
 }

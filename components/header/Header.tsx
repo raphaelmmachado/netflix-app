@@ -38,7 +38,7 @@ export default function Header() {
             />
           </div>
           <div className="flex items-center gap-4">
-            <GiftIcon className="text-white h-5 w-5" />
+            <GiftIcon className="icon" />
             <BellIcon className="text-white h-5 w-5" />
             <Image
               src="/assets/ProfileIMG.svg"

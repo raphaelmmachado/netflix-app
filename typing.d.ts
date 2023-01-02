@@ -1,44 +1,36 @@
-// MY INTERFACE FOR FETCHING DATA
-export interface DataProps {
-  trending: Trending;
-}
-export interface ITrendingComp {
-  results: Result[];
-}
-export interface IMovieSlider {
-  results: Result[];
-  poster?: string;
-}
-
-// INTERFACES GENERATED FROM JSON OBJECT
-export interface Trending {
-  page: number;
-  results: Result[];
-  total_pages: number;
-  total_results: number;
-}
-
-export interface Result {
-  adult?: boolean;
-  backdrop_path: string;
-  genre_ids: number[];
+export interface Genre {
   id: number;
-  original_language: OriginalLanguage;
-  original_title?: string;
-  overview: string;
-  poster_path: string;
-  release_date?: Date;
+  name: string;
+}
+
+export interface Movie {
+  id: number;
+  name?: string;
   title?: string;
+  overview: string;
+  backdrop_path: string;
+  poster_path: string;
+  genre_ids: number[];
+  adult?: boolean;
   video?: boolean;
+  media_type?: boolean;
   vote_average: number;
   vote_count: number;
   popularity: number;
-  first_air_date?: Date;
-  name?: string;
+  release_date?: Date | string;
+  first_air_date?: Date | string;
+  original_language: string;
+  original_title: string;
   origin_country?: string[];
   original_name?: string;
 }
-export enum OriginalLanguage {
-  En = "en",
-  Zh = "zh",
+
+export interface Element {
+  type:
+    | "Bloopers"
+    | "Featurette"
+    | "Behind the Scenes"
+    | "Clip"
+    | "Trailer"
+    | "Teaser";
 }

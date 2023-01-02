@@ -15,5 +15,9 @@ O que estou aprendendo?
 Maiores dificuldades?
 
 - Como montar o layout, pesquisei um design no google e estou seguindo
-- Tipagem do typescript com react, basicamente estou aprendendo buscando no google e lendo documentação o que está tornando
-  bem cansativo
+- Tipagem do typescript com react, principalmente passar props.
+  Basicamente estou aprendendo buscando no google e lendo documentação o que está tornando bem cansativo.
+  Sigo sofrendo muito para resolver erro de tipo JSX.IntrinsicAttributes
+
+Depois de apanhar bastante para o typescript, resolvi procurar no youtube e achei este video que me ajudou bastante:
+https://www.youtube.com/watch?v=cwqNAkwhKqw&t=4399s
