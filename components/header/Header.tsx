@@ -5,7 +5,7 @@ import { ChevronDownIcon } from "@heroicons/react/20/solid";
 export default function Header() {
   return (
     <header>
-      <nav className="flex justify-between bg-black py-6 px-16">
+      <nav className="flex justify-between bg-black py-6 md:px-16">
         <div className="flex gap-8 items-center" id="nav--left-div">
           <div>
             <Image

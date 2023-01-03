@@ -1,10 +1,11 @@
 import { useContext } from "react";
 import { Context } from "../../context/ContextProvider";
 import { Movie } from "../../typing";
+import MovieSlider from "../MovieSlider";
+import MovieDescription from "./MovieDescription";
 
 import { PlayIcon } from "@heroicons/react/20/solid";
 import { InformationCircleIcon } from "@heroicons/react/24/outline";
-import MovieSlider from "../MovieSlider";
 
 interface Props {
   movies: Movie[];
@@ -12,27 +13,23 @@ interface Props {
 }
 
 export default function HighlightedMovie({ movies }: Props) {
-  // const randomMovie =
-  //   netflixOriginals[Math.floor(Math.random() * netflixOriginals.length)];
-
-  const { highlighted, setHighlighted } = useContext(Context);
-
-  const handleHover = () => {};
+  const { highlighted } = useContext(Context);
 
   return (
     <>
       {highlighted ? (
         <section
-          className="backdrop-image flex flex-col justify-around min-h-[90vh]"
+          className="backdrop-image flex flex-col min-h-[100vh] transition-all"
           id="section--highlighted"
           style={{
             backgroundImage: `url(https://image.tmdb.org/t/p/w1280${highlighted?.backdrop_path})`,
           }}
         >
-          {/* HIGHLIGHTED MOVIE INFO */}
-          <div className="flex flex-col gap-4 max-w-[50vw]  px-8">
+          {/* HIGHLIGHTED MOVIE INFO - CUIDADO COM HEIGHT FIXADA!!!*/}
+          <div className="flex flex-col gap-4 py-4 px-8 h-[300px]">
             <h1 className=" text-white text-5xl pb-2">{highlighted.title}</h1>
-            <p className=" text-white">{highlighted.overview}</p>
+            <MovieDescription text={highlighted.overview} />
+
             {/* PLAY / INFO BUTTONS */}
             <div className="flex gap-6 items-center justify-start">
               <button
@@ -60,6 +57,7 @@ export default function HighlightedMovie({ movies }: Props) {
             title="Netflix Originals"
             background={false}
             poster={false}
+            autoplay={true}
           />
         </section>
       ) : (

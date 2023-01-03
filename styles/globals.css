@@ -142,6 +142,12 @@ select {
     scroll-behavior: auto !important;
   }
 }
+.title-clamp {
+  font-size: clamp(18px, 10vw, 2.5rem);
+}
+.description-clamp {
+  font-size: clamp(14px, 1.3vw, 1.2rem);
+}
 
 /* GIVE OPACITY TO BACKGROUND IMAGE */
 .backdrop-image {
@@ -157,6 +163,7 @@ select {
   z-index: -1;
   opacity: 0.5;
 }
+
 .swiper-slider:hover > :where(.swiper-button-prev, .swiper-button-next) {
   opacity: 1;
   transition: opacity 250ms ease-in-out;
