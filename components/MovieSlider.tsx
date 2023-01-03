@@ -1,4 +1,5 @@
 import { useContext } from "react";
+import { Context } from "../context/ContextProvider";
 import Image from "next/image";
 import { Movie } from "../typing";
 import apiConfiguration from "../utils/apiConfiguration";
@@ -25,6 +26,12 @@ export default function Slider({
   const imgUrl = apiConfiguration.images.secure_base_url;
   const posterSize = apiConfiguration.images.poster_sizes;
   const backdropSize = apiConfiguration.images.backdrop_sizes;
+
+  const { setHighlighted } = useContext(Context);
+  const handleHover = (movie: Movie) => {
+    setHighlighted(movie);
+  };
+
   return (
     <section
       className={`${background ? "bg-black" : ""} pl-8 py-6 m-0 shadow-2xl`}
@@ -42,7 +49,7 @@ export default function Slider({
       >
         {movies.map((item, i) => (
           <>
-            <SwiperSlide key={i}>
+            <SwiperSlide key={i} onMouseEnter={() => handleHover(item)}>
               <div
                 className={
                   poster ? `w-[120px] h-[280px]` : `w-[285px] h-[171px] `

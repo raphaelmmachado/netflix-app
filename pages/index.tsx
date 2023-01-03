@@ -3,10 +3,9 @@ import Head from "next/head";
 import Header from "../components/header/Header";
 import HighlightedMovie from "../components/body/HighlightedMovie";
 import SliderStacks from "../components/body/SliderStacks";
-import { IContext, IProvider, IRequests, Movie } from "../typing";
+import { IRequests } from "../typing";
 import requests from "../utils/requests";
-
-import { createContext, useContext, useEffect, useState } from "react";
+import { ContextProvider } from "../context/ContextProvider";
 
 export default function App({
   trendingNow,
@@ -20,18 +19,6 @@ export default function App({
   trendingSeries,
   documentaries,
 }: IRequests) {
-  // COLOQUEI O CONTEXT AQUI POIS ESTOU APRENDENDO TYPESCRIPT E NAO ENCONTREI UMA MANEIRA DE PASSAR UM VALOR DE PAGE PARA CONTEXT NO INITIAL VALUE
-  const randomMovie =
-    netflixOriginals[Math.floor(Math.random() * netflixOriginals.length)];
-
-  const initialContextValue = {
-    highlighted: randomMovie,
-    setHighlighted: () => {},
-  };
-  const Context = createContext<IContext>(initialContextValue);
-
-  const [highlighted, setHighlighted] = useState<Movie>(randomMovie);
-
   return (
     <>
       <Head>
@@ -42,9 +29,9 @@ export default function App({
       </Head>
 
       <Header />
-      <Context.Provider value={{ highlighted, setHighlighted }}>
+      <ContextProvider>
         <HighlightedMovie movies={netflixOriginals} />
-      </Context.Provider>
+      </ContextProvider>
       <SliderStacks
         requests={{
           trendingNow,

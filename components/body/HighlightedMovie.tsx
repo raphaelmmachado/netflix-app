@@ -1,7 +1,9 @@
+import { useContext } from "react";
+import { Context } from "../../context/ContextProvider";
+import { Movie } from "../../typing";
+
 import { PlayIcon } from "@heroicons/react/20/solid";
 import { InformationCircleIcon } from "@heroicons/react/24/outline";
-import { useEffect, useState } from "react";
-import { Movie } from "../../typing";
 import MovieSlider from "../MovieSlider";
 
 interface Props {
@@ -10,13 +12,10 @@ interface Props {
 }
 
 export default function HighlightedMovie({ movies }: Props) {
-  const [highlighted, setHighlighted] = useState<Movie | null>();
+  // const randomMovie =
+  //   netflixOriginals[Math.floor(Math.random() * netflixOriginals.length)];
 
-  useEffect(() => {
-    const randomMovie = movies[Math.floor(Math.random() * movies.length)];
-    setHighlighted(randomMovie);
-    console.log(highlighted);
-  }, []);
+  const { highlighted, setHighlighted } = useContext(Context);
 
   const handleHover = () => {};
 

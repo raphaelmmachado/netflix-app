@@ -1,24 +1,20 @@
-export const stfu = "stfu";
-// import { createContext, useState } from "react";
-// import { Movie } from "../typing";
+import { createContext, useState } from "react";
+import { IContext, IProvider, Movie } from "../typing";
+import defaultMovie from "../utils/defaultMovie";
 
-// interface Props {
-//   children?: JSX.Element | JSX.Element[];
-// }
+const initialContextValue = {
+  highlighted: defaultMovie,
+  setHighlighted: () => {},
+};
 
-// interface IContext {
-//   highlighted: Movie | undefined;
-//   setHighlighted: (newState: Movie) => void;
-// }
-// const MovieObject = {
-//   highlighted: undefined,
-//   setHighlighted: () => {},
-// };
-// export const Context = createContext<IContext>(MovieObject);
+export const Context = createContext<IContext>(initialContextValue);
 
-// export function ContextProvider({ children }: Props) {
-//   const [highlighted, setHighlighted] = useState(MovieObject);
-//   return (
-//     <Context.Provider value={{ highlighted, setHighlighted }}>{children}</Context.Provider>
-//   );
-// }
+export function ContextProvider({ children }: IProvider) {
+  const [highlighted, setHighlighted] = useState<Movie>(defaultMovie);
+
+  return (
+    <Context.Provider value={{ highlighted, setHighlighted }}>
+      {children}
+    </Context.Provider>
+  );
+}

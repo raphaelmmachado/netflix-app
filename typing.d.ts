@@ -48,7 +48,10 @@ interface IRequests {
   discoverMovie: Movie[];
   trendingSeries: Movie[];
 }
-
+interface IContext {
+  highlighted: Movie;
+  setHighlighted: (newState: Movie) => void;
+}
 interface IProvider {
   children: JSX.Element | JSX.Element[] | ReactNode;
 }

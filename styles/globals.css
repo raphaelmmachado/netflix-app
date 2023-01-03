@@ -168,7 +168,7 @@ select {
   background-repeat: no-repeat;
   background-size: cover;
   background-position: center;
-  background-color: rgba(0, 0, 0, 0.1);
+  background-color: rgba(0, 0, 0, 0.12);
   border-radius: 2px;
   padding: 2px;
   fill: white;
