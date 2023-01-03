@@ -6,7 +6,7 @@ export interface Genre {
 export interface Movie {
   id: number;
   name?: string;
-  title?: string;
+  title: string;
   overview: string;
   backdrop_path: string;
   poster_path: string;
@@ -33,4 +33,22 @@ export interface Element {
     | "Clip"
     | "Trailer"
     | "Teaser";
+}
+
+interface IRequests {
+  apiConfiguration?: string;
+  trendingNow: Movie[];
+  netflixOriginals: Movie[];
+  topRated: Movie[];
+  actionMovies: Movie[];
+  comedyMovies: Movie[];
+  horrorMovies: Movie[];
+  romanceMovies: Movie[];
+  documentaries: Movie[];
+  discoverMovie: Movie[];
+  trendingSeries: Movie[];
+}
+
+interface IProvider {
+  children: JSX.Element | JSX.Element[] | ReactNode;
 }

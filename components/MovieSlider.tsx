@@ -1,14 +1,13 @@
+import { useContext } from "react";
 import Image from "next/image";
 import { Movie } from "../typing";
 import apiConfiguration from "../utils/apiConfiguration";
 // Import Swiper React components
 import { Swiper, SwiperSlide } from "swiper/react";
 // Import Swiper styles
-import "swiper/css";
-import "swiper/css/pagination";
-
+import "swiper/swiper-bundle.css";
 // import required modules
-import { Pagination } from "swiper";
+import { Pagination, Navigation } from "swiper";
 
 interface IMovieSlider {
   movies: Movie[];
@@ -34,11 +33,12 @@ export default function Slider({
         {title}
       </h1>
       <Swiper
-        grabCursor
+        loop
         slidesPerView={5}
         spaceBetween={5}
-        modules={[Pagination]}
-        className="mySwiper"
+        navigation
+        modules={[Pagination, Navigation]}
+        className="swiper-slider"
       >
         {movies.map((item, i) => (
           <>

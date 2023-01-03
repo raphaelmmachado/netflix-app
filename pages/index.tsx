@@ -1,34 +1,37 @@
-import { GetServerSideProps, GetStaticProps } from "next";
+import { GetServerSideProps } from "next";
 import Head from "next/head";
 import Header from "../components/header/Header";
 import HighlightedMovie from "../components/body/HighlightedMovie";
-import { Movie } from "../typing";
+import SliderStacks from "../components/body/SliderStacks";
+import { IContext, IProvider, IRequests, Movie } from "../typing";
 import requests from "../utils/requests";
-import MovieSlider from "../components/MovieSlider";
 
-interface IHome {
-  apiConfiguration?: string;
-  trendingNow: Movie[];
-  netflixOriginals: Movie[];
-  topRated: Movie[];
-  actionMovies: Movie[];
-  comedyMovies: Movie[];
-  horrorMovies: Movie[];
-  romanceMovies: Movie[];
-  documentaries: Movie[];
-  discoverMovie: Movie[];
-  trendingSeries: Movie[];
-}
-export default function Home({
+import { createContext, useContext, useEffect, useState } from "react";
+
+export default function App({
   trendingNow,
   netflixOriginals,
   topRated,
   comedyMovies,
   horrorMovies,
   actionMovies,
+  romanceMovies,
+  discoverMovie,
   trendingSeries,
   documentaries,
-}: IHome) {
+}: IRequests) {
+  // COLOQUEI O CONTEXT AQUI POIS ESTOU APRENDENDO TYPESCRIPT E NAO ENCONTREI UMA MANEIRA DE PASSAR UM VALOR DE PAGE PARA CONTEXT NO INITIAL VALUE
+  const randomMovie =
+    netflixOriginals[Math.floor(Math.random() * netflixOriginals.length)];
+
+  const initialContextValue = {
+    highlighted: randomMovie,
+    setHighlighted: () => {},
+  };
+  const Context = createContext<IContext>(initialContextValue);
+
+  const [highlighted, setHighlighted] = useState<Movie>(randomMovie);
+
   return (
     <>
       <Head>
@@ -39,55 +42,28 @@ export default function Home({
       </Head>
 
       <Header />
-
-      <HighlightedMovie movies={trendingNow}>
-        <MovieSlider
-          movies={trendingNow}
-          title="Popular on Netflix"
-          background={false}
-          poster={false}
-        />
-      </HighlightedMovie>
-      <MovieSlider
-        movies={netflixOriginals}
-        poster
-        title="Netflix Originals"
-        background
-      />
-      <MovieSlider
-        movies={trendingSeries}
-        poster
-        title="Trending series"
-        background
-      />
-      <MovieSlider movies={topRated} poster title="Top rated" background />
-      <MovieSlider
-        movies={comedyMovies}
-        poster
-        title="Comedy movies"
-        background
-      />
-      <MovieSlider
-        movies={horrorMovies}
-        poster
-        title="Horror movies"
-        background
-      />
-      <MovieSlider
-        movies={actionMovies}
-        poster
-        title="Action movies"
-        background
-      />
-      <MovieSlider
-        movies={documentaries}
-        poster
-        title="Documentaries"
-        background
+      <Context.Provider value={{ highlighted, setHighlighted }}>
+        <HighlightedMovie movies={netflixOriginals} />
+      </Context.Provider>
+      <SliderStacks
+        requests={{
+          trendingNow,
+          netflixOriginals,
+          topRated,
+          comedyMovies,
+          horrorMovies,
+          actionMovies,
+          discoverMovie,
+          romanceMovies,
+          trendingSeries,
+          documentaries,
+        }}
       />
     </>
   );
 }
+
+//SERVER SIDE RENDERING
 export const getServerSideProps: GetServerSideProps = async (content) => {
   content.res.setHeader(
     "Cache-Control",

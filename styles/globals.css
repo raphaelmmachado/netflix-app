@@ -157,10 +157,32 @@ select {
   z-index: -1;
   opacity: 0.5;
 }
+.swiper-slider:hover > :where(.swiper-button-prev, .swiper-button-next) {
+  opacity: 1;
+  transition: opacity 250ms ease-in-out;
+  background-color: transparent;
+}
+.swiper-button-prev,
+.swiper-button-next {
+  opacity: 0.3;
+  background-repeat: no-repeat;
+  background-size: cover;
+  background-position: center;
+  background-color: rgba(0, 0, 0, 0.1);
+  border-radius: 2px;
+  padding: 2px;
+  fill: white;
+}
+.swiper-button-prev {
+  background-image: url("/assets/arrow-left.svg");
+}
+.swiper-button-next {
+  background-image: url("/assets/arrow-right.svg");
+}
 
 @layer components {
   .backdrop-image {
-    @apply bg-cover bg-center bg-no-repeat;
+    @apply bg-cover bg-center bg-no-repeat object-fill;
   }
   .icon {
     @apply text-white h-5 w-5;
