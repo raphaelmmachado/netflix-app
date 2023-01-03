@@ -49,7 +49,7 @@ interface IRequests {
   trendingSeries: Movie[];
 }
 interface IContext {
-  highlighted: Movie;
+  highlighted: Movie | undefined;
   setHighlighted: (newState: Movie) => void;
 }
 interface IProvider {

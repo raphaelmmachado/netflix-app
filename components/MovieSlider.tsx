@@ -1,21 +1,20 @@
 import { useContext } from "react";
-import { Context } from "../context/ContextProvider";
 import Image from "next/image";
-import { Movie } from "../typing";
+import { Context } from "../context/ContextProvider";
 import apiConfiguration from "../utils/apiConfiguration";
+import { Movie } from "../typing";
 // Import Swiper React components
 import { Swiper, SwiperSlide } from "swiper/react";
 // Import Swiper styles
 import "swiper/swiper-bundle.css";
 // import required modules
-import { Pagination, Navigation, FreeMode, Autoplay } from "swiper";
+import { Pagination, Navigation, FreeMode, Autoplay, Lazy } from "swiper";
 
 interface IMovieSlider {
   movies: Movie[];
   title: string;
   poster: boolean;
   background: boolean;
-  autoplay: boolean;
 }
 
 export default function Slider({
@@ -23,7 +22,6 @@ export default function Slider({
   title,
   background,
   poster,
-  autoplay,
 }: IMovieSlider) {
   const imgUrl = apiConfiguration.images.secure_base_url;
   const posterSize = apiConfiguration.images.poster_sizes;
@@ -39,12 +37,13 @@ export default function Slider({
       {/* ATENCAO AO MARGIN NO H1 */}
       <h1
         className="ml-8 pl-2 font-semibold tracking-wide text-lg
-       text-white my-2 border-l-4 border-red"
+   text-white my-2 border-l-4 border-red"
       >
         {title}
       </h1>
       <Swiper
-        slidesPerView={2}
+        modules={[Pagination, Navigation, FreeMode, Autoplay, Lazy]}
+        slidesPerView="auto"
         spaceBetween={5}
         breakpoints={{
           640: {
@@ -62,8 +61,8 @@ export default function Slider({
         }}
         freeMode={true}
         loop
+        lazy={true}
         navigation
-        modules={[Pagination, Navigation, FreeMode, Autoplay]}
         className="swiper-slider"
       >
         {movies.map((item, i) => (
@@ -82,7 +81,7 @@ export default function Slider({
                 fill={true}
                 alt="movie-poster"
                 className="rounded-sm shadow-lg scale-95
-                hover:scale-105 hover:z-10"
+            hover:scale-105 hover:z-10"
               />
             </div>
           </SwiperSlide>

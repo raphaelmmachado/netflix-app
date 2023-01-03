@@ -17,6 +17,7 @@ export default function HighlightedMovie({ movies }: Props) {
 
   return (
     <>
+      {" "}
       {highlighted ? (
         <section
           className="backdrop-image flex flex-col min-h-[100vh] transition-all"
@@ -34,16 +35,16 @@ export default function HighlightedMovie({ movies }: Props) {
             <div className="flex gap-6 items-center justify-start">
               <button
                 className="flex items-center justify-around gap-2
-          bg-smokewt text-black font-bold py-2 px-6
-          rounded-md"
+      bg-smokewt text-black font-bold py-2 px-6
+      rounded-md"
               >
                 <PlayIcon className="text-black h-5 w-5" />
                 <>Play</>
               </button>
               <button
                 className="flex items-center justify-around gap-2
-          bg-midgray text-white font-bold py-2 px-6
-          rounded-md"
+      bg-midgray text-white font-bold py-2 px-6
+      rounded-md"
               >
                 <InformationCircleIcon className="text-white h-5 w-5" />
                 <>More Info</>
@@ -57,7 +58,6 @@ export default function HighlightedMovie({ movies }: Props) {
             title="Netflix Originals"
             background={false}
             poster={false}
-            autoplay={true}
           />
         </section>
       ) : (
