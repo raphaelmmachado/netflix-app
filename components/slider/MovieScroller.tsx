@@ -1,6 +1,12 @@
-import { useContext, useState, useEffect, CSSProperties } from "react";
+import {
+  useContext,
+  useState,
+  useEffect,
+  CSSProperties,
+  Dispatch,
+  SetStateAction,
+} from "react";
 import Image from "next/image";
-import { Context } from "../../context/ContextProvider";
 import apiConfiguration from "../../utils/apiConfiguration";
 import { Movie } from "../../typing";
 import useWindowSize from "../../hooks/useWindowSize";
@@ -8,23 +14,18 @@ import useWindowSize from "../../hooks/useWindowSize";
 interface IMovieSlider {
   movies: Movie[];
   title: string;
-  poster: boolean;
-  background: boolean;
+  setHighlighted: Dispatch<SetStateAction<Movie>>;
 }
 
 export default function Scroller({
   movies,
   title,
-  background,
-  poster,
+  setHighlighted,
 }: IMovieSlider) {
-  const { setHighlighted } = useContext(Context);
   const [itemsPerScreen, setItemsPerScreen] = useState(4);
   const [sliderIndex, setSliderIndex] = useState(0);
   const [progressBarItems, setProgressBarItems] = useState(0);
   const { width } = useWindowSize();
-
-  console.log({ itemsPerScreen: width });
 
   useEffect(() => {
     if (width !== undefined) {
@@ -33,11 +34,8 @@ export default function Scroller({
       setProgressBarItems(math);
     }
     console.log(width, itemsPerScreen);
-  }, [, width, itemsPerScreen]);
+  }, [movies.length, width, itemsPerScreen]);
 
-  const handleHover = (movie: Movie) => {
-    setHighlighted(movie);
-  };
   const incrementSliderIndex = () => {
     setSliderIndex((prev) => {
       if (prev + 1 >= progressBarItems) return 0;
@@ -55,7 +53,7 @@ export default function Scroller({
   const backdropSize = apiConfiguration.images.backdrop_sizes;
 
   return (
-    <section className={`${background ? "bg-black" : ""}  m-0 py-6 shadow-2xl`}>
+    <section className={`m-0 py-6 shadow-2xl`}>
       <main className="row">
         <div className="header">
           <h2 className="md:text-lg tracking-wide font-bold">{title}</h2>
@@ -92,7 +90,7 @@ export default function Scroller({
             {movies.map((movie, i) => {
               return (
                 <Image
-                  onMouseEnter={() => handleHover(movie)}
+                  onMouseEnter={() => setHighlighted(movie)}
                   key={i}
                   src={`${imgUrl}${backdropSize[1]}${movie.backdrop_path}`}
                   width={285}

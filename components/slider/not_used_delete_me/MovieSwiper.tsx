@@ -1,9 +1,9 @@
 import { useContext, useState, useRef, useEffect } from "react";
 import Image from "next/image";
 import { motion } from "framer-motion";
-import { Context } from "../../context/ContextProvider";
-import apiConfiguration from "../../utils/apiConfiguration";
-import { Movie } from "../../typing";
+import { Context } from "../../../context/ContextProvider";
+import apiConfiguration from "../../../utils/apiConfiguration";
+import { Movie } from "../../../typing";
 
 interface IMovieSlider {
   movies: Movie[];

@@ -28,3 +28,7 @@ https://www.youtube.com/watch?v=cwqNAkwhKqw&t=4399s
 - Me deparei com um Hydration Error
   e descobri que a causa era configuracao de responsividade do swiper js
   para resolver bastar configurar slidesperview como auto
+
+- Eu peguei como referencia o video do Kyle (WebDev Simplified) e criei uma versão react do slider dele.
+- Implementei uma função minha onde pego o tamanho da tela pelo custom hook (useWindowSize) e dependendo do tamanho da tela eu atribuo o valor "Items Per Screen".
+- Também possibilitei navegar sliders clicando na "Progress Bar"

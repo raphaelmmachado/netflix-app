@@ -1,13 +1,10 @@
 import { GetServerSideProps } from "next";
 import Head from "next/head";
-import { lazy, Suspense } from "react";
+import { Suspense } from "react";
 import Header from "../components/header/Header";
 import HighlightedMovie from "../components/body/HighlightedMovie";
 import { IRequests } from "../typing";
 import requests from "../utils/requests";
-import { ContextProvider } from "../context/ContextProvider";
-
-const SliderStacks = lazy(() => import("../components/body/SliderStacks"));
 
 export default function App({
   trendingNow,
@@ -16,7 +13,6 @@ export default function App({
   comedyMovies,
   horrorMovies,
   actionMovies,
-  discoverMovie,
   trendingSeries,
 }: IRequests) {
   return (
@@ -27,24 +23,18 @@ export default function App({
         <meta name="viewport" content="width=device-width, initial-scale=1" />
         <link rel="icon" href="/favicon.ico" />
       </Head>
-
       <Header />
-      <ContextProvider>
-        <HighlightedMovie movies={netflixOriginals} />
-      </ContextProvider>
+      <HighlightedMovie
+        movies={netflixOriginals}
+        title="Netflix Originals"
+      />{" "}
       <Suspense fallback={<div>Loading...</div>}>
-        <SliderStacks
-          requests={{
-            trendingNow,
-            netflixOriginals,
-            topRated,
-            comedyMovies,
-            horrorMovies,
-            actionMovies,
-            discoverMovie,
-            trendingSeries,
-          }}
-        />
+        <HighlightedMovie movies={trendingNow} title="Trending Movies" />
+        <HighlightedMovie movies={trendingSeries} title="Trending Series" />
+        <HighlightedMovie movies={topRated} title="Top Rated" />
+        <HighlightedMovie movies={actionMovies} title="Action Movies" />
+        <HighlightedMovie movies={comedyMovies} title="Comedy Movies" />
+        <HighlightedMovie movies={horrorMovies} title="Horror Movies" />{" "}
       </Suspense>
     </>
   );

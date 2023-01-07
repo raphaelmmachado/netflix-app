@@ -16,6 +16,7 @@ export default function useWindowSize() {
   useEffect(() => {
     // Handler to call on window resize
     function handleResize() {
+      //nextjs runs on server so we have to check if window is not undefined
       if (window !== undefined || typeof window !== "undefined") {
         // Set window width/height to state
         switch (true) {
