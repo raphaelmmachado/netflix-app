@@ -43,9 +43,9 @@ interface IRequests {
   actionMovies: Movie[];
   comedyMovies: Movie[];
   horrorMovies: Movie[];
-  romanceMovies: Movie[];
-  documentaries: Movie[];
-  discoverMovie: Movie[];
+  romanceMovies?: Movie[];
+  documentaries?: Movie[];
+  discoverMovie?: Movie[];
   trendingSeries: Movie[];
 }
 interface IContext {

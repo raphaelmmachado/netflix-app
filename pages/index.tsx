@@ -1,11 +1,13 @@
 import { GetServerSideProps } from "next";
 import Head from "next/head";
+import { lazy, Suspense } from "react";
 import Header from "../components/header/Header";
 import HighlightedMovie from "../components/body/HighlightedMovie";
-import SliderStacks from "../components/body/SliderStacks";
 import { IRequests } from "../typing";
 import requests from "../utils/requests";
 import { ContextProvider } from "../context/ContextProvider";
+
+const SliderStacks = lazy(() => import("../components/body/SliderStacks"));
 
 export default function App({
   trendingNow,
@@ -14,10 +16,8 @@ export default function App({
   comedyMovies,
   horrorMovies,
   actionMovies,
-  romanceMovies,
   discoverMovie,
   trendingSeries,
-  documentaries,
 }: IRequests) {
   return (
     <>
@@ -32,20 +32,20 @@ export default function App({
       <ContextProvider>
         <HighlightedMovie movies={netflixOriginals} />
       </ContextProvider>
-      <SliderStacks
-        requests={{
-          trendingNow,
-          netflixOriginals,
-          topRated,
-          comedyMovies,
-          horrorMovies,
-          actionMovies,
-          discoverMovie,
-          romanceMovies,
-          trendingSeries,
-          documentaries,
-        }}
-      />
+      <Suspense fallback={<div>Loading...</div>}>
+        <SliderStacks
+          requests={{
+            trendingNow,
+            netflixOriginals,
+            topRated,
+            comedyMovies,
+            horrorMovies,
+            actionMovies,
+            discoverMovie,
+            trendingSeries,
+          }}
+        />
+      </Suspense>
     </>
   );
 }

@@ -1,7 +1,8 @@
 import { useContext } from "react";
 import { Context } from "../../context/ContextProvider";
 import { Movie } from "../../typing";
-import MovieSlider from "../MovieSlider";
+import MovieSlider from "../slider/MovieSlider";
+import MainSlider from "../slider/MovieScroller";
 import MovieDescription from "./MovieDescription";
 
 import { PlayIcon } from "@heroicons/react/20/solid";
@@ -20,15 +21,15 @@ export default function HighlightedMovie({ movies }: Props) {
       {" "}
       {highlighted ? (
         <section
-          className="backdrop-image flex flex-col min-h-[100vh] transition-all"
+          className="backdrop-image flex flex-col justify-between min-h-[87vh] transition-all"
           id="section--highlighted"
           style={{
             backgroundImage: `url(https://image.tmdb.org/t/p/w1280${highlighted?.backdrop_path})`,
           }}
         >
           {/* HIGHLIGHTED MOVIE INFO - CUIDADO COM HEIGHT FIXADA!!!*/}
-          <div className="flex flex-col gap-4 py-4 px-8 h-[300px]">
-            <h1 className=" text-white text-5xl pb-2">{highlighted.title}</h1>
+          <div className="flex flex-col justify-center gap-4 py-4 px-4 md:px-14 h-[300px]">
+            <h1 className=" text-smokewt text-5xl pb-2">{highlighted.title}</h1>
             <MovieDescription text={highlighted.overview} />
 
             {/* PLAY / INFO BUTTONS */}
@@ -43,17 +44,17 @@ export default function HighlightedMovie({ movies }: Props) {
               </button>
               <button
                 className="flex items-center justify-around gap-2
-      bg-midgray text-white font-bold py-2 px-6
+      bg-midgray text-smokewt font-bold py-2 px-6
       rounded-md"
               >
-                <InformationCircleIcon className="text-white h-5 w-5" />
+                <InformationCircleIcon className="text-smokewt h-5 w-5" />
                 <>More Info</>
               </button>
             </div>
           </div>
 
           {/* TRENDING MOVIES SLIDER */}
-          <MovieSlider
+          <MainSlider
             movies={movies}
             title="Netflix Originals"
             background={false}

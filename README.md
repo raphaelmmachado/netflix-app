@@ -1,3 +1,5 @@
+// ESTE README É TEMPORÁRIO
+
 Por que estou fazendo este app?
 
 - porque acho que é um bom projeto para colocar no portfolio
@@ -8,6 +10,7 @@ Por que a escolha de nextjs / typescript
 
 O que estou aprendendo?
 
+- Tipagem Typescript com React
 - Client Side Rendering
 - Static Site Generator
 - Server Side Rendering
@@ -21,3 +24,7 @@ Maiores dificuldades?
 
 Depois de apanhar bastante para o typescript, resolvi procurar no youtube e achei este video que me ajudou bastante:
 https://www.youtube.com/watch?v=cwqNAkwhKqw&t=4399s
+
+- Me deparei com um Hydration Error
+  e descobri que a causa era configuracao de responsividade do swiper js
+  para resolver bastar configurar slidesperview como auto
