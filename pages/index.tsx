@@ -1,10 +1,12 @@
 import { GetServerSideProps } from "next";
 import Head from "next/head";
 import { Suspense } from "react";
+//components
 import Header from "../components/header/Header";
 import HighlightedMovie from "../components/body/HighlightedMovie";
+//local
 import { IRequests } from "../typing";
-import requests from "../utils/requests";
+import { requests } from "../utils/requests";
 
 export default function App({
   trendingNow,
@@ -24,12 +26,9 @@ export default function App({
         <link rel="icon" href="/favicon.ico" />
       </Head>
       <Header />
-      <HighlightedMovie
-        movies={netflixOriginals}
-        title="Netflix Originals"
-      />{" "}
+      <HighlightedMovie movies={trendingNow} title="Trending Movies" />
       <Suspense fallback={<div>Loading...</div>}>
-        <HighlightedMovie movies={trendingNow} title="Trending Movies" />
+        <HighlightedMovie movies={netflixOriginals} title="Netflix Originals" />{" "}
         <HighlightedMovie movies={trendingSeries} title="Trending Series" />
         <HighlightedMovie movies={topRated} title="Top Rated" />
         <HighlightedMovie movies={actionMovies} title="Action Movies" />

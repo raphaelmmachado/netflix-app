@@ -1,8 +1,6 @@
 import { useState } from "react";
 import { Movie } from "../../typing";
 import MovieSlider from "../slider/MovieScroller";
-import MovieDescription from "./MovieDescription";
-
 import { PlayIcon } from "@heroicons/react/20/solid";
 import { InformationCircleIcon } from "@heroicons/react/24/outline";
 
@@ -14,13 +12,12 @@ interface Props {
 
 export default function HighlightedMovie({ movies, title }: Props) {
   const [highlighted, setHighlighted] = useState<Movie>(movies[0]);
-
   return (
     <>
       {" "}
       {highlighted ? (
         <section
-          className="backdrop-image flex flex-col justify-between min-h-[87vh] transition-all shadow-2xl mb-1"
+          className="backdrop-image flex flex-col justify-between min-h-[87vh] transition-all shadow-2xl mb-16"
           id="section--highlighted"
           style={{
             backgroundImage: `url(https://image.tmdb.org/t/p/w1280${highlighted?.backdrop_path})`,
@@ -28,8 +25,15 @@ export default function HighlightedMovie({ movies, title }: Props) {
         >
           {/* HIGHLIGHTED MOVIE INFO - CUIDADO COM HEIGHT FIXADA!!!*/}
           <div className="flex flex-col justify-center gap-4 py-4 px-4 md:px-14 h-[300px]">
-            <h1 className=" text-smokewt text-5xl pb-2">{highlighted.title}</h1>
-            <MovieDescription text={highlighted.overview} />
+            <h1 className=" text-smokewt text-5xl pb-2">
+              {highlighted.title || highlighted.name}
+            </h1>
+            <p
+              className={`text-white max-w-fit
+              md:max-w-[50vw] line-clamp-6 font-medium tracking-wide`}
+            >
+              {highlighted?.overview}
+            </p>
 
             {/* PLAY / INFO BUTTONS */}
             <div className="flex gap-6 items-center justify-start">
