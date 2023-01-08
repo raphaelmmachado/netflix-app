@@ -10,6 +10,7 @@ npm run dev
 
 - Nextjs Typescript
 - tailwindcss
+- TMDB api
 
 ## Por que estou fazendo este app?
 
