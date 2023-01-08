@@ -1,8 +1,9 @@
-# Netflix Clone
+# Netflix Clone (incompleto)
 
 ## Applicação criada com npx-create-next-app --typescript
 
-npm install
+npm install  
+
 npm run dev
 
 ## Feito com:
