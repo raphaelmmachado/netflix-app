@@ -34,19 +34,18 @@ npm run dev
 - Como montar o layout, pesquisei um design no google e estou seguindo
 - Tipagem do typescript com react, principalmente passar props e hooks.
 
-## Como está sendo desenvolver esse projeto?
+### Como está sendo desenvolver esse projeto?
 
-- Basicamente estou aprendendo buscando no google e lendo documentação o que está tornando bem cansativo.
+Basicamente estou aprendendo buscando no google e lendo documentação o que está tornando bem cansativo.
 
-- Sigo sofrendo muito para resolver erro de tipo JSX.IntrinsicAttributes.
+Sigo sofrendo muito para resolver erro de tipo JSX.IntrinsicAttributes.
 
-- Depois de apanhar bastante para o typescript, resolvi procurar no youtube e achei este video que me ajudou bastante:
-  https://www.youtube.com/watch?v=cwqNAkwhKqw&t=4399s
-- Me deparei com um Hydration Error e descobri que a causa era configuracao de responsividade do swiper js
-  para resolver bastar configurar slidesperview como auto
+Depois de apanhar bastante para o typescript, resolvi procurar no youtube e achei este video que me ajudou bastante: https://www.youtube.com/watch?v=cwqNAkwhKqw&t=4399s
 
-- Desistir de usar o swiper porque achei que não combinou muioto então eu peguei como referencia o video do Kyle (WebDev Simplified) e criei uma versão react do slider dele. Implementei uma função minha onde pego o tamanho da tela pelo custom hook (useWindowSize) e dependendo do tamanho da tela eu atribuo o valor "Items Per Screen". Também possibilitei navegar sliders clicando na "Progress Bar"
+Me deparei com um Hydration Error e descobri que a causa era configuracao de responsividade do swiper js para resolver bastar configurar slidesperview como auto
 
-- Eu precisava fazer o fetch do trailer dos videos de cada lista. Mas como estou aprendendo next eu não queria fazer no client side. Então eu usei Promise.all e carreguei cada trailer no server side. Alguns filmes não possui link do trailer na DB por isso o botão fica como "indisponivel".
+Desistir de usar o swiper porque achei que não combinou muioto então eu peguei como referencia o video do Kyle (WebDev Simplified) e criei uma versão react do slider dele. Implementei uma função minha onde pego o tamanho da tela pelo custom hook (useWindowSize) e dependendo do tamanho da tela eu atribuo o valor "Items Per Screen". Também possibilitei navegar sliders clicando na "Progress Bar"
 
-- Usei context api pra passar o link do youtube para o modal.
+Eu precisava fazer o fetch do trailer dos videos de cada lista. Mas como estou aprendendo next eu não queria fazer no client side. Então eu usei Promise.all e carreguei cada trailer no server side. Alguns filmes não possui link do trailer na DB por isso o botão fica como "indisponivel".
+
+Usei context api pra passar o link do youtube para o modal.
