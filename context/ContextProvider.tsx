@@ -1,19 +1,31 @@
 import { createContext, useState } from "react";
-import { IContext, IProvider, Movie } from "../typing";
-import defaultMovie from "../utils/defaultMovie";
+import { IProvider, IContext } from "../typing";
 
-const initialContextValue = {
-  highlighted: defaultMovie,
-  setHighlighted: () => {},
+const initialContextValue: IContext = {
+  showModal: false,
+  setShowModal: () => {},
+  video: {
+    iso_639_1: "string",
+    iso_3166_1: "string",
+    name: "string",
+    key: "string",
+    site: "string",
+    size: 0,
+    type: "string",
+    official: false,
+    published_at: "string",
+    id: "string",
+  },
+  setVideo: () => {},
 };
 
 export const Context = createContext<IContext>(initialContextValue);
 
 export function ContextProvider({ children }: IProvider) {
-  const [highlighted, setHighlighted] = useState<Movie>(defaultMovie);
-
+  const [showModal, setShowModal] = useState(false);
+  const [video, setVideo] = useState(initialContextValue.video);
   return (
-    <Context.Provider value={{ highlighted, setHighlighted }}>
+    <Context.Provider value={{ showModal, setShowModal, video, setVideo }}>
       {children}
     </Context.Provider>
   );

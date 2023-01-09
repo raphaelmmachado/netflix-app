@@ -1,17 +1,20 @@
 import {
   useState,
   useEffect,
+  useContext,
   CSSProperties,
   Dispatch,
   SetStateAction,
 } from "react";
 import Image from "next/image";
 import apiConfiguration from "../../utils/apiConfiguration";
-import { Movie } from "../../typing";
+import { IVideoRequest, Movie } from "../../typing";
 import useWindowSize from "../../hooks/useWindowSize";
+import { Context } from "../../context/ContextProvider";
 
 interface IMovieSlider {
   movies: Movie[];
+  trailers: IVideoRequest[];
   title: string;
   setHighlighted: Dispatch<SetStateAction<Movie>>;
 }
@@ -20,11 +23,13 @@ export default function Scroller({
   movies,
   title,
   setHighlighted,
+  trailers,
 }: IMovieSlider) {
   const [itemsPerScreen, setItemsPerScreen] = useState(4);
   const [sliderIndex, setSliderIndex] = useState(0);
   const [progressBarItems, setProgressBarItems] = useState(0);
   const { width } = useWindowSize();
+  const { setVideo } = useContext(Context);
 
   useEffect(() => {
     if (width !== undefined) {
@@ -32,7 +37,6 @@ export default function Scroller({
       const math = Math.ceil(movies.length / itemsPerScreen);
       setProgressBarItems(math);
     }
-    console.log(width, itemsPerScreen);
   }, [movies.length, width, itemsPerScreen]);
 
   const incrementSliderIndex = () => {
@@ -55,7 +59,12 @@ export default function Scroller({
     <section className={`m-0 py-6 shadow-2xl`}>
       <main className="row">
         <div className="header">
-          <h2 className="md:text-lg tracking-wide font-bold">{title}</h2>
+          <h2
+            className="md:text-lg tracking-wide font-bold
+          border-l-4 border-red pl-2"
+          >
+            {title}
+          </h2>
           <div className="progress-bar">
             {Array(progressBarItems)
               .fill("")
@@ -86,10 +95,13 @@ export default function Scroller({
             }
             className={`slider`}
           >
-            {movies.map((movie, i) => {
+            {movies.map((movie: Movie, i) => {
               return (
                 <Image
-                  onMouseEnter={() => setHighlighted(movie)}
+                  onClick={() => {
+                    setHighlighted(movie);
+                    if (trailers[i].results) setVideo(trailers[i]?.results[0]);
+                  }}
                   key={i}
                   src={`${imgUrl}${backdropSize[1]}${movie.backdrop_path}`}
                   width={285}

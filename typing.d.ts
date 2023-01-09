@@ -47,11 +47,44 @@ interface IRequests {
   documentaries?: Movie[];
   discoverMovie?: Movie[];
   trendingSeries: Movie[];
+  popularMovies: Movie[];
+  trendingNowTrailers: IResultsTrailers[];
+  netflixOriginalsTrailers: IResultsTrailers[];
+  topRatedTrailers: IResultsTrailers[];
+  actionMoviesTrailers: IResultsTrailers[];
+  comedyMovieTrailers: IResultsTrailers[];
+  horrorMovieTrailers: IResultsTrailers[];
+  romanceMoviesTrailers: IResultsTrailers[];
+  trendingSeriesTrailers: IResultsTrailers[];
+  popularMoviesTrailers: IResultsTrailers[];
 }
-interface IContext {
+interface IHighCtx {
   highlighted: Movie | undefined;
   setHighlighted: (newState: Movie) => void;
 }
 interface IProvider {
   children: JSX.Element | JSX.Element[] | ReactNode;
+}
+interface IContext {
+  showModal: boolean;
+  setShowModal: (newState: boolean) => void;
+  video: IVideo | null;
+  setVideo: (newVideo: IVideo) => void;
+}
+interface IVideoRequest {
+  id: string | number;
+  results: IVideo[];
+}
+
+interface IVideo {
+  iso_639_1: string;
+  iso_3166_1: string;
+  name: string;
+  key: string;
+  site: string;
+  size: number;
+  type: string;
+  official: boolean;
+  published_at: string | Date;
+  id: string;
 }

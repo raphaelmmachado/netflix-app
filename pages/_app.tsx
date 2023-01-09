@@ -13,7 +13,7 @@ const netFlixSans = localFont({
 });
 export default function MyApp({ Component, pageProps }: AppProps) {
   return (
-    <main className={netFlixSans.className}>
+    <main className={`${netFlixSans.className} bg-black`}>
       <Component {...pageProps} />
     </main>
   );

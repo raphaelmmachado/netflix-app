@@ -34,11 +34,11 @@ export default function Header() {
                 priority
               />
               <div className="flex text-white gap-4 items-center">
-                <p>Home</p>
-                <p>TV Shows</p>
-                <p>Movies</p>
-                <p>New & Popular</p>
-                <p>My List</p>
+                <p className="hover:text-red cursor-pointer">Home</p>
+                <p className="hover:text-red cursor-pointer">TV Shows</p>
+                <p className="hover:text-red cursor-pointer">Movies</p>
+                <p className="hover:text-red cursor-pointer">New & Popular</p>
+                <p className="hover:text-red cursor-pointer">My List</p>
               </div>
             </div>
             <div className="flex items-center gap-2" id="nav--right-div">
