@@ -18,7 +18,7 @@ npm run dev
 
 ## Por que a escolha de nextjs / typescript
 
-- Porque eu precisava dar um passo a frente, sair da zona de comforto
+- Porque eu precisava dar um passo a frente, sair da zona de conforto
   e aprender essas tecnologias que sao muito requisitadas
 
 ## O que estou aprendendo?
