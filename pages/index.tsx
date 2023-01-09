@@ -3,16 +3,14 @@ import Head from "next/head";
 import { Suspense } from "react";
 //components
 import Header from "../components/header/Header";
-import HighlightedMovie from "../components/body/HighlightedMovie";
-import Modal from "../components/Modal";
-import { ContextProvider } from "../context/ContextProvider";
+import MovieContainer from "../components/body/MovieContainer";
+
 //local
 import { IRequests } from "../typing";
 import { requests, dinamicRequests } from "../utils/requests";
 
 export default function App({
   trendingNow,
-  netflixOriginals,
   topRated,
   comedyMovies,
   horrorMovies,
@@ -20,7 +18,6 @@ export default function App({
   trendingSeries,
   popularMovies,
   trendingNowTrailers,
-  netflixOriginalsTrailers,
   topRatedTrailers,
   actionMoviesTrailers,
   comedyMovieTrailers,
@@ -31,57 +28,49 @@ export default function App({
   return (
     <>
       <Head>
-        <title>NetFlix</title>
+        <title>Netflix</title>
         <meta name="description" content="Movies" />
         <meta name="viewport" content="width=device-width, initial-scale=1" />
         <link rel="icon" href="/favicon.ico" />
       </Head>
       <Header />
-      <ContextProvider>
-        <Modal />
-        <HighlightedMovie
-          movies={trendingNow}
-          trailers={trendingNowTrailers}
-          title="Em Destaque"
+      <MovieContainer
+        movies={trendingNow}
+        trailers={trendingNowTrailers}
+        title="Em Destaque"
+      />
+      <Suspense fallback={<div>Loading...</div>}>
+        <MovieContainer
+          movies={popularMovies}
+          title="Filmes Populares"
+          trailers={popularMoviesTrailers}
         />
-        <Suspense fallback={<div>Loading...</div>}>
-          <HighlightedMovie
-            movies={netflixOriginals}
-            trailers={netflixOriginalsTrailers}
-            title="Originais Netflix"
-          />{" "}
-          <HighlightedMovie
-            movies={popularMovies}
-            title="Filmes Populares"
-            trailers={popularMoviesTrailers}
-          />
-          <HighlightedMovie
-            movies={trendingSeries}
-            trailers={trendingSeriesTrailers}
-            title="Series em Destaque"
-          />
-          <HighlightedMovie
-            movies={topRated}
-            trailers={topRatedTrailers}
-            title="Melhores Avaliados"
-          />
-          <HighlightedMovie
-            movies={actionMovies}
-            trailers={actionMoviesTrailers}
-            title="Filmes de Ação"
-          />
-          <HighlightedMovie
-            movies={comedyMovies}
-            trailers={comedyMovieTrailers}
-            title="Filmes de comédia"
-          />
-          <HighlightedMovie
-            movies={horrorMovies}
-            trailers={horrorMovieTrailers}
-            title="Filmes de Terror"
-          />
-        </Suspense>
-      </ContextProvider>
+        <MovieContainer
+          movies={trendingSeries}
+          trailers={trendingSeriesTrailers}
+          title="Series em Destaque"
+        />
+        <MovieContainer
+          movies={topRated}
+          trailers={topRatedTrailers}
+          title="Melhores Avaliados"
+        />
+        <MovieContainer
+          movies={actionMovies}
+          trailers={actionMoviesTrailers}
+          title="Filmes de Ação"
+        />
+        <MovieContainer
+          movies={comedyMovies}
+          trailers={comedyMovieTrailers}
+          title="Filmes de comédia"
+        />
+        <MovieContainer
+          movies={horrorMovies}
+          trailers={horrorMovieTrailers}
+          title="Filmes de Terror"
+        />
+      </Suspense>
     </>
   );
 }
@@ -92,10 +81,10 @@ export const getServerSideProps: GetServerSideProps = async (content) => {
     "Cache-Control",
     "public, s-maxage=10, stale-while-revalidate=59"
   );
+
   const [
     apiConfiguration,
     trendingNow,
-    netflixOriginals,
     topRated,
     actionMovies,
     comedyMovies,
@@ -107,7 +96,6 @@ export const getServerSideProps: GetServerSideProps = async (content) => {
   ] = await Promise.all([
     fetch(requests.fetchImages).then((res) => res.json()),
     fetch(requests.fetchTrending).then((res) => res.json()),
-    fetch(requests.fetchNetflixOriginals).then((res) => res.json()),
     fetch(requests.fecthTopRated).then((res) => res.json()),
     fetch(requests.fetchActionMovies).then((res) => res.json()),
     fetch(requests.fetchComedyMovies).then((res) => res.json()),
@@ -117,16 +105,13 @@ export const getServerSideProps: GetServerSideProps = async (content) => {
     fetch(requests.fetchTrendingSeries).then((res) => res.json()),
     fetch(requests.fetchPopularMovies).then((res) => res.json()),
   ]);
+
   interface ID {
     id: string | number;
   }
   // dinamic fetchs
   const dinamicReqs = {
     trending: trendingNow.results.map(async (item: ID) => {
-      const { url } = dinamicRequests(item.id);
-      return await fetch(url).then((res) => res.json());
-    }),
-    netflixOriginals: netflixOriginals.results.map(async (item: ID) => {
       const { url } = dinamicRequests(item.id);
       return await fetch(url).then((res) => res.json());
     }),
@@ -156,9 +141,7 @@ export const getServerSideProps: GetServerSideProps = async (content) => {
     }),
   };
   const trendingNowTrailers = await Promise.all(dinamicReqs.trending);
-  const netflixOriginalsTrailers = await Promise.all(
-    dinamicReqs.netflixOriginals
-  );
+
   const topRatedTrailers = await Promise.all(dinamicReqs.topRated);
   const actionMoviesTrailers = await Promise.all(dinamicReqs.actionMovies);
   const comedyMoviesTrailers = await Promise.all(dinamicReqs.comedyMovies);
@@ -169,7 +152,6 @@ export const getServerSideProps: GetServerSideProps = async (content) => {
     props: {
       apiConfiguration: apiConfiguration,
       trendingNow: trendingNow.results,
-      netflixOriginals: netflixOriginals.results,
       topRated: topRated.results,
       actionMovies: actionMovies.results,
       comedyMovies: comedyMovies.results,
@@ -179,7 +161,6 @@ export const getServerSideProps: GetServerSideProps = async (content) => {
       trendingSeries: trendingSeries.results,
       popularMovies: popularMovies.results,
       trendingNowTrailers: trendingNowTrailers,
-      netflixOriginalsTrailers: netflixOriginalsTrailers,
       topRatedTrailers: topRatedTrailers,
       actionMoviesTrailers: actionMoviesTrailers,
       comedyMovieTrailers: comedyMoviesTrailers,

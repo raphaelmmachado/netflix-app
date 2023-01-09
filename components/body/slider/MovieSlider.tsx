@@ -1,35 +1,48 @@
 import {
   useState,
   useEffect,
-  useContext,
   CSSProperties,
   Dispatch,
   SetStateAction,
 } from "react";
 import Image from "next/image";
-import apiConfiguration from "../../utils/apiConfiguration";
-import { IVideoRequest, Movie } from "../../typing";
-import useWindowSize from "../../hooks/useWindowSize";
-import { Context } from "../../context/ContextProvider";
+import apiConfiguration from "../../../utils/apiConfiguration";
+import { IVideo, IVideoRequest, Movie } from "../../../typing";
+import useWindowSize from "../../../hooks/useWindowSize";
+import InfoModal from "../../modal/InfoModal";
+import VideoModal from "../../modal/VideoModal";
 
 interface IMovieSlider {
   movies: Movie[];
+  selectedMovie: Movie;
   trailers: IVideoRequest[];
   title: string;
-  setHighlighted: Dispatch<SetStateAction<Movie>>;
+  setSelectedMovie: Dispatch<SetStateAction<Movie>>;
+  selectedVideo: IVideo | null;
+  setSelectedVideo: Dispatch<SetStateAction<IVideo | null>>;
+  showVideoModal: boolean;
+  showInfoModal: boolean;
+  setShowInfoModal: Dispatch<SetStateAction<boolean>>;
+  setShowVideoModal: Dispatch<SetStateAction<boolean>>;
 }
 
-export default function Scroller({
+export default function MovieSlider({
   movies,
   title,
-  setHighlighted,
   trailers,
+  selectedMovie,
+  setSelectedMovie,
+  selectedVideo,
+  setSelectedVideo,
+  showVideoModal,
+  showInfoModal,
+  setShowInfoModal,
+  setShowVideoModal,
 }: IMovieSlider) {
   const [itemsPerScreen, setItemsPerScreen] = useState(4);
   const [sliderIndex, setSliderIndex] = useState(0);
   const [progressBarItems, setProgressBarItems] = useState(0);
   const { width } = useWindowSize();
-  const { setVideo } = useContext(Context);
 
   useEffect(() => {
     if (width !== undefined) {
@@ -99,8 +112,14 @@ export default function Scroller({
               return (
                 <Image
                   onClick={() => {
-                    setHighlighted(movie);
-                    if (trailers[i].results) setVideo(trailers[i]?.results[0]);
+                    setSelectedMovie(movie);
+                    //if failed to request or got an empty array
+                    if (!trailers[i]) return setSelectedVideo(null);
+                    if (trailers[i].results.length < 1)
+                      return setSelectedVideo(null);
+                    else {
+                      setSelectedVideo(trailers[i].results[0]);
+                    }
                   }}
                   key={i}
                   src={`${imgUrl}${backdropSize[1]}${movie.backdrop_path}`}
@@ -118,6 +137,16 @@ export default function Scroller({
           ></div>
         </div>
       </main>
+      <InfoModal
+        showInfoModal={showInfoModal}
+        selectedMovie={selectedMovie}
+        setShowInfoModal={setShowInfoModal}
+      />
+      <VideoModal
+        showVideoModal={showVideoModal}
+        setShowVideoModal={setShowVideoModal}
+        selectedVideo={selectedVideo}
+      />
     </section>
   );
 }

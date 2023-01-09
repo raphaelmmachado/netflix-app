@@ -1,7 +1,6 @@
-import { useState, useContext } from "react";
-import { Context } from "../../context/ContextProvider";
-import { IVideoRequest, Movie } from "../../typing";
-import MovieSlider from "../slider/MovieScroller";
+import { useState } from "react";
+import { IVideo, IVideoRequest, Movie } from "../../typing";
+import MovieSlider from "./slider/MovieSlider";
 import { PlayIcon, ExclamationTriangleIcon } from "@heroicons/react/20/solid";
 import { InformationCircleIcon } from "@heroicons/react/24/outline";
 
@@ -12,19 +11,24 @@ interface Props {
   title: string;
 }
 
-export default function HighlightedMovie({ movies, title, trailers }: Props) {
-  const [highlighted, setHighlighted] = useState<Movie>(movies[0]);
-  const { setShowModal, video } = useContext(Context);
+export default function MovieContainer({ movies, title, trailers }: Props) {
+  const [selectedMovie, setSelectedMovie] = useState<Movie>(movies[0]);
+  const [selectedVideo, setSelectedVideo] = useState<IVideo | null>(null);
+  const [showVideoModal, setShowVideoModal] = useState(false);
+  const [showInfoModal, setShowInfoModal] = useState(false);
+
+  // const { setShowModal, setShowInfoModal, video, setSelectedMovieCtx } =
+  //   useContext(Context);
   return (
     <>
       {" "}
-      {highlighted ? (
+      {selectedMovie ? (
         <section
           className="backdrop-image flex flex-col justify-between
            min-h-[87vh] transition-all shadow-2xl mb-6"
           id="section--highlighted"
           style={{
-            backgroundImage: `url(https://image.tmdb.org/t/p/w1280${highlighted?.backdrop_path})`,
+            backgroundImage: `url(https://image.tmdb.org/t/p/w1280${selectedMovie?.backdrop_path})`,
           }}
         >
           {/* HIGHLIGHTED MOVIE INFO - CUIDADO COM HEIGHT FIXADA!!!*/}
@@ -33,33 +37,34 @@ export default function HighlightedMovie({ movies, title, trailers }: Props) {
            md:px-14 h-[300px]"
           >
             <h1 className=" text-white font-bold text-5xl pb-2">
-              {highlighted.title || highlighted.name}
+              {selectedMovie.title || selectedMovie.name}
             </h1>
             <p
               className={`text-white max-w-fit
               md:max-w-[50vw] line-clamp-6 font-base tracking-wide`}
             >
-              {highlighted?.overview}
+              {selectedMovie.overview}
             </p>
 
             {/* PLAY / INFO BUTTONS */}
             <div className="flex gap-6 items-center justify-start">
               <button
-                onClick={() => setShowModal(video ? true : false)}
+                onClick={() => setShowVideoModal(true)}
                 className={`flex items-center justify-around gap-2
               ${
-                video ? "bg-smokewt" : "bg-midgray"
+                selectedVideo ? "bg-smokewt" : "bg-midgray"
               } text-black font-bold py-2 px-6
               rounded-md`}
               >
-                {video ? (
+                {selectedVideo ? (
                   <PlayIcon className="text-black h-5 w-5" />
                 ) : (
                   <ExclamationTriangleIcon className="text-black h-5 w-5" />
                 )}
-                <>{video ? "Play" : "Indisponível"}</>
+                <>{selectedVideo ? "Play" : "Indisponível"}</>
               </button>
               <button
+                onClick={() => setShowInfoModal(true)}
                 className="flex items-center justify-around gap-2
               bg-midgray text-smokewt font-bold py-2 px-6
                 rounded-md"
@@ -69,16 +74,24 @@ export default function HighlightedMovie({ movies, title, trailers }: Props) {
               </button>
             </div>
           </div>
+
           {/* TRENDING MOVIES SLIDER */}
           <MovieSlider
             movies={movies}
             title={title}
-            setHighlighted={(movie) => setHighlighted(movie)}
             trailers={trailers}
+            selectedMovie={selectedMovie}
+            setSelectedMovie={(movie) => setSelectedMovie(movie)}
+            selectedVideo={selectedVideo}
+            setSelectedVideo={setSelectedVideo}
+            showInfoModal={showInfoModal}
+            showVideoModal={showVideoModal}
+            setShowVideoModal={setShowVideoModal}
+            setShowInfoModal={setShowInfoModal}
           />
         </section>
       ) : (
-        <h1>ERROR</h1>
+        <h1>Alguma coisa deu errado!</h1>
       )}
     </>
   );

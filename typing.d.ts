@@ -11,13 +11,13 @@ export interface Movie {
   backdrop_path: string;
   poster_path: string;
   genre_ids: number[];
-  adult?: boolean;
+  adult: boolean;
   video?: boolean;
   media_type?: boolean;
   vote_average: number;
   vote_count: number;
   popularity: number;
-  release_date?: Date | string;
+  release_date: Date | string;
   first_air_date?: Date | string;
   original_language: string;
   original_title: string;
@@ -68,8 +68,12 @@ interface IProvider {
 interface IContext {
   showModal: boolean;
   setShowModal: (newState: boolean) => void;
+  showInfoModal: boolean;
+  setShowInfoModal: (newState: boolean) => void;
   video: IVideo | null;
-  setVideo: (newVideo: IVideo) => void;
+  setVideo: (newVideo: IVideo | null) => void;
+  selectedMovieCtx: Movie | null;
+  setSelectedMovieCtx: (newMovie: Movie) => void;
 }
 interface IVideoRequest {
   id: string | number;
