@@ -1,12 +1,12 @@
 import { GetServerSideProps } from "next";
 import Head from "next/head";
-import { Suspense } from "react";
+import { useEffect, useState } from "react";
 //components
 import Header from "../components/header/Header";
 import MovieContainer from "../components/body/MovieContainer";
 
 //local
-import { IRequests } from "../typing";
+import { IRequests, Containers } from "../typing";
 import { requests, dinamicRequests } from "../utils/requests";
 
 export default function App({
@@ -25,6 +25,31 @@ export default function App({
   trendingSeriesTrailers,
   popularMoviesTrailers,
 }: IRequests) {
+  const [index, setIndex] = useState(0);
+
+  const handleScroll = () => {
+    if (window.scrollY > 0) {
+      setIndex((prev) => (prev + 1 > components.length - 1 ? prev : prev + 1));
+    } else setIndex((prev) => (prev - 1 < 0 ? prev : prev - 1));
+    console.log(index);
+  };
+  useEffect(() => {
+    if (window !== undefined) {
+      window.addEventListener("wheel", handleScroll);
+      return () => window.removeEventListener("wheel", handleScroll);
+    }
+  }, [index]);
+
+  const components: Containers[] = [
+    [trendingNow, trendingNowTrailers, "Em Destaque"],
+    [popularMovies, popularMoviesTrailers, "Filmes Populares"],
+    [trendingSeries, trendingSeriesTrailers, "Series em Destaque"],
+    [topRated, topRatedTrailers, "Melhores Avaliados"],
+    [actionMovies, actionMoviesTrailers, "Filmes de Ação"],
+    [comedyMovies, comedyMovieTrailers, "Filmes de comédia"],
+    [horrorMovies, horrorMovieTrailers, "Filmes de Terror"],
+  ];
+
   return (
     <>
       <Head>
@@ -34,43 +59,22 @@ export default function App({
         <link rel="icon" href="/favicon.ico" />
       </Head>
       <Header />
-      <MovieContainer
-        movies={trendingNow}
-        trailers={trendingNowTrailers}
-        title="Em Destaque"
-      />
-      <Suspense fallback={<div>Loading...</div>}>
-        <MovieContainer
-          movies={popularMovies}
-          title="Filmes Populares"
-          trailers={popularMoviesTrailers}
-        />
-        <MovieContainer
-          movies={trendingSeries}
-          trailers={trendingSeriesTrailers}
-          title="Series em Destaque"
-        />
-        <MovieContainer
-          movies={topRated}
-          trailers={topRatedTrailers}
-          title="Melhores Avaliados"
-        />
-        <MovieContainer
-          movies={actionMovies}
-          trailers={actionMoviesTrailers}
-          title="Filmes de Ação"
-        />
-        <MovieContainer
-          movies={comedyMovies}
-          trailers={comedyMovieTrailers}
-          title="Filmes de comédia"
-        />
-        <MovieContainer
-          movies={horrorMovies}
-          trailers={horrorMovieTrailers}
-          title="Filmes de Terror"
-        />
-      </Suspense>
+
+      {components.map((component, i) => {
+        if (i === index) {
+          return (
+            <MovieContainer
+              key={i}
+              movies={component[0]}
+              trailers={component[1]}
+              title={component[2]}
+              bars={components.length}
+              index={index}
+              setIndex={setIndex}
+            />
+          );
+        }
+      })}
     </>
   );
 }
@@ -109,7 +113,7 @@ export const getServerSideProps: GetServerSideProps = async (content) => {
   interface ID {
     id: string | number;
   }
-  // dinamic fetchs
+  // Nested fetchs
   const dinamicReqs = {
     trending: trendingNow.results.map(async (item: ID) => {
       const { url } = dinamicRequests(item.id);
@@ -141,13 +145,13 @@ export const getServerSideProps: GetServerSideProps = async (content) => {
     }),
   };
   const trendingNowTrailers = await Promise.all(dinamicReqs.trending);
-
   const topRatedTrailers = await Promise.all(dinamicReqs.topRated);
   const actionMoviesTrailers = await Promise.all(dinamicReqs.actionMovies);
   const comedyMoviesTrailers = await Promise.all(dinamicReqs.comedyMovies);
   const horrorMoviesTrailers = await Promise.all(dinamicReqs.horrorMovies);
   const trendingSeriesTrailers = await Promise.all(dinamicReqs.trendingSeries);
   const popularMoviesTrailers = await Promise.all(dinamicReqs.popularMovies);
+
   return {
     props: {
       apiConfiguration: apiConfiguration,

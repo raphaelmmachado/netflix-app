@@ -68,6 +68,18 @@ export default function MovieSlider({
   const imgUrl = apiConfiguration.images.secure_base_url;
   const backdropSize = apiConfiguration.images.backdrop_sizes;
 
+  const handleClick = (movie: Movie, i: number) => {
+    setSelectedMovie(movie);
+    const results = trailers[i].results;
+    if (results && results.length > 0) {
+      setSelectedVideo(results[0]);
+    } else {
+      setSelectedVideo(null);
+      console.error(
+        `Não foi encontrado video do filme ${movie.name ?? movie.title} na DB.`
+      );
+    }
+  };
   return (
     <section className={`m-0 py-6 shadow-2xl`}>
       <main className="row">
@@ -111,16 +123,7 @@ export default function MovieSlider({
             {movies.map((movie: Movie, i) => {
               return (
                 <Image
-                  onClick={() => {
-                    setSelectedMovie(movie);
-                    //if failed to request or got an empty array
-                    if (!trailers[i]) return setSelectedVideo(null);
-                    if (trailers[i].results.length < 1)
-                      return setSelectedVideo(null);
-                    else {
-                      setSelectedVideo(trailers[i].results[0]);
-                    }
-                  }}
+                  onMouseEnter={() => handleClick(movie, i)}
                   key={i}
                   src={`${imgUrl}${backdropSize[1]}${movie.backdrop_path}`}
                   width={285}

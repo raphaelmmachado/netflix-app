@@ -13,7 +13,7 @@ const requests = {
   fetchDocumentaries: `${BASE_URL}/discover/movie?api_key=${API_KEY}&language=pt-BR&with_genres=99`,
   fetchDiscoverMovie: `${BASE_URL}/discover/movie?api_key=${API_KEY}&language=pt-BR&sort_by=popularity.desc&include_adult=false&include_video=false&page=1&with_watch_monetization_types=flatrate`,
   fetchTrendingSeries: `${BASE_URL}/tv/top_rated?api_key=${API_KEY}&language=pt-BR&page=1`,
-  fetchPopularMovies: `${BASE_URL}/movie/popular?api_key=${API_KEY}&language=p-BR`,
+  fetchPopularMovies: `${BASE_URL}/movie/popular?api_key=${API_KEY}&language=pt-BR`,
 };
 const dinamicRequests = (movie_id: string | number) => {
   return {

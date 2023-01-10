@@ -92,3 +92,9 @@ interface IVideo {
   published_at: string | Date;
   id: string;
 }
+interface Containers {
+  [0]: Movie[];
+  [1]: IVideoRequest[];
+  [2]: string;
+}
+[];
