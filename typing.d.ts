@@ -66,14 +66,10 @@ interface IProvider {
   children: JSX.Element | JSX.Element[] | ReactNode;
 }
 interface IContext {
-  showModal: boolean;
-  setShowModal: (newState: boolean) => void;
-  showInfoModal: boolean;
-  setShowInfoModal: (newState: boolean) => void;
-  video: IVideo | null;
-  setVideo: (newVideo: IVideo | null) => void;
-  selectedMovieCtx: Movie | null;
-  setSelectedMovieCtx: (newMovie: Movie) => void;
+  liked: boolean;
+  setLiked: (newState: boolean) => void;
+  disliked: boolean;
+  setDisliked: (newState: boolean) => void;
 }
 interface IVideoRequest {
   id: string | number;
@@ -92,7 +88,7 @@ interface IVideo {
   published_at: string | Date;
   id: string;
 }
-interface Containers {
+interface IComponents {
   [0]: Movie[];
   [1]: IVideoRequest[];
   [2]: string;

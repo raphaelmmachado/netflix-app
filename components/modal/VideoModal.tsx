@@ -1,5 +1,5 @@
-import XMarkIcon from "@heroicons/react/24/solid/XMarkIcon";
 import { Dispatch, SetStateAction } from "react";
+import XMarkIcon from "@heroicons/react/24/solid/XMarkIcon";
 import { IVideo } from "../../typing";
 interface Props {
   title?: string;
@@ -22,8 +22,8 @@ export default function VideoModal({
   flex justify-center items-center z-50 top-0 left-0"
     >
       <div
-        className="bg-transparent min-w-[800px] min-h-[500px]
-      rounded-sm  flex flex-col"
+        className="min-w-[450px] sm:min-w-[640px] md:min-w-[768px] lg:min-w-[1024px]
+        rounded-sm flex flex-col"
       >
         <button className="self-end" onClick={() => setShowVideoModal(false)}>
           <span>
@@ -37,8 +37,7 @@ export default function VideoModal({
 
         {selectedVideo?.site === "YouTube" && (
           <iframe
-            width="800"
-            height="500"
+            className="aspect-video w-full"
             src={`https://www.youtube.com/embed/${selectedVideo?.key}`}
             title={`${selectedVideo?.name}`}
             allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"

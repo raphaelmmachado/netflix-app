@@ -53,9 +53,11 @@ a:not([class]) {
 
 /* Make images easier to work with */
 img,
+video,
 picture {
   max-width: 100%;
   display: block;
+  height: auto;
 }
 
 /* Inherit fonts for inputs and buttons */
@@ -139,33 +141,16 @@ select {
   background-color: rgba(0, 0, 0, 0.2);
   border-radius: 2px;
 }
-/* swiper */
-.swiper-slider:hover > :where(.swiper-button-prev, .swiper-button-next) {
-  opacity: 1;
-  transition: opacity 250ms ease-in-out;
-  background-color: transparent;
-}
-.swiper-button-prev,
-.swiper-button-next {
-  opacity: 0.3;
-  background-repeat: no-repeat;
-  background-size: cover;
-  background-position: center;
-  background-color: rgba(0, 0, 0, 0.12);
-  border-radius: 2px;
-  padding: 2px;
-  fill: white;
-}
-.swiper-button-prev {
-  background-image: url("/assets/arrow-left.svg");
-}
-.swiper-button-next {
-  background-image: url("/assets/arrow-right.svg");
+
+@layer base {
+  * {
+    @apply tracking-wide;
+  }
 }
 
 @layer components {
   .backdrop-image {
-    @apply bg-cover bg-center bg-no-repeat object-fill;
+    @apply bg-cover bg-center bg-no-repeat object-contain;
   }
   .icon {
     @apply text-white h-5 w-5;

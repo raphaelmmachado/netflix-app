@@ -52,6 +52,16 @@ export default function MovieSlider({
     }
   }, [movies.length, width, itemsPerScreen]);
 
+  useEffect(() => {
+    const results = trailers[0].results;
+    if (results && results.length > 0) {
+      setSelectedVideo(results[0]);
+    } else {
+      setSelectedVideo(null);
+      console.warn(`Não foi encontrado video deste filme na DB.`);
+    }
+  }, []);
+
   const incrementSliderIndex = () => {
     setSliderIndex((prev) => {
       if (prev + 1 >= progressBarItems) return 0;
@@ -68,14 +78,14 @@ export default function MovieSlider({
   const imgUrl = apiConfiguration.images.secure_base_url;
   const backdropSize = apiConfiguration.images.backdrop_sizes;
 
-  const handleClick = (movie: Movie, i: number) => {
+  const selectAMovie = (movie: Movie, i: number) => {
     setSelectedMovie(movie);
     const results = trailers[i].results;
     if (results && results.length > 0) {
       setSelectedVideo(results[0]);
     } else {
       setSelectedVideo(null);
-      console.error(
+      console.warn(
         `Não foi encontrado video do filme ${movie.name ?? movie.title} na DB.`
       );
     }
@@ -123,13 +133,15 @@ export default function MovieSlider({
             {movies.map((movie: Movie, i) => {
               return (
                 <Image
-                  onMouseEnter={() => handleClick(movie, i)}
+                  onMouseEnter={() =>
+                    setTimeout(() => selectAMovie(movie, i), 150)
+                  }
                   key={i}
                   src={`${imgUrl}${backdropSize[1]}${movie.backdrop_path}`}
                   width={285}
                   height={171}
                   alt="movie-pic"
-                  className="cursor-pointer"
+                  className="cursor-pointer hover:scale-105 transition-transform"
                 />
               );
             })}

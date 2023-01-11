@@ -2,10 +2,6 @@
 
 ## Applicação criada com npx-create-next-app --typescript
 
-npm install  
-
-npm run dev
-
 ## Feito com:
 
 - Nextjs Typescript
@@ -27,11 +23,13 @@ npm run dev
 - Client Side Rendering
 - Static Site Generator
 - Server Side Rendering
+- Hydratation
 - Props Interface
 
 ## Maiores dificuldades?
 
-- Como montar o layout, pesquisei um design no google e estou seguindo
+- Como montar o layout.
+- Criar um slider de videos.
 - Tipagem do typescript com react, principalmente passar props e hooks.
 
 ### Como está sendo desenvolver esse projeto?
@@ -44,8 +42,9 @@ Depois de apanhar bastante para o typescript, resolvi procurar no youtube e ache
 
 Me deparei com um Hydration Error e descobri que a causa era configuracao de responsividade do swiper js para resolver bastar configurar slidesperview como auto
 
-Desistir de usar o swiper porque achei que não combinou muioto então eu peguei como referencia o video do Kyle (WebDev Simplified) e criei uma versão react do slider dele. Implementei uma função minha onde pego o tamanho da tela pelo custom hook (useWindowSize) e dependendo do tamanho da tela eu atribuo o valor "Items Per Screen". Também possibilitei navegar sliders clicando na "Progress Bar"
+Desisti de usar o swiper porque achei que não combinou muioto então eu peguei como referencia o video do Kyle (WebDev Simplified) e criei uma versão react do slider dele. Implementei uma função minha onde pego o tamanho da tela pelo custom hook (useWindowSize) e dependendo do tamanho da tela eu atribuo o valor "Items Per Screen". Também possibilitei navegar sliders clicando na "Progress Bar"
 
 Eu precisava fazer o fetch do trailer dos videos de cada lista. Mas como estou aprendendo next eu não queria fazer no client side. Então eu usei Promise.all e carreguei cada trailer no server side. Alguns filmes não possui link do trailer na DB por isso o botão fica como "indisponivel".
 
-Usei context api pra passar o link do youtube para o modal.
+Refiz toda a estrutura de código da página inicial, ao invés de colocar uma stack de componentes, eu gerei componentes de uma array com os dados de todos os componentes anteriores. O componente que será renderizado será o que estiver com o index igual ao index ativo.
+Aprendi a criar e usar custom hooks então criei um hook para acrescentar e diminuir valor do index, usei essa lógica para criar uma navegação entre categoria de filmes com o scroll do mouse.

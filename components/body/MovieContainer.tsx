@@ -1,8 +1,20 @@
-import { Dispatch, SetStateAction, useState } from "react";
+import { Dispatch, SetStateAction, useState, useContext } from "react";
+import { Context } from "../../context/ContextProvider";
 import { IVideo, IVideoRequest, Movie } from "../../typing";
 import MovieSlider from "./slider/MovieSlider";
-import { PlayIcon, ExclamationTriangleIcon } from "@heroicons/react/20/solid";
+
+import ThumbUpIconOut from "@heroicons/react/24/outline/HandThumbUpIcon";
+import ThumbUpIconSol from "@heroicons/react/24/solid/HandThumbUpIcon";
+import ThumbDownIconOut from "@heroicons/react/24/outline/HandThumbDownIcon";
+import ThumbDOwnIconSol from "@heroicons/react/24/solid/HandThumbDownIcon";
+import {
+  ExclamationTriangleIcon,
+  PlayIcon,
+  ChevronUpIcon,
+  ChevronDownIcon,
+} from "@heroicons/react/20/solid/";
 import { InformationCircleIcon } from "@heroicons/react/24/outline";
+import Header from "../header/Header";
 
 interface Props {
   movies: Movie[];
@@ -27,20 +39,26 @@ export default function MovieContainer({
   const [showVideoModal, setShowVideoModal] = useState(false);
   const [showInfoModal, setShowInfoModal] = useState(false);
 
+  //TODO como fazer o botao de like
+  const { liked, disliked, setDisliked, setLiked } = useContext(Context);
+
   return (
     <>
       {" "}
       {selectedMovie ? (
-        <section
+        <main
           className="backdrop-image flex flex-col justify-between
-           min-h-[87vh] transition-all shadow-2xl mb-6"
+           min-h-[100vh] transition-all shadow-2xl"
           id="section--highlighted"
           style={{
             backgroundImage: `url(https://image.tmdb.org/t/p/w1280${selectedMovie?.backdrop_path})`,
           }}
         >
+          {/* NAV BAR */}
+          <Header />
+
           <div className="flex justify-between items-center">
-            {/* HIGHLIGHTED MOVIE INFO - CUIDADO COM HEIGHT FIXADA!!!*/}
+            {/* SELECTED MOVIE INFO - CUIDADO COM HEIGHT FIXADA!!!*/}
             <div
               className="flex flex-col justify-center gap-4 py-4 px-4
            md:px-14 h-[300px]"
@@ -79,22 +97,38 @@ export default function MovieContainer({
                 rounded-md"
                 >
                   <InformationCircleIcon className="text-smokewt h-5 w-5" />
-                  <>More Info</>
+                  <>Detalhes</>
                 </button>
               </div>
             </div>
-            <div className="flex flex-col gap-2 px-8">
-              {Array(bars)
-                .fill(" ")
-                .map((bar, i) => (
-                  <div
-                    onClick={() => setIndex(i)}
-                    key={i}
-                    className={`w-6 h-2 hover:cursor-pointer ${
-                      index === i ? "bg-red" : "bg-white/50"
-                    } `}
-                  ></div>
-                ))}
+
+            {/* VERTICAL NAVIGATION BAR */}
+            <div className="flex flex-col items-center gap-2 px-8">
+              <div
+                className="cursor-pointer"
+                onClick={() =>
+                  setIndex((prev) => (prev - 1 < 0 ? prev : --prev))
+                }
+              >
+                <ChevronUpIcon className="w-5 h-5 text-center" />
+              </div>
+              {[...Array(bars).fill(" ")].map((bar, i) => (
+                <div
+                  onClick={() => setIndex(i)}
+                  key={i}
+                  className={`w-6 h-2 hover:cursor-pointer ${
+                    index === i ? "bg-red" : "bg-white/50"
+                  } `}
+                ></div>
+              ))}
+              <div
+                className="cursor-pointer"
+                onClick={() =>
+                  setIndex((prev) => (prev + 1 > bars - 1 ? prev : ++prev))
+                }
+              >
+                <ChevronDownIcon className="w-5 h-5" />
+              </div>
             </div>
           </div>
 
@@ -112,7 +146,7 @@ export default function MovieContainer({
             setShowVideoModal={setShowVideoModal}
             setShowInfoModal={setShowInfoModal}
           />
-        </section>
+        </main>
       ) : (
         <h1>Alguma coisa deu errado!</h1>
       )}

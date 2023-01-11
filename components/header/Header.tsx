@@ -24,7 +24,7 @@ export default function Header() {
       {" "}
       {!mobile ? (
         <>
-          <nav className="flex justify-between bg-black py-6 md:px-16">
+          <nav className="flex justify-between py-6 md:px-16">
             <div className="flex gap-8 items-center" id="nav--left-div">
               <Image
                 src="/assets/NetflixLogoSvg.svg"
@@ -33,13 +33,13 @@ export default function Header() {
                 height={30}
                 priority
               />
-              <div className="flex text-white gap-4 items-center">
-                <p className="hover:text-red cursor-pointer">Início</p>
-                <p className="hover:text-red cursor-pointer">Séries</p>
-                <p className="hover:text-red cursor-pointer">Filmes</p>
-                <p className="hover:text-red cursor-pointer">Lançamentos</p>
-                <p className="hover:text-red cursor-pointer">Minha Lista</p>
-              </div>
+              <ul className="flex text-smokewt gap-4 items-center">
+                <li className="hover:text-red cursor-pointer">Início</li>
+                <li className="hover:text-red cursor-pointer">Séries</li>
+                <li className="hover:text-red cursor-pointer">Filmes</li>
+                <li className="hover:text-red cursor-pointer">Lançamentos</li>
+                <li className="hover:text-red cursor-pointer">Minha Lista</li>
+              </ul>
             </div>
             <div className="flex items-center gap-2" id="nav--right-div">
               <div className="flex items-center gap-3">
@@ -70,7 +70,7 @@ export default function Header() {
         </>
       ) : (
         <>
-          <nav className="flex justify-between bg-black p-6">
+          <nav className="flex justify-between p-6">
             <div>
               {" "}
               <Image

@@ -5,6 +5,7 @@
 }
 
 :root {
+  --border-radius: 0.25rem;
   --handle-size: 3rem;
   --img-gap: 0.25rem;
 }
@@ -39,15 +40,15 @@ body {
   max-width: calc(100% / var(--items-per-screen));
   aspect-ratio: 16 / 9;
   padding: var(--img-gap);
-  border-radius: 1rem;
+  border-radius: var(--border-radius);
 }
 
 .handle {
   border: none;
-  border-radius: 1rem;
+  border-radius: var(--border-radius);
   flex-grow: 0;
   flex-shrink: 0;
-  background-color: rgba(255, 255, 255, 0.25);
+  background-color: rgba(0, 0, 0, 0.25);
   z-index: 10;
   margin: var(--img-gap) 0;
   width: var(--handle-size);
@@ -80,7 +81,7 @@ body {
 }
 .handle:hover,
 .handle:focus {
-  background-color: rgba(255, 255, 255, 0.5);
+  background-color: rgba(0, 0, 0, 0.5);
 }
 
 .text {
@@ -119,17 +120,6 @@ body {
 .progress-item.active {
   background-color: rgba(255, 255, 255, 0.9);
 }
-
-/* @media (max-width: 1000px) {
-  .slider {
-    --items-per-screen: 3;
-  }
-}
-@media (max-width: 500px) {
-  .slider {
-    --items-per-screen: 2;
-  }
-} */
 
 body {
   background-color: #333;

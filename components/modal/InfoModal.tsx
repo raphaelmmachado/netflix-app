@@ -66,7 +66,6 @@ export default function InfoModal({
 
                 <div className="max-w-[50%] flex flex-col gap-2">
                   <div className="inline-flex items-center gap-1">
-                    <RocketIcon className="w-5 h-5" />
                     <p>
                       Data de lançamento:{" "}
                       <span className="text-gray">
@@ -76,7 +75,6 @@ export default function InfoModal({
                   </div>
 
                   <div className="inline-flex items-center gap-1">
-                    <StarIcon className="w-5 h-5" />
                     <p>
                       Media de Avaliação:{" "}
                       <span className="text-gray">
@@ -86,7 +84,6 @@ export default function InfoModal({
                   </div>
 
                   <div className="inline-flex items-center gap-1">
-                    <HandIcon className="w-5 h-5" />
                     <p>
                       Votos:{" "}
                       <span className="text-gray">
@@ -96,7 +93,6 @@ export default function InfoModal({
                   </div>
 
                   <div className="inline-flex items-center gap-1">
-                    <LangIcon className="w-5 h-5" />
                     <p>
                       Idioma Original:{" "}
                       <span className="text-gray">
@@ -106,7 +102,6 @@ export default function InfoModal({
                   </div>
 
                   <div className="inline-flex items-center gap-1">
-                    <ChartIcon className="w-5 h-5" />
                     <p>
                       Popularidade:{" "}
                       {
