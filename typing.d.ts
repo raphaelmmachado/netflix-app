@@ -66,10 +66,12 @@ interface IProvider {
   children: JSX.Element | JSX.Element[] | ReactNode;
 }
 interface IContext {
-  liked: boolean;
-  setLiked: (newState: boolean) => void;
-  disliked: boolean;
-  setDisliked: (newState: boolean) => void;
+  liked: number[];
+  setLiked: Dispatch<SetStateAction<number[]>>;
+  disliked: number[];
+  setDisliked: Dispatch<SetStateAction<number[]>>;
+  myList: Movie[];
+  setMyList: Dispatch<SetStateAction<Movie[]>>;
 }
 interface IVideoRequest {
   id: string | number;
@@ -86,7 +88,7 @@ interface IVideo {
   type: string;
   official: boolean;
   published_at: string | Date;
-  id: string;
+  id: number;
 }
 interface IComponents {
   [0]: Movie[];

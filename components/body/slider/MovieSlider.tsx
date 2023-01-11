@@ -9,8 +9,8 @@ import Image from "next/image";
 import apiConfiguration from "../../../utils/apiConfiguration";
 import { IVideo, IVideoRequest, Movie } from "../../../typing";
 import useWindowSize from "../../../hooks/useWindowSize";
-import InfoModal from "../../modal/InfoModal";
-import VideoModal from "../../modal/VideoModal";
+import InfoModal from "./modal/InfoModal";
+import VideoModal from "./modal/VideoModal";
 
 interface IMovieSlider {
   movies: Movie[];

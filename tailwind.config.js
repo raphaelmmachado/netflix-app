@@ -17,6 +17,7 @@ module.exports = {
       smokewt: "#E5E5E5",
       white: "#FFFFFF",
       def_red: colors.red,
+      def_green: colors.green,
       def_black: colors.black,
       def_gray: colors.gray,
       def_white: colors.white,

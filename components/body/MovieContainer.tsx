@@ -1,12 +1,7 @@
-import { Dispatch, SetStateAction, useState, useContext } from "react";
-import { Context } from "../../context/ContextProvider";
+import { Dispatch, SetStateAction, useState } from "react";
 import { IVideo, IVideoRequest, Movie } from "../../typing";
 import MovieSlider from "./slider/MovieSlider";
 
-import ThumbUpIconOut from "@heroicons/react/24/outline/HandThumbUpIcon";
-import ThumbUpIconSol from "@heroicons/react/24/solid/HandThumbUpIcon";
-import ThumbDownIconOut from "@heroicons/react/24/outline/HandThumbDownIcon";
-import ThumbDOwnIconSol from "@heroicons/react/24/solid/HandThumbDownIcon";
 import {
   ExclamationTriangleIcon,
   PlayIcon,
@@ -14,7 +9,7 @@ import {
   ChevronDownIcon,
 } from "@heroicons/react/20/solid/";
 import { InformationCircleIcon } from "@heroicons/react/24/outline";
-import Header from "../header/Header";
+import Header from "./header/Header";
 
 interface Props {
   movies: Movie[];
@@ -38,9 +33,6 @@ export default function MovieContainer({
   const [selectedVideo, setSelectedVideo] = useState<IVideo | null>(null);
   const [showVideoModal, setShowVideoModal] = useState(false);
   const [showInfoModal, setShowInfoModal] = useState(false);
-
-  //TODO como fazer o botao de like
-  const { liked, disliked, setDisliked, setLiked } = useContext(Context);
 
   return (
     <>
@@ -76,7 +68,7 @@ export default function MovieContainer({
               {/* PLAY / INFO BUTTONS */}
               <div className="flex gap-6 items-center justify-start">
                 <button
-                  onClick={() => setShowVideoModal(true)}
+                  onClick={() => selectedVideo && setShowVideoModal(true)}
                   className={`flex items-center justify-around gap-2
               ${
                 selectedVideo ? "bg-smokewt" : "bg-midgray"
@@ -105,9 +97,10 @@ export default function MovieContainer({
             {/* VERTICAL NAVIGATION BAR */}
             <div className="flex flex-col items-center gap-2 px-8">
               <div
+                id="prev-component-button"
                 className="cursor-pointer"
                 onClick={() =>
-                  setIndex((prev) => (prev - 1 < 0 ? prev : --prev))
+                  setIndex((prev: number) => (prev - 1 < 0 ? prev : --prev))
                 }
               >
                 <ChevronUpIcon className="w-5 h-5 text-center" />
@@ -115,6 +108,7 @@ export default function MovieContainer({
               {[...Array(bars).fill(" ")].map((bar, i) => (
                 <div
                   onClick={() => setIndex(i)}
+                  id="vertical-bars"
                   key={i}
                   className={`w-6 h-2 hover:cursor-pointer ${
                     index === i ? "bg-red" : "bg-white/50"
@@ -122,9 +116,12 @@ export default function MovieContainer({
                 ></div>
               ))}
               <div
+                id="next-component-button"
                 className="cursor-pointer"
                 onClick={() =>
-                  setIndex((prev) => (prev + 1 > bars - 1 ? prev : ++prev))
+                  setIndex((prev: number) =>
+                    prev + 1 > bars - 1 ? prev : ++prev
+                  )
                 }
               >
                 <ChevronDownIcon className="w-5 h-5" />

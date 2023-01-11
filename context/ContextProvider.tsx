@@ -2,17 +2,20 @@ import { createContext, useState } from "react";
 import { IProvider, IContext } from "../typing";
 
 const initialContextValue: IContext = {
-  liked: false,
+  liked: [],
   setLiked: () => {},
-  disliked: false,
+  disliked: [],
   setDisliked: () => {},
+  myList: [],
+  setMyList: () => {},
 };
 
 export const Context = createContext<IContext>(initialContextValue);
 
 export function ContextProvider({ children }: IProvider) {
-  const [liked, setLiked] = useState(false);
-  const [disliked, setDisliked] = useState(false);
+  const [liked, setLiked] = useState([]);
+  const [disliked, setDisliked] = useState([]);
+  const [myList, setMyList] = useState([]);
 
   return (
     <Context.Provider
@@ -21,6 +24,8 @@ export function ContextProvider({ children }: IProvider) {
         setLiked,
         disliked,
         setDisliked,
+        myList,
+        setMyList,
       }}
     >
       {children}

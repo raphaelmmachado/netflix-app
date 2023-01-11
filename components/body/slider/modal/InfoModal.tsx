@@ -1,13 +1,13 @@
 import Image from "next/image";
 import { Dispatch, SetStateAction, useEffect } from "react";
-import { Movie } from "../../typing";
+import { Movie } from "../../../../typing";
 import LangIcon from "@heroicons/react/24/solid/LanguageIcon";
 import StarIcon from "@heroicons/react/24/solid/StarIcon";
 import ChartIcon from "@heroicons/react/24/solid/ChartBarIcon";
 import RocketIcon from "@heroicons/react/24/solid/RocketLaunchIcon";
 import HandIcon from "@heroicons/react/24/solid/HandThumbUpIcon";
 import XMarkIcon from "@heroicons/react/24/solid/XMarkIcon";
-import apiConfiguration from "../../utils/apiConfiguration";
+import apiConfiguration from "../../../../utils/apiConfiguration";
 interface Props {
   showInfoModal: boolean;
   selectedMovie: Movie;

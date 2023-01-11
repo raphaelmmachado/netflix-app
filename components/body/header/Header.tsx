@@ -3,7 +3,7 @@ import { MagnifyingGlassIcon, BellIcon } from "@heroicons/react/24/solid";
 import { GiftIcon } from "@heroicons/react/24/outline";
 import { ChevronDownIcon } from "@heroicons/react/20/solid";
 import { Bars3Icon } from "@heroicons/react/24/solid";
-import useWindowSize from "../../hooks/useWindowSize";
+import useWindowSize from "../../../hooks/useWindowSize";
 import { useEffect, useState } from "react";
 
 export default function Header() {
@@ -57,13 +57,15 @@ export default function Header() {
               <div className="flex items-center gap-4">
                 <GiftIcon className="icon" />
                 <BellIcon className="text-white h-5 w-5" />
-                <Image
-                  src="/assets/ProfileIMG.svg"
-                  alt="user"
-                  width={32}
-                  height={32}
-                />
-                <ChevronDownIcon className="text-white h-5 w-5" />
+                <span className="flex items-center gap-1">
+                  <Image
+                    src="/assets/ProfileIMG.svg"
+                    alt="user"
+                    width={32}
+                    height={32}
+                  />
+                  <Bars3Icon className="text-white h-6 w-6" />
+                </span>
               </div>
             </div>
           </nav>

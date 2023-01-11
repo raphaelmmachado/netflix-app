@@ -2,9 +2,8 @@ import { GetServerSideProps } from "next";
 import Head from "next/head";
 import useScroll from "../hooks/useScroll";
 //components
-import Header from "../components/header/Header";
 import MovieContainer from "../components/body/MovieContainer";
-
+import { ContextProvider } from "../context/ContextProvider";
 //local
 import { IRequests, IComponents } from "../typing";
 import { requests, dinamicRequests } from "../utils/requests";
@@ -44,22 +43,23 @@ export default function App({
         <meta name="viewport" content="width=device-width, initial-scale=1" />
         <link rel="icon" href="/favicon.ico" />
       </Head>
-
-      {components.map((component, i) => {
-        if (i === index) {
-          return (
-            <MovieContainer
-              key={i}
-              movies={component[0]}
-              trailers={component[1]}
-              title={component[2]}
-              bars={components.length}
-              index={index}
-              setIndex={setIndex}
-            />
-          );
-        }
-      })}
+      <ContextProvider>
+        {components.map((component, i) => {
+          if (i === index) {
+            return (
+              <MovieContainer
+                key={i}
+                movies={component[0]}
+                trailers={component[1]}
+                title={component[2]}
+                bars={components.length}
+                index={index}
+                setIndex={setIndex}
+              />
+            );
+          }
+        })}
+      </ContextProvider>
     </>
   );
 }
