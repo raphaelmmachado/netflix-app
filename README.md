@@ -47,4 +47,8 @@ Desisti de usar o swiper porque achei que não combinou muioto então eu peguei 
 Eu precisava fazer o fetch do trailer dos videos de cada lista. Mas como estou aprendendo next eu não queria fazer no client side. Então eu usei Promise.all e carreguei cada trailer no server side. Alguns filmes não possui link do trailer na DB por isso o botão fica como "indisponivel".
 
 Refiz toda a estrutura de código da página inicial, ao invés de colocar uma stack de componentes, eu gerei componentes de uma array com os dados de todos os componentes anteriores. O componente que será renderizado será o que estiver com o index igual ao index ativo.
-Aprendi a criar e usar custom hooks então criei um hook para acrescentar e diminuir valor do index, usei essa lógica para criar uma navegação entre categoria de filmes com o scroll do mouse.
+Aprendi a criar e usar custom hooks então criei um hook para acrescentar e diminuir valor do index usando scroll, usei essa lógica para criar uma navegação entre categoria de filmes com o scroll do mouse.
+
+Tive muitos problemas com essa api já que nem todos os filmes possuem video. E em quase todos os componentes eu tive que fazer algum tipo de condicional para sabe se há videos deste id na DB
+
+Usei context api para criar uma seção com filmes adicionados numa lista

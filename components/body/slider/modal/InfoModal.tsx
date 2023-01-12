@@ -69,7 +69,8 @@ export default function InfoModal({
                     <p>
                       Data de lançamento:{" "}
                       <span className="text-gray">
-                        {selectedMovie.release_date.toLocaleString("pt-BR")}
+                        {selectedMovie.release_date?.toLocaleString("pt-BR") ??
+                          "Não encontrado"}
                       </span>{" "}
                     </p>
                   </div>

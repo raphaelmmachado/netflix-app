@@ -1,4 +1,4 @@
-import { Dispatch, SetStateAction, useContext } from "react";
+import { Dispatch, SetStateAction, useContext, useState } from "react";
 import { Context } from "../../../../context/ContextProvider";
 
 import XMarkIcon from "@heroicons/react/24/solid/XMarkIcon";
@@ -6,17 +6,14 @@ import ThumbUpIconOut from "@heroicons/react/24/outline/HandThumbUpIcon";
 import ThumbUpIconSol from "@heroicons/react/24/solid/HandThumbUpIcon";
 import ThumbDownIconOut from "@heroicons/react/24/outline/HandThumbDownIcon";
 import ThumbDOwnIconSol from "@heroicons/react/24/solid/HandThumbDownIcon";
-import PlusCircleIcon from "@heroicons/react/24/outline/PlusCircleIcon";
-import CheckIcon from "@heroicons/react/24/solid/CheckIcon";
-import { IVideo, Movie } from "../../../../typing";
 
-// if error pode ser o tipo do selectedVideo
+import { Movie } from "../../../../typing";
+
 interface Props {
   title?: string;
   children?: JSX.Element;
   showVideoModal: boolean;
   selectedMovie: Movie;
-  selectedVideo: IVideo | null;
   setShowVideoModal: Dispatch<SetStateAction<boolean>>;
 }
 
@@ -24,16 +21,12 @@ export default function VideoModal({
   title,
   children,
   selectedMovie,
-  selectedVideo,
   showVideoModal,
   setShowVideoModal,
 }: Props) {
-  const { liked, disliked, setDisliked, setLiked, myList, setMyList } =
-    useContext(Context);
+  const { liked, disliked, setDisliked, setLiked } = useContext(Context);
 
   const handleLikeButton = (id: number) => {
-    console.log(liked);
-
     if (!liked.includes(id)) {
       setDisliked((newDisliked: number[]) =>
         [...newDisliked].filter((dislikedIds) => dislikedIds !== id)
@@ -45,6 +38,7 @@ export default function VideoModal({
       );
     }
   };
+
   const handleDislikeButton = (id: number) => {
     if (!disliked.includes(id)) {
       setLiked((newLiked: number[]) =>
@@ -57,7 +51,13 @@ export default function VideoModal({
       );
     }
   };
-  const handleAddToList = (movie: Movie) => {};
+  const movieFound = () => {
+    if ("results" in selectedMovie.trailer) {
+      return true;
+    } else {
+      return false;
+    }
+  };
   return showVideoModal ? (
     <section
       id="modal"
@@ -79,41 +79,33 @@ export default function VideoModal({
             <button
               id="like-button"
               onClick={() => {
-                if (selectedVideo?.id) handleLikeButton(selectedVideo.id);
+                if (movieFound()) {
+                  const id = selectedMovie.id;
+                  if (id) handleLikeButton(id);
+                }
               }}
               className="flex items-center justify-around gap-2
               text-smokewt font-bold py-2 px-6"
             >
-              {selectedVideo && liked.includes(selectedVideo.id) ? (
+              {liked.includes(selectedMovie.id) ? (
                 <ThumbUpIconSol className="w-6 h-6" />
               ) : (
                 <ThumbUpIconOut className="w-6 h-6 text-white" />
               )}
             </button>
-            {/* TODO */}
-            {/* <button
-              className="flex items-center gap-2 text-smokewt font-bold py-2 px-6"
-              onClick={() => handleAddToList(selectedMovie)}
-            >
-              {" "}
-              {selectedVideo && !myList.includes(selectedMovie.id) ? (
-                <>
-                  <>Add na lista</>
-                  <PlusCircleIcon className="w-6 h-6 text-white" />
-                </>
-              ) : (
-                <CheckIcon className="w-6 h-6 text-white" />
-              )}
-            </button> */}
+
             <button
               id="dislike-button"
               onClick={() => {
-                if (selectedVideo?.id) handleDislikeButton(selectedVideo.id);
+                if (movieFound()) {
+                  const id = selectedMovie.id;
+                  if (id) handleDislikeButton(id);
+                }
               }}
               className="flex items-center justify-around gap-2
               text-smokewt font-bold py-2 px-6"
             >
-              {selectedVideo && disliked.includes(selectedVideo.id) ? (
+              {disliked.includes(selectedMovie.id) ? (
                 <ThumbDOwnIconSol className="w-6 h-6 text-white" />
               ) : (
                 <ThumbDownIconOut className="w-6 h-6 text-white" />
@@ -135,13 +127,12 @@ export default function VideoModal({
             </span>
           </button>
         </header>
-
-        {selectedVideo?.site === "YouTube" && (
+        {movieFound() && (
           <iframe
             id="modal-video"
             className="aspect-video w-full"
-            src={`https://www.youtube.com/embed/${selectedVideo?.key}`}
-            title={`${selectedVideo?.name}`}
+            src={`https://www.youtube.com/embed/${selectedMovie.trailer.results[0]?.key}`}
+            title={`${selectedMovie.trailer.results[0]?.name}`}
             allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
             allowFullScreen
           ></iframe>

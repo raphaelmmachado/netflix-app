@@ -7,7 +7,7 @@ import {
 } from "react";
 import Image from "next/image";
 import apiConfiguration from "../../../utils/apiConfiguration";
-import { IVideo, IVideoRequest, Movie } from "../../../typing";
+import { Movie } from "../../../typing";
 import useWindowSize from "../../../hooks/useWindowSize";
 import InfoModal from "./modal/InfoModal";
 import VideoModal from "./modal/VideoModal";
@@ -15,11 +15,8 @@ import VideoModal from "./modal/VideoModal";
 interface IMovieSlider {
   movies: Movie[];
   selectedMovie: Movie;
-  trailers: IVideoRequest[];
   title: string;
   setSelectedMovie: Dispatch<SetStateAction<Movie>>;
-  selectedVideo: IVideo | null;
-  setSelectedVideo: Dispatch<SetStateAction<IVideo | null>>;
   showVideoModal: boolean;
   showInfoModal: boolean;
   setShowInfoModal: Dispatch<SetStateAction<boolean>>;
@@ -29,11 +26,8 @@ interface IMovieSlider {
 export default function MovieSlider({
   movies,
   title,
-  trailers,
   selectedMovie,
   setSelectedMovie,
-  selectedVideo,
-  setSelectedVideo,
   showVideoModal,
   showInfoModal,
   setShowInfoModal,
@@ -52,16 +46,6 @@ export default function MovieSlider({
     }
   }, [movies.length, width, itemsPerScreen]);
 
-  useEffect(() => {
-    const results = trailers[0].results;
-    if (results && results.length > 0) {
-      setSelectedVideo(results[0]);
-    } else {
-      setSelectedVideo(null);
-      console.warn(`Não foi encontrado video deste filme na DB.`);
-    }
-  }, []);
-
   const incrementSliderIndex = () => {
     setSliderIndex((prev) => {
       if (prev + 1 >= progressBarItems) return 0;
@@ -78,15 +62,15 @@ export default function MovieSlider({
   const imgUrl = apiConfiguration.images.secure_base_url;
   const backdropSize = apiConfiguration.images.backdrop_sizes;
 
-  const selectAMovie = (movie: Movie, i: number) => {
+  const selectAMovie = (movie: Movie) => {
     setSelectedMovie(movie);
-    const results = trailers[i].results;
-    if (results && results.length > 0) {
-      setSelectedVideo(results[0]);
+    if ("results" in selectedMovie.trailer) {
+      true;
     } else {
-      setSelectedVideo(null);
-      console.warn(
-        `Não foi encontrado video do filme ${movie.name ?? movie.title} na DB.`
+      return console.warn(
+        `Não foi encontrado trailer do filme ${
+          selectedMovie.title ?? selectedMovie.name
+        } na DB`
       );
     }
   };
@@ -134,7 +118,7 @@ export default function MovieSlider({
               return (
                 <Image
                   onMouseEnter={() =>
-                    setTimeout(() => selectAMovie(movie, i), 150)
+                    setTimeout(() => selectAMovie(movie), 150)
                   }
                   key={i}
                   src={`${imgUrl}${backdropSize[1]}${movie.backdrop_path}`}
@@ -158,9 +142,9 @@ export default function MovieSlider({
         setShowInfoModal={setShowInfoModal}
       />
       <VideoModal
+        selectedMovie={selectedMovie}
         showVideoModal={showVideoModal}
         setShowVideoModal={setShowVideoModal}
-        selectedVideo={selectedVideo}
       />
     </section>
   );

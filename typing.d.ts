@@ -4,20 +4,21 @@ export interface Genre {
 }
 
 export interface Movie {
+  poster_path: string | null;
+  adult: boolean;
   id: number;
   name?: string;
   title: string;
   overview: string;
-  backdrop_path: string;
-  poster_path: string;
+  backdrop_path: string | null;
   genre_ids: number[];
-  adult: boolean;
   video?: boolean;
+  trailer: IVideoRequest;
   media_type?: boolean;
   vote_average: number;
   vote_count: number;
   popularity: number;
-  release_date: Date | string;
+  release_date: string;
   first_air_date?: Date | string;
   original_language: string;
   original_title: string;
@@ -25,6 +26,27 @@ export interface Movie {
   original_name?: string;
 }
 
+interface IVideoRequest {
+  id: string | number;
+  results: IVideo[];
+}
+interface BadRequest {
+  success: boolean;
+  status_message: string;
+  status_code: number;
+}
+interface IVideo {
+  iso_639_1: string;
+  iso_3166_1: string;
+  name: string;
+  key: string;
+  site: string;
+  size: number;
+  type: string;
+  official: boolean;
+  published_at?: string | Date;
+  id: number;
+}
 export interface Element {
   type:
     | "Bloopers"
@@ -57,11 +79,9 @@ interface IRequests {
   romanceMoviesTrailers: IResultsTrailers[];
   trendingSeriesTrailers: IResultsTrailers[];
   popularMoviesTrailers: IResultsTrailers[];
+  teste: Movie[];
 }
-interface IHighCtx {
-  highlighted: Movie | undefined;
-  setHighlighted: (newState: Movie) => void;
-}
+
 interface IProvider {
   children: JSX.Element | JSX.Element[] | ReactNode;
 }
@@ -73,26 +93,59 @@ interface IContext {
   myList: Movie[];
   setMyList: Dispatch<SetStateAction<Movie[]>>;
 }
-interface IVideoRequest {
-  id: string | number;
-  results: IVideo[];
-}
 
-interface IVideo {
-  iso_639_1: string;
-  iso_3166_1: string;
-  name: string;
-  key: string;
-  site: string;
-  size: number;
-  type: string;
-  official: boolean;
-  published_at: string | Date;
-  id: number;
-}
 interface IComponents {
   [0]: Movie[];
-  [1]: IVideoRequest[];
-  [2]: string;
+  [1]: string;
 }
 [];
+
+export interface IMovie {
+  adult: boolean;
+  backdrop_path: string | null;
+  belongs_to_collection: null | {};
+  budget: number;
+  genres: Genre[];
+  homepage: string | null;
+  id: number;
+  imdb_id: string | null;
+  original_language: string;
+  original_title: string;
+  overview: string | null;
+  popularity: number;
+  poster_path: string | null;
+  production_companies: ProductionCompany[];
+  production_countries: ProductionCountry[];
+  release_date: string;
+  revenue: number;
+  runtime: number | null;
+  spoken_languages: SpokenLanguage[];
+  status: string;
+  tagline: string | null;
+  title: string;
+  video: boolean;
+  vote_average: number;
+  vote_count: number;
+}
+
+export interface Genre {
+  id: number;
+  name: string;
+}
+
+export interface ProductionCompany {
+  id: number;
+  logo_path: null | string;
+  name: string;
+  origin_country: string;
+}
+
+export interface ProductionCountry {
+  iso_3166_1: string;
+  name: string;
+}
+
+export interface SpokenLanguage {
+  iso_639_1: string;
+  name: string;
+}

@@ -1,11 +1,13 @@
 import { GetServerSideProps } from "next";
 import Head from "next/head";
 import useScroll from "../hooks/useScroll";
+import { Context } from "../context/ContextProvider";
+import { useContext } from "react";
+
 //components
 import MovieContainer from "../components/body/MovieContainer";
-import { ContextProvider } from "../context/ContextProvider";
 //local
-import { IRequests, IComponents } from "../typing";
+import { IRequests, IComponents, Movie } from "../typing";
 import { requests, dinamicRequests } from "../utils/requests";
 
 export default function App({
@@ -16,50 +18,45 @@ export default function App({
   actionMovies,
   trendingSeries,
   popularMovies,
-  trendingNowTrailers,
-  topRatedTrailers,
-  actionMoviesTrailers,
-  comedyMovieTrailers,
-  horrorMovieTrailers,
-  trendingSeriesTrailers,
-  popularMoviesTrailers,
 }: IRequests) {
-  const components: IComponents[] = [
-    [trendingNow, trendingNowTrailers, "Em Destaque"],
-    [popularMovies, popularMoviesTrailers, "Filmes Populares"],
-    [trendingSeries, trendingSeriesTrailers, "Series em Destaque"],
-    [topRated, topRatedTrailers, "Melhores Avaliados"],
-    [actionMovies, actionMoviesTrailers, "Filmes de Ação"],
-    [comedyMovies, comedyMovieTrailers, "Filmes de comédia"],
-    [horrorMovies, horrorMovieTrailers, "Filmes de Terror"],
-  ];
-  const { index, setIndex } = useScroll(components.length);
+  const { myList } = useContext(Context);
 
+  const COMPONENTS: IComponents[] = [
+    [trendingNow, "Em destaque"],
+    [popularMovies, "Filmes populares"],
+    [trendingSeries, "Series em destaque"],
+    [topRated, "Melhores avaliados"],
+    [actionMovies, "Filmes de ação"],
+    [comedyMovies, "Filmes de comédia"],
+    [horrorMovies, "Filmes de terror"],
+    [myList, "Minha lista"],
+  ];
+
+  const { index, setIndex } = useScroll(COMPONENTS.length);
+
+  console.log("index:", myList);
   return (
     <>
       <Head>
-        <title>Netflix - {components[index][2]}</title>
+        <title>Netflix</title>
         <meta name="description" content="Fake Netflix" />
         <meta name="viewport" content="width=device-width, initial-scale=1" />
         <link rel="icon" href="/favicon.ico" />
       </Head>
-      <ContextProvider>
-        {components.map((component, i) => {
-          if (i === index) {
-            return (
-              <MovieContainer
-                key={i}
-                movies={component[0]}
-                trailers={component[1]}
-                title={component[2]}
-                bars={components.length}
-                index={index}
-                setIndex={setIndex}
-              />
-            );
-          }
-        })}
-      </ContextProvider>
+      {COMPONENTS.map((component: IComponents, i) => {
+        if (i === index) {
+          return (
+            <MovieContainer
+              key={i}
+              movies={component[0]}
+              title={component[1]}
+              bars={COMPONENTS.length}
+              index={index}
+              setIndex={setIndex}
+            />
+          );
+        }
+      })}
     </>
   );
 }
@@ -71,26 +68,21 @@ export const getServerSideProps: GetServerSideProps = async (content) => {
     "public, s-maxage=10, stale-while-revalidate=59"
   );
 
+  // FETCH MOVIES INFO / NAME/ PICTURE/IMAGES
   const [
-    apiConfiguration,
-    trendingNow,
-    topRated,
-    actionMovies,
-    comedyMovies,
-    horrorMovies,
-    documentaries,
-    discoverMovie,
-    trendingSeries,
-    popularMovies,
+    reqTrending,
+    reqTopRated,
+    reqActionMovies,
+    reqComedyMovies,
+    reqHorrorMovies,
+    reqTrendingSeries,
+    reqPopularMovies,
   ] = await Promise.all([
-    fetch(requests.fetchImages).then((res) => res.json()),
     fetch(requests.fetchTrending).then((res) => res.json()),
     fetch(requests.fecthTopRated).then((res) => res.json()),
     fetch(requests.fetchActionMovies).then((res) => res.json()),
     fetch(requests.fetchComedyMovies).then((res) => res.json()),
     fetch(requests.fetchHorrorMovies).then((res) => res.json()),
-    fetch(requests.fetchDocumentaries).then((res) => res.json()),
-    fetch(requests.fetchDiscoverMovie).then((res) => res.json()),
     fetch(requests.fetchTrendingSeries).then((res) => res.json()),
     fetch(requests.fetchPopularMovies).then((res) => res.json()),
   ]);
@@ -98,37 +90,38 @@ export const getServerSideProps: GetServerSideProps = async (content) => {
   interface Id {
     id: string | number;
   }
-  // Nested fetchs
+  // FETCH VIDEOS FROM EACH MOVIE
   const dinamicReqs = {
-    trending: trendingNow.results.map(async (item: Id) => {
+    trending: reqTrending.results.map(async (item: Id) => {
       const { url } = dinamicRequests(item.id);
       return await fetch(url).then((res) => res.json());
     }),
-    topRated: topRated.results.map(async (item: Id) => {
+    topRated: reqTopRated.results.map(async (item: Id) => {
       const { url } = dinamicRequests(item.id);
       return await fetch(url).then((res) => res.json());
     }),
-    actionMovies: actionMovies.results.map(async (item: Id) => {
+    actionMovies: reqActionMovies.results.map(async (item: Id) => {
       const { url } = dinamicRequests(item.id);
       return await fetch(url).then((res) => res.json());
     }),
-    comedyMovies: comedyMovies.results.map(async (item: Id) => {
+    comedyMovies: reqComedyMovies.results.map(async (item: Id) => {
       const { url } = dinamicRequests(item.id);
       return await fetch(url).then((res) => res.json());
     }),
-    horrorMovies: horrorMovies.results.map(async (item: Id) => {
+    horrorMovies: reqHorrorMovies.results.map(async (item: Id) => {
       const { url } = dinamicRequests(item.id);
       return await fetch(url).then((res) => res.json());
     }),
-    trendingSeries: trendingSeries.results.map(async (item: Id) => {
+    trendingSeries: reqTrendingSeries.results.map(async (item: Id) => {
       const { url } = dinamicRequests(item.id);
       return await fetch(url).then((res) => res.json());
     }),
-    popularMovies: popularMovies.results.map(async (item: Id) => {
+    popularMovies: reqPopularMovies.results.map(async (item: Id) => {
       const { url } = dinamicRequests(item.id);
       return await fetch(url).then((res) => res.json());
     }),
   };
+
   const trendingNowTrailers = await Promise.all(dinamicReqs.trending);
   const topRatedTrailers = await Promise.all(dinamicReqs.topRated);
   const actionMoviesTrailers = await Promise.all(dinamicReqs.actionMovies);
@@ -137,25 +130,45 @@ export const getServerSideProps: GetServerSideProps = async (content) => {
   const trendingSeriesTrailers = await Promise.all(dinamicReqs.trendingSeries);
   const popularMoviesTrailers = await Promise.all(dinamicReqs.popularMovies);
 
+  // MERGE MOVIE INFO AND VIDEO IN ONE ARRAY
+  const trendingNow = reqTrending.results.map((item: Movie, i: number) => ({
+    ...item,
+    trailer: trendingNowTrailers[i],
+  }));
+  const topRated = reqTopRated.results.map((item: Movie, i: number) => ({
+    ...item,
+    trailer: topRatedTrailers[i],
+  }));
+  const action = reqActionMovies.results.map((item: Movie, i: number) => ({
+    ...item,
+    trailer: actionMoviesTrailers[i],
+  }));
+  const comedy = reqComedyMovies.results.map((item: Movie, i: number) => ({
+    ...item,
+    trailer: comedyMoviesTrailers[i],
+  }));
+  const horror = reqHorrorMovies.results.map((item: Movie, i: number) => ({
+    ...item,
+    trailer: horrorMoviesTrailers[i],
+  }));
+  const series = reqTrendingSeries.results.map((item: Movie, i: number) => ({
+    ...item,
+    trailer: trendingSeriesTrailers[i],
+  }));
+  const popular = reqPopularMovies.results.map((item: Movie, i: number) => ({
+    ...item,
+    trailer: popularMoviesTrailers[i],
+  }));
+
   return {
     props: {
-      apiConfiguration: apiConfiguration,
-      trendingNow: trendingNow.results,
-      topRated: topRated.results,
-      actionMovies: actionMovies.results,
-      comedyMovies: comedyMovies.results,
-      horrorMovies: horrorMovies.results,
-      documentaries: documentaries.results,
-      discoverMovie: discoverMovie.results,
-      trendingSeries: trendingSeries.results,
-      popularMovies: popularMovies.results,
-      trendingNowTrailers: trendingNowTrailers,
-      topRatedTrailers: topRatedTrailers,
-      actionMoviesTrailers: actionMoviesTrailers,
-      comedyMovieTrailers: comedyMoviesTrailers,
-      horrorMovieTrailers: horrorMoviesTrailers,
-      trendingSeriesTrailers: trendingSeriesTrailers,
-      popularMoviesTrailers: popularMoviesTrailers,
+      trendingNow: trendingNow,
+      topRated: topRated,
+      actionMovies: action,
+      comedyMovies: comedy,
+      horrorMovies: horror,
+      trendingSeries: series,
+      popularMovies: popular,
     },
   };
 };

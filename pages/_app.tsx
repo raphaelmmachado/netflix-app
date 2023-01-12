@@ -2,6 +2,7 @@ import "../styles/globals.css";
 import "../styles/Slider.css";
 import type { AppProps } from "next/app";
 import localFont from "@next/font/local";
+import { ContextProvider } from "../context/ContextProvider";
 
 const netFlixSans = localFont({
   src: [
@@ -14,7 +15,9 @@ const netFlixSans = localFont({
 export default function MyApp({ Component, pageProps }: AppProps) {
   return (
     <main className={`${netFlixSans.className} bg-black`}>
-      <Component {...pageProps} />
+      <ContextProvider>
+        <Component {...pageProps} />
+      </ContextProvider>
     </main>
   );
 }

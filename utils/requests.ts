@@ -2,7 +2,6 @@ const BASE_URL = "https://api.themoviedb.org/3";
 const API_KEY = process.env.NEXT_PUBLIC_API_KEY;
 
 const requests = {
-  fetchImages: `${BASE_URL}/configuration?api_key${API_KEY}`,
   fetchTrending: `${BASE_URL}/trending/all/week?api_key=${API_KEY}&language=pt-BR`,
   fetchNetflixOriginals: `${BASE_URL}/discover/movie?api_key=${API_KEY}&language=pt-B&with_networks=213`,
   fecthTopRated: `${BASE_URL}/movie/top_rated?api_key=${API_KEY}&language=pt-BR`,

@@ -1,19 +1,19 @@
-import { Dispatch, SetStateAction, useState } from "react";
-import { IVideo, IVideoRequest, Movie } from "../../typing";
-import MovieSlider from "./slider/MovieSlider";
-
-import {
-  ExclamationTriangleIcon,
-  PlayIcon,
-  ChevronUpIcon,
-  ChevronDownIcon,
-} from "@heroicons/react/20/solid/";
-import { InformationCircleIcon } from "@heroicons/react/24/outline";
+import { Dispatch, SetStateAction, useState, useContext } from "react";
 import Header from "./header/Header";
+import Image from "next/image";
+import { Context } from "../../context/ContextProvider";
+import ArrowUpIcon from "@heroicons/react/24/solid/ArrowLongUpIcon";
+import MovieSlider from "./slider/MovieSlider";
+import BannerText from "./banner/BannerText";
+import PlayButton from "./banner/PlayButton";
+import ListButton from "./banner/ListButton";
+import DetailsButton from "./banner/DetailsButton";
+import VerticalScroller from "./banner/VerticalScroller";
+import { Movie } from "../../typing";
+import movieFound from "../../utils/movieFound";
 
 interface Props {
   movies: Movie[];
-  trailers: IVideoRequest[];
   children?: JSX.Element | JSX.Element[];
   title: string;
   bars: number;
@@ -24,19 +24,27 @@ interface Props {
 export default function MovieContainer({
   movies,
   title,
-  trailers,
   bars,
   index,
   setIndex,
 }: Props) {
   const [selectedMovie, setSelectedMovie] = useState<Movie>(movies[0]);
-  const [selectedVideo, setSelectedVideo] = useState<IVideo | null>(null);
   const [showVideoModal, setShowVideoModal] = useState(false);
   const [showInfoModal, setShowInfoModal] = useState(false);
+  const { myList, setMyList } = useContext(Context);
+
+  const handleAddToList = (movie: Movie) => {
+    if (myList.some((item) => item.id === movie.id)) {
+      setMyList((myList: Movie[]) =>
+        [...myList].filter((item) => item.id !== movie.id)
+      );
+    } else {
+      setMyList((myList: Movie[]) => [...myList, movie]);
+    }
+  };
 
   return (
     <>
-      {" "}
       {selectedMovie ? (
         <main
           className="backdrop-image flex flex-col justify-between
@@ -50,94 +58,50 @@ export default function MovieContainer({
           <Header />
 
           <div className="flex justify-between items-center">
-            {/* SELECTED MOVIE INFO - CUIDADO COM HEIGHT FIXADA!!!*/}
             <div
               className="flex flex-col justify-center gap-4 py-4 px-4
            md:px-14 h-[300px]"
             >
-              <h1 className=" text-white font-bold text-5xl pb-2">
-                {selectedMovie.title || selectedMovie.name}
-              </h1>
-              <p
-                className={`text-white max-w-fit
-              md:max-w-[50vw] line-clamp-6 font-base tracking-wide`}
-              >
-                {selectedMovie.overview}
-              </p>
-
+              <BannerText
+                title={selectedMovie.title ?? selectedMovie.name}
+                description={selectedMovie.overview}
+              />
               {/* PLAY / INFO BUTTONS */}
               <div className="flex gap-6 items-center justify-start">
-                <button
-                  onClick={() => selectedVideo && setShowVideoModal(true)}
-                  className={`flex items-center justify-around gap-2
-              ${
-                selectedVideo ? "bg-smokewt" : "bg-midgray"
-              } text-black font-bold py-2 px-6
-              rounded-md`}
-                >
-                  {selectedVideo ? (
-                    <PlayIcon className="text-black h-5 w-5" />
-                  ) : (
-                    <ExclamationTriangleIcon className="text-black h-5 w-5" />
-                  )}
-                  <>{selectedVideo ? "Play" : "Indisponível"}</>
-                </button>
-                <button
-                  onClick={() => setShowInfoModal(true)}
-                  className="flex items-center justify-around gap-2
-              bg-midgray text-smokewt font-bold py-2 px-6
-                rounded-md"
-                >
-                  <InformationCircleIcon className="text-smokewt h-5 w-5" />
-                  <>Detalhes</>
-                </button>
+                <PlayButton
+                  play={movieFound(selectedMovie) ? true : false}
+                  showModal={() => setShowVideoModal(true)}
+                />
+                <ListButton
+                  added={myList.some((item) => item.id === selectedMovie.id)}
+                  addToList={() => handleAddToList(selectedMovie)}
+                />
+                <DetailsButton showModal={() => setShowInfoModal(true)} />
               </div>
             </div>
 
             {/* VERTICAL NAVIGATION BAR */}
-            <div className="flex flex-col items-center gap-2 px-8">
-              <div
-                id="prev-component-button"
-                className="cursor-pointer"
-                onClick={() =>
-                  setIndex((prev: number) => (prev - 1 < 0 ? prev : --prev))
-                }
-              >
-                <ChevronUpIcon className="w-5 h-5 text-center" />
-              </div>
-              {[...Array(bars).fill(" ")].map((bar, i) => (
-                <div
-                  onClick={() => setIndex(i)}
-                  id="vertical-bars"
-                  key={i}
-                  className={`w-6 h-2 hover:cursor-pointer ${
-                    index === i ? "bg-red" : "bg-white/50"
-                  } `}
-                ></div>
-              ))}
-              <div
-                id="next-component-button"
-                className="cursor-pointer"
-                onClick={() =>
-                  setIndex((prev: number) =>
-                    prev + 1 > bars - 1 ? prev : ++prev
-                  )
-                }
-              >
-                <ChevronDownIcon className="w-5 h-5" />
-              </div>
-            </div>
+            <VerticalScroller
+              bars={bars}
+              index={index}
+              setIndex={(i) => setIndex(i)}
+              goUp={() =>
+                setIndex((prev: number) => (prev - 1 < 0 ? prev : --prev))
+              }
+              goDown={() =>
+                setIndex((prev: number) =>
+                  prev + 1 > bars - 1 ? prev : ++prev
+                )
+              }
+            />
           </div>
 
-          {/* TRENDING MOVIES SLIDER */}
+          {/* SLIDER */}
           <MovieSlider
             movies={movies}
             title={title}
-            trailers={trailers}
             selectedMovie={selectedMovie}
             setSelectedMovie={(movie) => setSelectedMovie(movie)}
-            selectedVideo={selectedVideo}
-            setSelectedVideo={setSelectedVideo}
             showInfoModal={showInfoModal}
             showVideoModal={showVideoModal}
             setShowVideoModal={setShowVideoModal}
@@ -145,7 +109,24 @@ export default function MovieContainer({
           />
         </main>
       ) : (
-        <h1>Alguma coisa deu errado!</h1>
+        <main className=" bg-black">
+          <section className="min-h-[100vh] w-full flex flex-col items-center justify-center gap-4">
+            <Image
+              src="/assets/NetflixLogoSvg.svg"
+              alt="netflix-logo"
+              width={200}
+              height={100}
+            />
+            <h1>Lista de filmes vazia</h1>
+            <button
+              className="bg-white rounded-md text-black font-bold px-6 gap-2 py-2"
+              onClick={() => setIndex(0)}
+            >
+              <ArrowUpIcon />
+              <>Voltar</>
+            </button>
+          </section>
+        </main>
       )}
     </>
   );
