@@ -8,11 +8,10 @@ export default function DefaultButton({ showModal }: Props) {
       <button
         onClick={() => showModal()}
         className="flex items-center justify-around gap-2
-    bg-midgray text-smokewt font-bold py-2 px-6
+    bg-midgray/70 text-smokewt  py-2 px-4
       rounded-md"
       >
         <InformationCircleIcon className="text-smokewt h-6 w-6" />
-        <>Detalhes</>
       </button>
     </>
   );

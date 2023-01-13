@@ -91,7 +91,7 @@ select {
 }
 
 /* GIVE OPACITY TO BACKGROUND IMAGE */
-.backdrop-image {
+/* .backdrop-image {
   position: relative;
   isolation: isolate;
   object-fit: "cover";
@@ -103,7 +103,7 @@ select {
   inset: 0;
   z-index: -1;
   opacity: 0.5;
-}
+} */
 /* slider */
 .carousel:hover > :where(.arrow-left, .arrow-right) {
   opacity: 1;

@@ -14,7 +14,7 @@ export interface Movie {
   genre_ids: number[];
   video?: boolean;
   trailer: IVideoRequest;
-  media_type?: boolean;
+  media_type?: boolean | string;
   vote_average: number;
   vote_count: number;
   popularity: number;

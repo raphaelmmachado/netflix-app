@@ -5,8 +5,10 @@ import { ChevronDownIcon } from "@heroicons/react/20/solid";
 import { Bars3Icon } from "@heroicons/react/24/solid";
 import useWindowSize from "../../../hooks/useWindowSize";
 import { useEffect, useState } from "react";
-
-export default function Header() {
+interface Props {
+  setIndex: (i: number) => void;
+}
+export default function Header({ setIndex }: Props) {
   const [mobile, setMobile] = useState(false);
   const { width } = useWindowSize();
 
@@ -34,11 +36,36 @@ export default function Header() {
                 priority
               />
               <ul className="flex text-smokewt gap-4 items-center">
-                <li className="hover:text-red cursor-pointer">Início</li>
-                <li className="hover:text-red cursor-pointer">Séries</li>
-                <li className="hover:text-red cursor-pointer">Filmes</li>
-                <li className="hover:text-red cursor-pointer">Lançamentos</li>
-                <li className="hover:text-red cursor-pointer">Minha Lista</li>
+                <li
+                  onClick={() => setIndex(0)}
+                  className="hover:text-red cursor-pointer"
+                >
+                  Início
+                </li>
+                <li
+                  onClick={() => setIndex(2)}
+                  className="hover:text-red cursor-pointer"
+                >
+                  Séries
+                </li>
+                <li
+                  onClick={() => setIndex(1)}
+                  className="hover:text-red cursor-pointer"
+                >
+                  Filmes
+                </li>
+                <li
+                  onClick={() => setIndex(0)}
+                  className="hover:text-red cursor-pointer"
+                >
+                  Lançamentos
+                </li>
+                <li
+                  onClick={() => setIndex(7)}
+                  className="hover:text-red cursor-pointer"
+                >
+                  Minha Lista
+                </li>
               </ul>
             </div>
             <div className="flex items-center gap-2" id="nav--right-div">

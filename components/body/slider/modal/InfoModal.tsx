@@ -1,13 +1,12 @@
 import Image from "next/image";
-import { Dispatch, SetStateAction, useEffect } from "react";
+import { Dispatch, SetStateAction, useState } from "react";
 import { Movie } from "../../../../typing";
-import LangIcon from "@heroicons/react/24/solid/LanguageIcon";
-import StarIcon from "@heroicons/react/24/solid/StarIcon";
-import ChartIcon from "@heroicons/react/24/solid/ChartBarIcon";
-import RocketIcon from "@heroicons/react/24/solid/RocketLaunchIcon";
-import HandIcon from "@heroicons/react/24/solid/HandThumbUpIcon";
 import XMarkIcon from "@heroicons/react/24/solid/XMarkIcon";
 import apiConfiguration from "../../../../utils/apiConfiguration";
+import Paragraph from "./info/Paragraph";
+import MovieInfoModal from "./info/MovieInfoModal";
+import formatDate from "../../../../utils/formatDate";
+import FormateDateToBR from "../../../../utils/formatDate";
 interface Props {
   showInfoModal: boolean;
   selectedMovie: Movie;
@@ -18,11 +17,7 @@ export default function InfoModal({
   selectedMovie,
   setShowInfoModal,
 }: Props) {
-  useEffect(() => {
-    if (window !== undefined) {
-      window.removeEventListener("whell", () => {});
-    }
-  }, []);
+  const date = FormateDateToBR(selectedMovie?.release_date);
   return (
     <>
       {showInfoModal ? (
@@ -43,6 +38,7 @@ export default function InfoModal({
                 />
               </span>
             </button>
+
             <div className="flex flex-col justify-around gap-6 bg-black p-4 rounded-sm">
               <div className="flex justify-around">
                 <div className="relative">
@@ -65,59 +61,26 @@ export default function InfoModal({
                 </div>
 
                 <div className="max-w-[50%] flex flex-col gap-2">
-                  <div className="inline-flex items-center gap-1">
-                    <p>
-                      Data de lançamento:{" "}
-                      <span className="text-gray">
-                        {selectedMovie.release_date?.toLocaleString("pt-BR") ??
-                          "Não encontrado"}
-                      </span>{" "}
-                    </p>
-                  </div>
-
-                  <div className="inline-flex items-center gap-1">
-                    <p>
-                      Media de Avaliação:{" "}
-                      <span className="text-gray">
-                        {Math.ceil(selectedMovie.vote_average)}
-                      </span>
-                    </p>
-                  </div>
-
-                  <div className="inline-flex items-center gap-1">
-                    <p>
-                      Votos:{" "}
-                      <span className="text-gray">
-                        {selectedMovie.vote_count}
-                      </span>
-                    </p>
-                  </div>
-
-                  <div className="inline-flex items-center gap-1">
-                    <p>
-                      Idioma Original:{" "}
-                      <span className="text-gray">
-                        {selectedMovie.original_language}
-                      </span>
-                    </p>
-                  </div>
-
-                  <div className="inline-flex items-center gap-1">
-                    <p>
-                      Popularidade:{" "}
-                      {
-                        <span className="text-gray">
-                          {selectedMovie.popularity}
-                        </span>
-                      }
-                    </p>
-                  </div>
+                  <Paragraph title="Data de lançamento" value={date} />
+                  <Paragraph
+                    title="Media de avaliação"
+                    value={Math.ceil(selectedMovie.vote_average)}
+                  />
+                  <Paragraph title="Votos" value={selectedMovie.vote_count} />
+                  <Paragraph
+                    title="Idioma original"
+                    value={selectedMovie.original_language}
+                  />
+                  <Paragraph
+                    title="Popularidade"
+                    value={selectedMovie.popularity}
+                  />
                 </div>
               </div>
-              <div className="">
-                <h1 className="text-xl p-1">{selectedMovie.title}</h1>
-                <p className="tracking-wide">{`${selectedMovie.overview}`}</p>
-              </div>
+              <MovieInfoModal
+                title={selectedMovie.title}
+                overview={selectedMovie.overview}
+              />
             </div>
           </div>
         </section>

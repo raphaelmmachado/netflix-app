@@ -11,6 +11,8 @@ import DetailsButton from "./banner/DetailsButton";
 import VerticalScroller from "./banner/VerticalScroller";
 import { Movie } from "../../typing";
 import movieFound from "../../utils/movieFound";
+import FormateDateToBR from "../../utils/formatDate";
+import checkIfHasDate from "../../utils/checkIfHasDate";
 
 interface Props {
   movies: Movie[];
@@ -42,73 +44,86 @@ export default function MovieContainer({
       setMyList((myList: Movie[]) => [...myList, movie]);
     }
   };
-
+  // const check = () => {
+  //   let date;
+  //   if (checkIfHasDate(selectedMovie)) {
+  //     date = FormateDateToBR(selectedMovie.release_date);
+  //   } else {
+  //     return (date = "");
+  //   }
+  //   return date;
+  // };
+  // const date = check();
   return (
     <>
       {selectedMovie ? (
         <main
           className="backdrop-image flex flex-col justify-between
            min-h-[100vh] transition-all shadow-2xl"
-          id="section--highlighted"
+          id="section--highlighted relative"
           style={{
             backgroundImage: `url(https://image.tmdb.org/t/p/w1280${selectedMovie?.backdrop_path})`,
           }}
         >
-          {/* NAV BAR */}
-          <Header />
-
-          <div className="flex justify-between items-center">
-            <div
-              className="flex flex-col justify-center gap-4 py-4 px-4
+          {" "}
+          <div className=" bg-gradient-to-r from-black via-black/70 to-black/25 absolute">
+            {/* NAV BAR */}
+            <Header setIndex={(i: number) => setIndex(i)} />
+            <div className="flex justify-between items-center">
+              <div
+                className="flex flex-col justify-center gap-4 py-4 px-4
            md:px-14 h-[300px]"
-            >
-              <BannerText
-                title={selectedMovie.title ?? selectedMovie.name}
-                description={selectedMovie.overview}
-              />
-              {/* PLAY / INFO BUTTONS */}
-              <div className="flex gap-6 items-center justify-start">
-                <PlayButton
-                  play={movieFound(selectedMovie) ? true : false}
-                  showModal={() => setShowVideoModal(true)}
+              >
+                <BannerText
+                  title={selectedMovie.title ?? selectedMovie.name}
+                  description={selectedMovie.overview}
+                  rating={selectedMovie.vote_average.toFixed(1)}
+                  release_date={selectedMovie?.release_date}
+                  typeOfShow={selectedMovie.media_type}
                 />
-                <ListButton
-                  added={myList.some((item) => item.id === selectedMovie.id)}
-                  addToList={() => handleAddToList(selectedMovie)}
-                />
-                <DetailsButton showModal={() => setShowInfoModal(true)} />
+                {/* PLAY / INFO BUTTONS */}
+                <div className="flex gap-6 items-center justify-start">
+                  <PlayButton
+                    play={movieFound(selectedMovie) ? true : false}
+                    showModal={() => setShowVideoModal(true)}
+                  />
+                  <ListButton
+                    added={myList.some((item) => item.id === selectedMovie.id)}
+                    addToList={() => handleAddToList(selectedMovie)}
+                  />
+                  <DetailsButton showModal={() => setShowInfoModal(true)} />
+                </div>
               </div>
-            </div>
 
-            {/* VERTICAL NAVIGATION BAR */}
-            <VerticalScroller
-              bars={bars}
-              index={index}
-              setIndex={(i) => setIndex(i)}
-              goUp={() =>
-                setIndex((prev: number) => (prev - 1 < 0 ? prev : --prev))
-              }
-              goDown={() =>
-                setIndex((prev: number) =>
-                  prev + 1 > bars - 1 ? prev : ++prev
-                )
-              }
+              <VerticalScroller
+                bars={bars}
+                index={index}
+                setIndex={(i) => setIndex(i)}
+                goUp={() =>
+                  setIndex((prev: number) => (prev - 1 < 0 ? prev : --prev))
+                }
+                goDown={() =>
+                  setIndex((prev: number) =>
+                    prev + 1 > bars - 1 ? prev : ++prev
+                  )
+                }
+              />
+            </div>
+            {/* SLIDER */}
+            <MovieSlider
+              movies={movies}
+              title={title}
+              selectedMovie={selectedMovie}
+              setSelectedMovie={(movie) => setSelectedMovie(movie)}
+              showInfoModal={showInfoModal}
+              showVideoModal={showVideoModal}
+              setShowVideoModal={setShowVideoModal}
+              setShowInfoModal={setShowInfoModal}
             />
           </div>
-
-          {/* SLIDER */}
-          <MovieSlider
-            movies={movies}
-            title={title}
-            selectedMovie={selectedMovie}
-            setSelectedMovie={(movie) => setSelectedMovie(movie)}
-            showInfoModal={showInfoModal}
-            showVideoModal={showVideoModal}
-            setShowVideoModal={setShowVideoModal}
-            setShowInfoModal={setShowInfoModal}
-          />
         </main>
       ) : (
+        // IN CASE SELECTED MOVIE CAN NOT BE ACESSED
         <main className=" bg-black">
           <section className="min-h-[100vh] w-full flex flex-col items-center justify-center gap-4">
             <Image

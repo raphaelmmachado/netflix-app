@@ -1,4 +1,4 @@
-import PlusCircleIcon from "@heroicons/react/24/outline/PlusCircleIcon";
+import PlusIcon from "@heroicons/react/24/outline/PlusIcon";
 import CheckIcon from "@heroicons/react/24/solid/CheckIcon";
 
 interface Props {
@@ -10,14 +10,14 @@ export default function ListButton({ added, addToList }: Props) {
     <>
       <button
         onClick={() => addToList()}
-        className="flex items-center gap-2 bg-smokewt rounded-md text-black font-bold py-2 px-6"
+        className="flex items-center gap-2 bg-black shadow-sm rounded-md text-whitefont-bold py-2 px-6"
       >
         {added ? (
-          <CheckIcon className="w-6 h-6 font-bold text-black" />
+          <CheckIcon className="w-6 h-6 font-bold text-white" />
         ) : (
           <>
-            <PlusCircleIcon className="w-6 h-6 font-bold text-black" />
-            <>Lista</>
+            <PlusIcon className="w-6 h-6 font-bold text-white" />
+            <>Minha lista</>
           </>
         )}
       </button>

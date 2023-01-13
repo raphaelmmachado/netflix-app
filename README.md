@@ -52,3 +52,5 @@ Aprendi a criar e usar custom hooks então criei um hook para acrescentar e dimi
 Tive muitos problemas com essa api já que nem todos os filmes possuem video. E em quase todos os componentes eu tive que fazer algum tipo de condicional para sabe se há videos deste id na DB
 
 Usei context api para criar uma seção com filmes adicionados numa lista
+
+Simplesmente não consigo formatar a data para estilo brasileiro, parece ser algum bug no nextjs 13. Algumas respostas da api vem sem "release_date" então essa propriedade pode não existir, mesmo fazendo todo tipo de checkagem se há essa proprieade com Object.prototype.hasOwn(obj, "release_date") ainda assim recebo erro, isso acontece com outras propriedades mas consegui consertar
