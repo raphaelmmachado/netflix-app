@@ -24,11 +24,14 @@ export default function InfoModal({
           className="bg-black/70 fixed w-full h-full
         grid place-content-center z-50 top-0 left-0 font-medium"
         >
-          <div className="flex flex-col px-8">
+          <div className="flex flex-col p-4 ">
             <XButton setShowInfoModal={() => setShowInfoModal(false)} />
 
-            <div className="flex flex-col-reverse md:flex-row gap-4 bg-black p-4 rounded-sm">
-              <div className="flex flex-col gap-4">
+            <div
+              className="flex flex-col-reverse md:flex-row gap-4
+             bg-black p-4 rounded-sm shadow-md shadow-black/30"
+            >
+              <div className="flex flex-col gap-4 flex-grow min-w-fit">
                 <MoviePoster
                   adult={selectedMovie.adult}
                   title={selectedMovie.title}

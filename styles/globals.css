@@ -11,7 +11,7 @@
 
 @layer components {
   .banner {
-    @apply bg-cover bg-center bg-no-repeat object-contain min-h-[100vh] transition-all shadow-2xl relative;
+    @apply bg-cover bg-center bg-no-repeat object-contain min-h-[100.1vh] transition-all shadow-2xl relative;
   }
   .banner-wrapper {
     @apply flex flex-col justify-between bg-gradient-to-r
@@ -78,7 +78,7 @@
     @apply flex justify-between items-center w-full bg-black;
   }
   .video-modal-header-like-dislike {
-    @apply flex  justify-between items-center;
+    @apply flex justify-between items-center;
   }
   .video-modal-buttons {
     @apply flex items-center justify-around gap-2

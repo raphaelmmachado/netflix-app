@@ -9,7 +9,7 @@ export default function useScroll(length: number) {
     } else setIndex((prev) => (prev - 1 < 0 ? prev : prev - 1));
   };
   useEffect(() => {
-    if (window !== undefined) {
+    if (window !== undefined || typeof window !== "undefined") {
       window.addEventListener("wheel", handleScroll);
       return () => window.removeEventListener("wheel", handleScroll);
     }

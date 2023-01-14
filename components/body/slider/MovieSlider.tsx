@@ -41,7 +41,6 @@ export default function MovieSlider({
   useEffect(() => {
     if (width !== undefined) {
       setItemsPerScreen(width);
-      console.log(width, itemsPerScreen);
       const math = Math.ceil(movies.length / itemsPerScreen);
       setProgressBarItems(math);
     }
@@ -68,7 +67,7 @@ export default function MovieSlider({
     if ("results" in selectedMovie.trailer) {
       true;
     } else {
-      return console.warn(
+      return console.info(
         `Não foi encontrado trailer do filme ${
           selectedMovie.title ?? selectedMovie.name
         } na DB`

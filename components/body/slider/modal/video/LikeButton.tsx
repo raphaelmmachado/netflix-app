@@ -15,9 +15,12 @@ export default function LikeButton({ handleClick, includes }: Props) {
         className="video-modal-buttons"
       >
         {includes ? (
-          <ThumbUpIconSol className="w-6 h-6 text-white" />
+          <>
+            <ThumbUpIconSol className="w-6 h-6" />
+            <p className="text-white">Gostei!</p>
+          </>
         ) : (
-          <ThumbUpIconOut className="w-6 h-6 text-white" />
+          <ThumbUpIconOut className="w-6 h-6 " />
         )}
       </button>
     </>

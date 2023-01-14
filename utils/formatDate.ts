@@ -1,7 +1,7 @@
 export default function FormateDateToBR(arg: string | number | Date) {
   let date = new Date(arg);
   if (isNaN(date.getTime())) {
-    console.warn(
+    console.info(
       "Falha ao converter data. Talvez esse filme não tem data de lançamento na DB"
     );
     return arg;

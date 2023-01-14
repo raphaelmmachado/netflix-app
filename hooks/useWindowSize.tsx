@@ -20,19 +20,19 @@ export default function useWindowSize() {
       if (window !== undefined || typeof window !== "undefined") {
         // Set window width/height to state
         switch (true) {
-          case window.innerWidth <= 450:
+          case window.innerWidth < 450:
             setWindowSize({ width: 1 });
             break;
-          case window.innerWidth <= 768:
+          case window.innerWidth < 768:
             setWindowSize({ width: 2 });
             break;
-          case window.innerWidth <= 1024:
+          case window.innerWidth < 1024:
             setWindowSize({ width: 3 });
             break;
-          case window.innerWidth <= 1440:
+          case window.innerWidth < 1440:
             setWindowSize({ width: 4 });
             break;
-          case window.innerWidth >= 1440:
+          case window.innerWidth > 1440:
             setWindowSize({ width: 5 });
             break;
           default:

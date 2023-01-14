@@ -12,6 +12,7 @@ import VerticalScroller from "./banner/VerticalScroller";
 import { Movie } from "../../typing";
 import movieFound from "../../utils/movieFound";
 import IMG_BASE_URL from "../../utils/bgImageBaseUrl";
+import getVideo from "../../utils/getVideo";
 
 interface Props {
   movies: Movie[];

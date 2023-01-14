@@ -17,7 +17,7 @@ export default function MoviePoster({ adult, title, url }: Props) {
         />
       ) : null}
 
-      <Image src={url} width={180} height={300} alt={title} />
+      <Image src={url} width={225} height={300} alt={title} />
     </div>
   );
 }

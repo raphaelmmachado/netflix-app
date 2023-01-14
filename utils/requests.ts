@@ -19,4 +19,4 @@ const dinamicRequests = (movie_id: string | number) => {
     url: `${BASE_URL}/movie/${movie_id}/videos?api_key=${API_KEY}&language=pt-BR`,
   };
 };
-export { requests, dinamicRequests };
+export { requests, dinamicRequests, BASE_URL };

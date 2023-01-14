@@ -1,6 +1,5 @@
 import { GetServerSideProps } from "next";
 import Head from "next/head";
-import useScroll from "../hooks/useScroll";
 import { Context } from "../context/ContextProvider";
 import { useContext } from "react";
 
@@ -9,6 +8,7 @@ import MovieContainer from "../components/body/MovieContainer";
 //local
 import { IRequests, IComponents, Movie } from "../typing";
 import { requests, dinamicRequests } from "../utils/requests";
+import useScroll from "../hooks/useScroll";
 
 export default function App({
   trendingNow,

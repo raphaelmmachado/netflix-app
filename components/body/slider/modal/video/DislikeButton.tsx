@@ -14,9 +14,12 @@ export default function Dislike({ handleClick, includes }: Props) {
         className="video-modal-buttons"
       >
         {includes ? (
-          <ThumbDOwnIconSol className="w-6 h-6 text-white" />
+          <>
+            <ThumbDOwnIconSol className="w-6 h-6 " />
+            <p className="text-white">Não Gostei!</p>
+          </>
         ) : (
-          <ThumbDownIconOut className="w-6 h-6 text-white" />
+          <ThumbDownIconOut className="w-6 h-6" />
         )}
       </button>
     </>

@@ -1,16 +1,19 @@
-import { Dispatch, SetStateAction, useContext, useState } from "react";
+import {
+  Dispatch,
+  SetStateAction,
+  SyntheticEvent,
+  useContext,
+  useRef,
+  useState,
+} from "react";
 import { Context } from "../../../../context/ContextProvider";
 
 import XMarkIcon from "@heroicons/react/24/solid/XMarkIcon";
-import ThumbUpIconOut from "@heroicons/react/24/outline/HandThumbUpIcon";
-import ThumbUpIconSol from "@heroicons/react/24/solid/HandThumbUpIcon";
-import ThumbDownIconOut from "@heroicons/react/24/outline/HandThumbDownIcon";
-import ThumbDOwnIconSol from "@heroicons/react/24/solid/HandThumbDownIcon";
-
 import { Movie } from "../../../../typing";
 import LikeButton from "./video/LikeButton";
 import DislikeButton from "./video/DislikeButton";
-
+import PaperAirplaneIcon from "@heroicons/react/24/solid/PaperAirplaneIcon";
+import { getSecret, base_url } from "../../../../utils/getSecret";
 interface Props {
   showVideoModal: boolean;
   selectedMovie: Movie;
@@ -23,7 +26,7 @@ export default function VideoModal({
   setShowVideoModal,
 }: Props) {
   const { liked, disliked, setDisliked, setLiked } = useContext(Context);
-
+  const [send, setSend] = useState(false);
   const handleLikeButton = (id: number) => {
     if (!liked.includes(id)) {
       setDisliked((newDisliked: number[]) =>
@@ -56,6 +59,30 @@ export default function VideoModal({
       return false;
     }
   };
+  const rating = useRef<HTMLInputElement | null>(null);
+  const handleSubmit = (e: SyntheticEvent) => {
+    e.preventDefault();
+    const value = Number(rating.current?.value);
+    if (value < 0 || value > 10 || typeof value !== "number")
+      return console.warn("Nota deve ser número entre 0 e 10");
+    else {
+      rateMovie(value);
+    }
+  };
+  const rateMovie = async (rating: number) => {
+    try {
+      const { secret } = await getSecret().then((res) => res);
+      const url = `${base_url}${selectedMovie.id}/rating?api_key=${secret}`;
+      const res = await fetch(url, {
+        method: "POST",
+        headers: { "Content-Type": "application/json;charset=utf-8" },
+        body: JSON.stringify({ value: rating }),
+      });
+    } catch (err) {
+      console.error(err);
+    }
+  };
+
   return showVideoModal ? (
     <section id="modal" className="video-modal">
       <div className="video-modal-container" id="video-modal-container">
@@ -83,8 +110,25 @@ export default function VideoModal({
               }}
             />
           </div>
-
+          {!send ? (
+            <form className="flex gap-2 items-center text-sm">
+              <label htmlFor="rating">Este filme é nota:</label>
+              <input
+                ref={rating}
+                id="rating"
+                type="tel"
+                className="bg-gray/20 w-8 px-1 py-1"
+                min={0}
+                max={10}
+                placeholder="10"
+              />
+              <button onClick={handleSubmit}>
+                <PaperAirplaneIcon className="w-5 h-5 text-white" />
+              </button>
+            </form>
+          ) : null}
           <button
+            onSubmit={handleSubmit}
             className="px-1"
             onClick={() => setShowVideoModal(false)}
             id="modal_header-close-btn"

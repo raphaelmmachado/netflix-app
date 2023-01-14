@@ -17,7 +17,7 @@ export default function PlayButton({ play, showModal }: Props) {
         ) : (
           <ExclamationTriangleIcon className="text-black h-6 w-6" />
         )}
-        <>{play ? "Play" : "Indisponível"}</>
+        <>{play ? "Trailer" : "Indisponível"}</>
       </button>
     </>
   );
