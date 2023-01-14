@@ -11,8 +11,7 @@ import DetailsButton from "./banner/DetailsButton";
 import VerticalScroller from "./banner/VerticalScroller";
 import { Movie } from "../../typing";
 import movieFound from "../../utils/movieFound";
-import FormateDateToBR from "../../utils/formatDate";
-import checkIfHasDate from "../../utils/checkIfHasDate";
+import IMG_BASE_URL from "../../utils/bgImageBaseUrl";
 
 interface Props {
   movies: Movie[];
@@ -35,6 +34,7 @@ export default function MovieContainer({
   const [showInfoModal, setShowInfoModal] = useState(false);
   const { myList, setMyList } = useContext(Context);
 
+  //add movie to a list when
   const handleAddToList = (movie: Movie) => {
     if (myList.some((item) => item.id === movie.id)) {
       setMyList((myList: Movie[]) =>
@@ -44,36 +44,23 @@ export default function MovieContainer({
       setMyList((myList: Movie[]) => [...myList, movie]);
     }
   };
-  // const check = () => {
-  //   let date;
-  //   if (checkIfHasDate(selectedMovie)) {
-  //     date = FormateDateToBR(selectedMovie.release_date);
-  //   } else {
-  //     return (date = "");
-  //   }
-  //   return date;
-  // };
-  // const date = check();
+
   return (
     <>
       {selectedMovie ? (
+        // banner
         <main
-          className="backdrop-image flex flex-col justify-between
-           min-h-[100vh] transition-all shadow-2xl"
-          id="section--highlighted relative"
+          id="banner"
+          className="banner"
           style={{
-            backgroundImage: `url(https://image.tmdb.org/t/p/w1280${selectedMovie?.backdrop_path})`,
+            backgroundImage: `url(${IMG_BASE_URL}${selectedMovie?.backdrop_path})`,
           }}
         >
           {" "}
-          <div className=" bg-gradient-to-r from-black via-black/70 to-black/25 absolute">
-            {/* NAV BAR */}
+          <div className="banner-wrapper" id="banner-wrapper">
             <Header setIndex={(i: number) => setIndex(i)} />
-            <div className="flex justify-between items-center">
-              <div
-                className="flex flex-col justify-center gap-4 py-4 px-4
-           md:px-14 h-[300px]"
-              >
+            <div className="banner-center" id="banner-center">
+              <section className="banner-center-left" id="banner-center-left">
                 <BannerText
                   title={selectedMovie.title ?? selectedMovie.name}
                   description={selectedMovie.overview}
@@ -81,8 +68,7 @@ export default function MovieContainer({
                   release_date={selectedMovie?.release_date}
                   typeOfShow={selectedMovie.media_type}
                 />
-                {/* PLAY / INFO BUTTONS */}
-                <div className="flex gap-6 items-center justify-start">
+                <div className="banner-center-left-buttons">
                   <PlayButton
                     play={movieFound(selectedMovie) ? true : false}
                     showModal={() => setShowVideoModal(true)}
@@ -93,7 +79,7 @@ export default function MovieContainer({
                   />
                   <DetailsButton showModal={() => setShowInfoModal(true)} />
                 </div>
-              </div>
+              </section>
 
               <VerticalScroller
                 bars={bars}
@@ -109,7 +95,6 @@ export default function MovieContainer({
                 }
               />
             </div>
-            {/* SLIDER */}
             <MovieSlider
               movies={movies}
               title={title}

@@ -8,12 +8,9 @@ export default function PlayButton({ play, showModal }: Props) {
   return (
     <>
       <button
+        id="banner-play-button"
         onClick={() => showModal()}
-        className={`flex items-center justify-around gap-2
-              ${
-                play ? "bg-smokewt" : "bg-midgray"
-              } text-black font-bold py-2 px-6
-              rounded-md`}
+        className={`banner-play-button ${play ? "bg-smokewt" : "bg-midgray"} `}
       >
         {play ? (
           <PlayIcon className="text-black h-6 w-6" />

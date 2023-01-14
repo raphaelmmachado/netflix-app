@@ -19,8 +19,9 @@ export default function App({
   trendingSeries,
   popularMovies,
 }: IRequests) {
+  // context array of movies added to list
   const { myList } = useContext(Context);
-
+  // components made of data coming from server
   const COMPONENTS: IComponents[] = [
     [trendingNow, "Em destaque"],
     [popularMovies, "Filmes populares"],
@@ -31,10 +32,10 @@ export default function App({
     [horrorMovies, "Filmes de terror"],
     [myList, "Minha lista"],
   ];
-
+  // this custom hook increments index if user scrolls down
+  // or decrements if scrolls up
   const { index, setIndex } = useScroll(COMPONENTS.length);
 
-  console.log("index:", myList);
   return (
     <>
       <Head>
@@ -43,6 +44,7 @@ export default function App({
         <meta name="viewport" content="width=device-width, initial-scale=1" />
         <link rel="icon" href="/favicon.ico" />
       </Head>
+
       {COMPONENTS.map((component: IComponents, i) => {
         if (i === index) {
           return (

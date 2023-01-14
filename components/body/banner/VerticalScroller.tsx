@@ -15,13 +15,13 @@ export default function VerticalScroller({
 }: Props) {
   return (
     <>
-      <div className="flex flex-col items-center gap-2 px-8">
+      <aside className="flex flex-col items-center gap-2 lg:px-8">
         <div
           id="prev-component-button"
           className="cursor-pointer"
           onClick={() => goUp()}
         >
-          <ChevronUpIcon className="w-5 h-5 text-center" />
+          <ChevronUpIcon className="w-8 h-8" />
         </div>
 
         {[...Array(bars).fill(" ")].map((bar, i, arr) => (
@@ -29,8 +29,8 @@ export default function VerticalScroller({
             onClick={() => setIndex(i)}
             id="vertical-bars"
             key={i}
-            className={`w-6 h-2 hover:cursor-pointer ${
-              index === i ? "bg-red" : "bg-white/50"
+            className={`w-2 hover:cursor-pointer transition-transform ${
+              index === i ? "bg-red h-6" : "bg-white/50 h-3"
             } `}
           ></div>
         ))}
@@ -39,9 +39,9 @@ export default function VerticalScroller({
           className="cursor-pointer"
           onClick={() => goDown()}
         >
-          <ChevronDownIcon className="w-5 h-5" />
+          <ChevronDownIcon className="w-8 h-8" />
         </div>
-      </div>
+      </aside>
     </>
   );
 }

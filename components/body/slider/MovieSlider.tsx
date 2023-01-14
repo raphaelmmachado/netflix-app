@@ -41,6 +41,7 @@ export default function MovieSlider({
   useEffect(() => {
     if (width !== undefined) {
       setItemsPerScreen(width);
+      console.log(width, itemsPerScreen);
       const math = Math.ceil(movies.length / itemsPerScreen);
       setProgressBarItems(math);
     }
@@ -74,17 +75,15 @@ export default function MovieSlider({
       );
     }
   };
+
+  // This component has pure css classes mixed with tailwind classes
   return (
-    <section className={`m-0 py-6 shadow-2xl`}>
-      <main className="row">
-        <div className="header">
-          <h2
-            className="md:text-lg tracking-wide font-bold
-          border-l-4 border-red pl-2"
-          >
-            {title}
-          </h2>
-          <div className="progress-bar">
+    <section className="slider-section" id="slider-section">
+      <main className="row" id="slider-row">
+        <div className="header slider-section-header">
+          <h2 className="slider-title">{title}</h2>
+
+          <div className="progress-bar hidden md:inline-flex">
             {Array(progressBarItems)
               .fill("")
               .map((item, i) => {

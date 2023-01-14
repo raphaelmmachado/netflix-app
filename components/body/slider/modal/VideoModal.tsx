@@ -8,18 +8,16 @@ import ThumbDownIconOut from "@heroicons/react/24/outline/HandThumbDownIcon";
 import ThumbDOwnIconSol from "@heroicons/react/24/solid/HandThumbDownIcon";
 
 import { Movie } from "../../../../typing";
+import LikeButton from "./video/LikeButton";
+import DislikeButton from "./video/DislikeButton";
 
 interface Props {
-  title?: string;
-  children?: JSX.Element;
   showVideoModal: boolean;
   selectedMovie: Movie;
   setShowVideoModal: Dispatch<SetStateAction<boolean>>;
 }
 
 export default function VideoModal({
-  title,
-  children,
   selectedMovie,
   showVideoModal,
   setShowVideoModal,
@@ -59,58 +57,31 @@ export default function VideoModal({
     }
   };
   return showVideoModal ? (
-    <section
-      id="modal"
-      className="bg-black/70 fixed w-full h-full
-  flex justify-center items-center z-50 top-0 left-0"
-    >
-      <div
-        className="min-w-[450px] sm:min-w-[640px] md:min-w-[768px] lg:min-w-[1024px]
-        rounded-sm flex flex-col"
-      >
-        <header
-          className="flex justify-between items-center w-full bg-black"
-          id="modal_header"
-        >
+    <section id="modal" className="video-modal">
+      <div className="video-modal-container" id="video-modal-container">
+        <header className="video-modal-header" id="modal_header">
           <div
-            className="flex min-w-[15rem] justify-between items-center"
+            className="video-modal-header-like-dislike"
             id="modal_header--like-dislike-div"
           >
-            <button
-              id="like-button"
-              onClick={() => {
+            <LikeButton
+              includes={liked.includes(selectedMovie.id)}
+              handleClick={() => {
                 if (movieFound()) {
                   const id = selectedMovie.id;
                   if (id) handleLikeButton(id);
                 }
               }}
-              className="flex items-center justify-around gap-2
-              text-smokewt font-bold py-2 px-6"
-            >
-              {liked.includes(selectedMovie.id) ? (
-                <ThumbUpIconSol className="w-6 h-6" />
-              ) : (
-                <ThumbUpIconOut className="w-6 h-6 text-white" />
-              )}
-            </button>
-
-            <button
-              id="dislike-button"
-              onClick={() => {
+            />
+            <DislikeButton
+              includes={disliked.includes(selectedMovie.id)}
+              handleClick={() => {
                 if (movieFound()) {
                   const id = selectedMovie.id;
                   if (id) handleDislikeButton(id);
                 }
               }}
-              className="flex items-center justify-around gap-2
-              text-smokewt font-bold py-2 px-6"
-            >
-              {disliked.includes(selectedMovie.id) ? (
-                <ThumbDOwnIconSol className="w-6 h-6 text-white" />
-              ) : (
-                <ThumbDownIconOut className="w-6 h-6 text-white" />
-              )}
-            </button>
+            />
           </div>
 
           <button

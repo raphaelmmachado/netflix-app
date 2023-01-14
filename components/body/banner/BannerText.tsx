@@ -18,12 +18,17 @@ export default function BannerText({
   return (
     <>
       {" "}
-      <h1 className=" text-white font-bold text-5xl pb-2">{title}</h1>
-      <div className="flex items-center gap-8  text-sm">
-        <p className="text-def_green-400">Avaliação {rating} </p>{" "}
+      <h1 className="banner-center-left-text" id="banner-text-h1">
+        {title}
+      </h1>
+      <div
+        className="banner-center-left-smallinfo"
+        id="banner-text-small-text-info"
+      >
+        <p className="text-def_green-400 ">Avaliação {rating} </p>{" "}
         {release_date && (
           <p className="text-gray">
-            <>Lançamento {release_date}</>
+            <>Lançamento {release_date.toString().substring(0, 4)}</>
           </p>
         )}
         {typeOfShow && (
@@ -39,8 +44,8 @@ export default function BannerText({
         )}
       </div>
       <p
-        className={`text-white/80 max-w-fit
-  md:max-w-[50vw] line-clamp-3 font-base tracking-wide`}
+        className="banner-center-left-description"
+        id="banner-center-left-description"
       >
         {description}
       </p>
