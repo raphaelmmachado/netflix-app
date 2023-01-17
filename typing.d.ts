@@ -13,7 +13,7 @@ export interface Movie {
   backdrop_path: string | null;
   genre_ids: number[];
   video?: boolean;
-  trailer: IVideoRequest;
+  trailer: IVideo[];
   media_type?: boolean | string;
   vote_average: number;
   vote_count: number;
@@ -79,7 +79,6 @@ interface IRequests {
   romanceMoviesTrailers: IResultsTrailers[];
   trendingSeriesTrailers: IResultsTrailers[];
   popularMoviesTrailers: IResultsTrailers[];
-  teste: Movie[];
 }
 
 interface IProvider {
@@ -97,6 +96,7 @@ interface IContext {
 interface IComponents {
   [0]: Movie[];
   [1]: string;
+  [2]?: "tv" | "movie";
 }
 [];
 

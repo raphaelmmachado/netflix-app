@@ -15,7 +15,7 @@ export default function VerticalScroller({
 }: Props) {
   return (
     <>
-      <aside className="flex flex-col items-center gap-2 lg:px-8">
+      <aside className="vertical-scroller">
         <div
           id="prev-component-button"
           className="cursor-pointer"
@@ -29,8 +29,8 @@ export default function VerticalScroller({
             onClick={() => setIndex(i)}
             id="vertical-bars"
             key={i}
-            className={`w-2 hover:cursor-pointer transition-transform ${
-              index === i ? "bg-red h-6" : "bg-white/50 h-3"
+            className={`hidden md:inline-flex w-2  h-0 md:h-5 hover:cursor-pointer transition-transform ${
+              index === i ? "bg-red " : "bg-white/50"
             } `}
           ></div>
         ))}

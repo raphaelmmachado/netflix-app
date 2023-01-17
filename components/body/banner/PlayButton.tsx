@@ -1,23 +1,20 @@
 import { PlayIcon, ExclamationTriangleIcon } from "@heroicons/react/24/solid";
 
 interface Props {
-  play: boolean;
   showModal: () => void;
 }
-export default function PlayButton({ play, showModal }: Props) {
+export default function PlayButton({ showModal }: Props) {
   return (
     <>
       <button
         id="banner-play-button"
         onClick={() => showModal()}
-        className={`banner-play-button ${play ? "bg-smokewt" : "bg-midgray"} `}
+        className="banner-button 
+           bg-smokewt text-black"
       >
-        {play ? (
-          <PlayIcon className="text-black h-6 w-6" />
-        ) : (
-          <ExclamationTriangleIcon className="text-black h-6 w-6" />
-        )}
-        <>{play ? "Trailer" : "Indisponível"}</>
+        <PlayIcon className="text-black h-6 w-6" />
+
+        <>{"Trailer"}</>
       </button>
     </>
   );

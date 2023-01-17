@@ -16,6 +16,7 @@ interface IMovieSlider {
   movies: Movie[];
   selectedMovie: Movie;
   title: string;
+  mediaType?: "tv" | "movie";
   setSelectedMovie: Dispatch<SetStateAction<Movie>>;
   showVideoModal: boolean;
   showInfoModal: boolean;
@@ -26,6 +27,7 @@ interface IMovieSlider {
 export default function MovieSlider({
   movies,
   title,
+  mediaType,
   selectedMovie,
   setSelectedMovie,
   showVideoModal,
@@ -38,6 +40,7 @@ export default function MovieSlider({
   const [progressBarItems, setProgressBarItems] = useState(0);
   const { width } = useWindowSize();
 
+  //set sliders items per screen based on screen width
   useEffect(() => {
     if (width !== undefined) {
       setItemsPerScreen(width);
@@ -62,23 +65,10 @@ export default function MovieSlider({
   const imgUrl = apiConfiguration.images.secure_base_url;
   const backdropSize = apiConfiguration.images.backdrop_sizes;
 
-  const selectAMovie = (movie: Movie) => {
-    setSelectedMovie(movie);
-    if ("results" in selectedMovie.trailer) {
-      true;
-    } else {
-      return console.info(
-        `Não foi encontrado trailer do filme ${
-          selectedMovie.title ?? selectedMovie.name
-        } na DB`
-      );
-    }
-  };
-
-  // This component has pure css classes mixed with tailwind classes
+  // This component has css classes mixed with tailwind classes
   return (
     <section className="slider-section" id="slider-section">
-      <main className="row" id="slider-row">
+      <main className="flex flex-col gap-3" id="slider-row">
         <div className="header slider-section-header">
           <h2 className="slider-title">{title}</h2>
 
@@ -115,9 +105,7 @@ export default function MovieSlider({
             {movies.map((movie: Movie, i) => {
               return (
                 <Image
-                  onMouseEnter={() =>
-                    setTimeout(() => selectAMovie(movie), 150)
-                  }
+                  onMouseEnter={() => setSelectedMovie(movie)}
                   key={i}
                   src={`${imgUrl}${backdropSize[1]}${movie.backdrop_path}`}
                   width={285}
@@ -143,6 +131,7 @@ export default function MovieSlider({
         selectedMovie={selectedMovie}
         showVideoModal={showVideoModal}
         setShowVideoModal={setShowVideoModal}
+        mediaType={mediaType}
       />
     </section>
   );

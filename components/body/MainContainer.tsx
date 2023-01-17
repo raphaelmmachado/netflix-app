@@ -1,8 +1,9 @@
+import ArrowUpIcon from "@heroicons/react/24/solid/ArrowLongUpIcon";
 import { Dispatch, SetStateAction, useState, useContext } from "react";
+import { useSwipeable } from "react-swipeable";
 import Header from "./header/Header";
 import Image from "next/image";
 import { Context } from "../../context/ContextProvider";
-import ArrowUpIcon from "@heroicons/react/24/solid/ArrowLongUpIcon";
 import MovieSlider from "./slider/MovieSlider";
 import BannerText from "./banner/BannerText";
 import PlayButton from "./banner/PlayButton";
@@ -10,9 +11,8 @@ import ListButton from "./banner/ListButton";
 import DetailsButton from "./banner/DetailsButton";
 import VerticalScroller from "./banner/VerticalScroller";
 import { Movie } from "../../typing";
-import movieFound from "../../utils/movieFound";
 import IMG_BASE_URL from "../../utils/bgImageBaseUrl";
-import getVideo from "../../utils/getVideo";
+import movieFound from "../../utils/movieFound";
 
 interface Props {
   movies: Movie[];
@@ -20,12 +20,14 @@ interface Props {
   title: string;
   bars: number;
   index: number;
+  mediaType?: "tv" | "movie";
   setIndex: Dispatch<SetStateAction<number>>;
 }
 
-export default function MovieContainer({
+export default function MainContainer({
   movies,
   title,
+  mediaType,
   bars,
   index,
   setIndex,
@@ -34,6 +36,13 @@ export default function MovieContainer({
   const [showVideoModal, setShowVideoModal] = useState(false);
   const [showInfoModal, setShowInfoModal] = useState(false);
   const { myList, setMyList } = useContext(Context);
+
+  // change index when user swipes
+  const swipeHandler = useSwipeable({
+    onSwipedUp: () =>
+      setIndex((prev) => (prev + 1 > bars - 1 ? prev : prev + 1)),
+    onSwipedDown: () => setIndex((prev) => (prev - 1 < 0 ? prev : prev - 1)),
+  });
 
   //add movie to a list when
   const handleAddToList = (movie: Movie) => {
@@ -46,11 +55,13 @@ export default function MovieContainer({
     }
   };
 
+  //
   return (
     <>
       {selectedMovie ? (
         // banner
         <main
+          {...swipeHandler}
           id="banner"
           className="banner"
           style={{
@@ -71,8 +82,9 @@ export default function MovieContainer({
                 />
                 <div className="banner-center-left-buttons">
                   <PlayButton
-                    play={movieFound(selectedMovie) ? true : false}
-                    showModal={() => setShowVideoModal(true)}
+                    showModal={() => {
+                      setShowVideoModal(true);
+                    }}
                   />
                   <ListButton
                     added={myList.some((item) => item.id === selectedMovie.id)}
@@ -99,6 +111,7 @@ export default function MovieContainer({
             <MovieSlider
               movies={movies}
               title={title}
+              mediaType={mediaType}
               selectedMovie={selectedMovie}
               setSelectedMovie={(movie) => setSelectedMovie(movie)}
               showInfoModal={showInfoModal}

@@ -1,5 +1,4 @@
 import { useEffect, useState } from "react";
-
 export default function useScroll(length: number) {
   const [index, setIndex] = useState(0);
 
@@ -8,6 +7,7 @@ export default function useScroll(length: number) {
       setIndex((prev) => (prev + 1 > length - 1 ? prev : prev + 1));
     } else setIndex((prev) => (prev - 1 < 0 ? prev : prev - 1));
   };
+
   useEffect(() => {
     if (window !== undefined || typeof window !== "undefined") {
       window.addEventListener("wheel", handleScroll);

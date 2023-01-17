@@ -1,158 +1,166 @@
 import {
   Dispatch,
   SetStateAction,
-  SyntheticEvent,
   useContext,
-  useRef,
+  useEffect,
   useState,
 } from "react";
 import { Context } from "../../../../context/ContextProvider";
-
+import YoutubeIcon from "./video/YoutubeIcon";
 import XMarkIcon from "@heroicons/react/24/solid/XMarkIcon";
-import { Movie } from "../../../../typing";
+import { IVideo, Movie } from "../../../../typing";
 import LikeButton from "./video/LikeButton";
 import DislikeButton from "./video/DislikeButton";
 import PaperAirplaneIcon from "@heroicons/react/24/solid/PaperAirplaneIcon";
-import { getSecret, base_url } from "../../../../utils/getSecret";
+import MediaComponent from "./video/MediaComponent";
+import getPTBRTrailers from "../../../../utils/getTrailers";
+
 interface Props {
   showVideoModal: boolean;
   selectedMovie: Movie;
   setShowVideoModal: Dispatch<SetStateAction<boolean>>;
+  mediaType?: "tv" | "movie";
 }
 
 export default function VideoModal({
   selectedMovie,
   showVideoModal,
   setShowVideoModal,
+  mediaType,
 }: Props) {
   const { liked, disliked, setDisliked, setLiked } = useContext(Context);
-  const [send, setSend] = useState(false);
+  const [showVideo, setShowVideo] = useState(false);
+  const [video, setVideo] = useState<IVideo[] | undefined>(undefined);
+  const [videoIndex, setVideoIndex] = useState(0);
   const handleLikeButton = (id: number) => {
     if (!liked.includes(id)) {
-      setDisliked((newDisliked: number[]) =>
-        [...newDisliked].filter((dislikedIds) => dislikedIds !== id)
+      setDisliked((prevDisliked: number[]) =>
+        [...prevDisliked].filter((dislikedIds) => dislikedIds !== id)
       );
-      setLiked((newLiked: number[]) => [...newLiked, id]);
+      setLiked((prevLiked: number[]) => [...prevLiked, id]);
     } else {
-      setLiked((newLiked: number[]) =>
-        [...newLiked].filter((likedIds) => likedIds !== id)
+      setLiked((prevLiked: number[]) =>
+        [...prevLiked].filter((likedIds) => likedIds !== id)
       );
     }
   };
 
   const handleDislikeButton = (id: number) => {
     if (!disliked.includes(id)) {
-      setLiked((newLiked: number[]) =>
-        [...newLiked].filter((likedIds) => likedIds !== id)
+      setLiked((prevLiked: number[]) =>
+        [...prevLiked].filter((likedIds) => likedIds !== id)
       );
-      setDisliked((newDisliked: number[]) => [...newDisliked, id]);
+      setDisliked((prevDisliked: number[]) => [...prevDisliked, id]);
     } else {
-      setDisliked((newDisliked: number[]) =>
-        [...newDisliked].filter((dislikedIds) => dislikedIds !== id)
+      setDisliked((prevDisliked: number[]) =>
+        [...prevDisliked].filter((dislikedIds) => dislikedIds !== id)
       );
     }
   };
-  const movieFound = () => {
-    if ("results" in selectedMovie.trailer) {
-      return true;
-    } else {
-      return false;
-    }
+  type Results = {
+    results: IVideo[];
   };
-  const rating = useRef<HTMLInputElement | null>(null);
-  const handleSubmit = (e: SyntheticEvent) => {
-    e.preventDefault();
-    const value = Number(rating.current?.value);
-    if (value < 0 || value > 10 || typeof value !== "number")
-      return console.warn("Nota deve ser número entre 0 e 10");
-    else {
-      rateMovie(value);
-    }
-  };
-  const rateMovie = async (rating: number) => {
-    try {
-      const { secret } = await getSecret().then((res) => res);
-      const url = `${base_url}${selectedMovie.id}/rating?api_key=${secret}`;
-      const res = await fetch(url, {
-        method: "POST",
-        headers: { "Content-Type": "application/json;charset=utf-8" },
-        body: JSON.stringify({ value: rating }),
-      });
-    } catch (err) {
-      console.error(err);
-    }
-  };
+  //TODO FETCH MOVIES INDIVIDUALLY
+  useEffect(() => {
+    getPTBRTrailers({ mediaType, selectedMovie })
+      .then(({ results }: Results) => {
+        if (results.length < 1) {
+          setVideo(undefined);
+          setShowVideo(false);
+        } else {
+          setVideo(results);
+        }
+      })
+      .catch((error) => console.log(error));
+    return () => setVideo(undefined);
+  }, [selectedMovie]);
 
-  return showVideoModal ? (
-    <section id="modal" className="video-modal">
-      <div className="video-modal-container" id="video-modal-container">
-        <header className="video-modal-header" id="modal_header">
-          <div
-            className="video-modal-header-like-dislike"
-            id="modal_header--like-dislike-div"
-          >
-            <LikeButton
-              includes={liked.includes(selectedMovie.id)}
-              handleClick={() => {
-                if (movieFound()) {
-                  const id = selectedMovie.id;
-                  if (id) handleLikeButton(id);
-                }
-              }}
-            />
-            <DislikeButton
-              includes={disliked.includes(selectedMovie.id)}
-              handleClick={() => {
-                if (movieFound()) {
-                  const id = selectedMovie.id;
-                  if (id) handleDislikeButton(id);
-                }
-              }}
-            />
-          </div>
-          {!send ? (
-            <form className="flex gap-2 items-center text-sm">
-              <label htmlFor="rating">Este filme é nota:</label>
-              <input
-                ref={rating}
-                id="rating"
-                type="tel"
-                className="bg-gray/20 w-8 px-1 py-1"
-                min={0}
-                max={10}
-                placeholder="10"
-              />
-              <button onClick={handleSubmit}>
-                <PaperAirplaneIcon className="w-5 h-5 text-white" />
+  // const rateMovie = async (rating: number) => {
+  //   try {
+  //     const { secret } = await getSecret().then((res) => res);
+  //     const url = `${base_url}${selectedMovie.id}/rating?api_key=${secret}`;
+  //     const res = await fetch(url, {
+  //       method: "POST",
+  //       headers: { "Content-Type": "application/json;charset=utf-8" },
+  //       body: JSON.stringify({ value: rating }),
+  //     });
+  //   } catch (err) {
+  //     console.error(err);
+  //   }
+  // };
+  console.log(Boolean(video));
+
+  return (
+    <>
+      {showVideoModal && (
+        <section id="modal" className="video-modal">
+          <div className="video-modal-container" id="video-modal-container">
+            <header className="video-modal-header" id="modal_header">
+              <div
+                className="video-modal-header-like-dislike"
+                id="modal_header--like-dislike-div"
+              >
+                <LikeButton
+                  includes={liked.includes(selectedMovie.id)}
+                  handleClick={() => {
+                    const id = selectedMovie.id;
+                    if (id) handleLikeButton(id);
+                  }}
+                />
+                <DislikeButton
+                  includes={disliked.includes(selectedMovie.id)}
+                  handleClick={() => {
+                    const id = selectedMovie.id;
+                    if (id) handleDislikeButton(id);
+                  }}
+                />
+              </div>
+              <button onClick={() => setShowVideoModal(false)}>
+                <XMarkIcon className="w-8 h-8 text-white hover:bg-gray/30 rounded-sm" />
               </button>
-            </form>
-          ) : null}
-          <button
-            onSubmit={handleSubmit}
-            className="px-1"
-            onClick={() => setShowVideoModal(false)}
-            id="modal_header-close-btn"
-          >
-            <span>
-              {" "}
-              <XMarkIcon
-                className="h-8 w-8 rounded-sm hover:bg-gray/30
-             p-1 transition-colors"
-              />
-            </span>
-          </button>
-        </header>
-        {movieFound() && (
-          <iframe
-            id="modal-video"
-            className="aspect-video w-full"
-            src={`https://www.youtube.com/embed/${selectedMovie.trailer.results[0]?.key}`}
-            title={`${selectedMovie.trailer.results[0]?.name}`}
-            allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
-            allowFullScreen
-          ></iframe>
-        )}
-      </div>
-    </section>
-  ) : null;
+            </header>
+            <main className="max-w-full">
+              {showVideo && (
+                <MediaComponent
+                  videoIndex={videoIndex}
+                  selectedVideo={video}
+                  clearVideo={() => {
+                    setVideo(undefined);
+                    setShowVideo(false);
+                  }}
+                />
+              )}
+            </main>
+            <footer className="w-full bg-black flex flex-wrap gap-4 border-t border-gray">
+              <>
+                {video ? (
+                  video?.map((item, i) => {
+                    return (
+                      <div
+                        className="flex gap-2 cursor-pointer hover:underline p-2"
+                        key={item.id}
+                        onClick={() => {
+                          setVideoIndex(i);
+                          setShowVideo(true);
+                        }}
+                      >
+                        <h1>{item.type}</h1>
+                        {item.site === "YouTube" && (
+                          <YoutubeIcon pathFill="#b9090b" />
+                        )}
+                      </div>
+                    );
+                  })
+                ) : (
+                  <h3 className="bg-black text-center text-xl text-red">
+                    Não encontramos video em português!
+                  </h3>
+                )}
+              </>
+            </footer>
+          </div>
+        </section>
+      )}
+    </>
+  );
 }

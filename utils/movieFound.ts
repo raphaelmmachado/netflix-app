@@ -1,12 +1,9 @@
 import { Movie } from "../typing";
 
 const movieFound = (selectedMovie: Movie) => {
-  if (!selectedMovie.trailer["results"]) {
+  if (!selectedMovie.trailer) {
     return false;
-  } else if (
-    selectedMovie.trailer["results"] &&
-    selectedMovie.trailer["results"].length < 1
-  ) {
+  } else if (selectedMovie.trailer && selectedMovie.trailer.length < 1) {
     return false;
   } else {
     return true;

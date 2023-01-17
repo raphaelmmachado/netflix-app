@@ -14,31 +14,33 @@
     @apply bg-cover bg-center bg-no-repeat object-contain min-h-[100.1vh] transition-all shadow-2xl relative;
   }
   .banner-wrapper {
-    @apply flex flex-col justify-between bg-gradient-to-r
+    @apply flex flex-col justify-evenly sm:justify-between bg-gradient-to-r
     from-black via-black/70 to-black/25 absolute h-full w-full;
   }
   .banner-center {
-    @apply flex justify-between items-center;
+    @apply flex flex-col sm:flex-row justify-between items-center;
   }
   .banner-center-left {
-    @apply flex flex-col justify-center gap-4 md:py-4 px-4
-    md:px-14 md:max-h-[300px];
+    @apply flex flex-col justify-center gap-4 md:py-4
+    px-4 md:px-14;
   }
   .banner-center-left-text {
-    @apply text-white font-bold text-5xl pb-2;
+    @apply text-white font-bold line-clamp-3 md:line-clamp-none text-4xl md:text-5xl pb-2;
   }
   .banner-center-left-smallinfo {
     @apply flex items-center gap-8 text-sm lg:text-base;
   }
   .banner-center-left-description {
     @apply text-white/80 max-w-fit text-base lg:text-lg  
-    md:max-w-[50vw] lg:line-clamp-3 tracking-wide;
+    md:max-w-[50vw] line-clamp-5 md:line-clamp-4 lg:line-clamp-3 tracking-wide;
   }
   .banner-center-left-buttons {
-    @apply flex gap-6 items-center justify-start;
+    @apply grid grid-flow-col place-content-center place-items-center md:place-content-start
+     text-sm sm:text-base gap-2 sm:gap-6;
   }
-  .banner-play-button {
-    @apply flex items-center justify-around gap-2 text-black font-bold py-2 px-6
+  .banner-button {
+    @apply flex flex-row items-center justify-evenly
+     gap-2 text-black font-bold px-2 py-2 md:py-2 md:px-6
     rounded-md;
   }
   .header-nav {
@@ -54,35 +56,38 @@
     @apply flex items-center gap-2;
   }
   .header-nav-mobile {
-    @apply flex justify-between p-6;
+    @apply flex justify-between px-6;
   }
   .slider-section {
-    @apply m-0 md:py-6 shadow-2xl min-h-[30%];
+    @apply m-0 md:py-6 shadow-2xl;
   }
   .slider-section-header {
     @apply px-4 lg:px-14;
   }
   .slider-title {
     @apply text-xl tracking-wide font-bold
-    border-l-4 border-red md:pl-2;
+    border-l-4 border-red pl-2 mb-2 md:mb-0;
+  }
+  .vertical-scroller {
+    @apply flex flex-col items-center gap-2 lg:px-8;
   }
   .video-modal {
     @apply bg-black/70 fixed w-full h-full
-    flex justify-center items-center z-50 top-0 left-0;
+    flex justify-center items-center z-50 inset-0;
   }
   .video-modal-container {
-    @apply min-w-[450px] sm:min-w-[640px] md:min-w-[768px] lg:min-w-[1024px]
-    rounded-sm flex flex-col;
+    @apply min-w-[420px] sm:min-w-[615px] md:min-w-[740px] lg:min-w-[990px]
+    rounded-sm flex flex-col border border-gray;
   }
   .video-modal-header {
-    @apply flex justify-between items-center w-full bg-black;
+    @apply flex justify-between items-center w-full bg-black px-1;
   }
   .video-modal-header-like-dislike {
     @apply flex justify-between items-center;
   }
   .video-modal-buttons {
     @apply flex items-center justify-around gap-2
-    text-smokewt font-bold py-2 px-6;
+    text-smokewt font-bold py-2 px-3 rounded-sm hover:bg-gray/30;
   }
   .icon {
     @apply text-white h-5 w-5;

@@ -20,3 +20,76 @@ const dinamicRequests = (movie_id: string | number) => {
   };
 };
 export { requests, dinamicRequests, BASE_URL };
+
+// interface Id {
+//   id: string | number;
+// }
+
+// const dinamicReqs = {
+//   trending: reqTrending.results.map(async (item: Id) => {
+//     const { url } = dinamicRequests(item.id);
+//     return await fetch(url).then((res) => res.json());
+//   }),
+//   topRated: reqTopRated.results.map(async (item: Id) => {
+//     const { url } = dinamicRequests(item.id);
+//     return await fetch(url).then((res) => res.json());
+//   }),
+//   actionMovies: reqActionMovies.results.map(async (item: Id) => {
+//     const { url } = dinamicRequests(item.id);
+//     return await fetch(url).then((res) => res.json());
+//   }),
+//   comedyMovies: reqComedyMovies.results.map(async (item: Id) => {
+//     const { url } = dinamicRequests(item.id);
+//     return await fetch(url).then((res) => res.json());
+//   }),
+//   horrorMovies: reqHorrorMovies.results.map(async (item: Id) => {
+//     const { url } = dinamicRequests(item.id);
+//     return await fetch(url).then((res) => res.json());
+//   }),
+//   trendingSeries: reqTrendingSeries.results.map(async (item: Id) => {
+//     const { url } = dinamicRequests(item.id);
+//     return await fetch(url).then((res) => res.json());
+//   }),
+//   popularMovies: reqPopularMovies.results.map(async (item: Id) => {
+//     const { url } = dinamicRequests(item.id);
+//     return await fetch(url).then((res) => res.json());
+//   }),
+// };
+
+// const trendingNowTrailers = await Promise.all(dinamicReqs.trending);
+// const topRatedTrailers = await Promise.all(dinamicReqs.topRated);
+// const actionMoviesTrailers = await Promise.all(dinamicReqs.actionMovies);
+// const comedyMoviesTrailers = await Promise.all(dinamicReqs.comedyMovies);
+// const horrorMoviesTrailers = await Promise.all(dinamicReqs.horrorMovies);
+// const trendingSeriesTrailers = await Promise.all(dinamicReqs.trendingSeries);
+// const popularMoviesTrailers = await Promise.all(dinamicReqs.popularMovies);
+
+// // MERGE MOVIE INFO AND VIDEO IN ONE ARRAY
+// const trendingNow = reqTrending.results.map((item: Movie, i: number) => ({
+//   ...item,
+//   trailer: trendingNowTrailers[i],
+// }));
+// const topRated = reqTopRated.results.map((item: Movie, i: number) => ({
+//   ...item,
+//   trailer: topRatedTrailers[i],
+// }));
+// const action = reqActionMovies.results.map((item: Movie, i: number) => ({
+//   ...item,
+//   trailer: actionMoviesTrailers[i],
+// }));
+// const comedy = reqComedyMovies.results.map((item: Movie, i: number) => ({
+//   ...item,
+//   trailer: comedyMoviesTrailers[i],
+// }));
+// const horror = reqHorrorMovies.results.map((item: Movie, i: number) => ({
+//   ...item,
+//   trailer: horrorMoviesTrailers[i],
+// }));
+// const series = reqTrendingSeries.results.map((item: Movie, i: number) => ({
+//   ...item,
+//   trailer: trendingSeriesTrailers[i],
+// }));
+// const popular = reqPopularMovies.results.map((item: Movie, i: number) => ({
+//   ...item,
+//   trailer: popularMoviesTrailers[i],
+// }));

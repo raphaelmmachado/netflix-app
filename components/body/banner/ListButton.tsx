@@ -10,7 +10,7 @@ export default function ListButton({ added, addToList }: Props) {
     <>
       <button
         onClick={() => addToList()}
-        className="flex items-center gap-2 bg-black shadow-sm rounded-md text-whitefont-bold py-2 px-6"
+        className="banner-button bg-black text-white"
       >
         {added ? (
           <CheckIcon className="w-6 h-6 font-bold text-white" />

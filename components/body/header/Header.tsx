@@ -1,8 +1,4 @@
 import Image from "next/image";
-import { MagnifyingGlassIcon, BellIcon } from "@heroicons/react/24/solid";
-import { GiftIcon } from "@heroicons/react/24/outline";
-import { ChevronDownIcon } from "@heroicons/react/20/solid";
-import { Bars3Icon } from "@heroicons/react/24/solid";
 import useWindowSize from "../../../hooks/useWindowSize";
 import { useEffect, useState } from "react";
 import NavLinks from "./links/NavLinks";

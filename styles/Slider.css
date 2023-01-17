@@ -38,8 +38,10 @@ body {
   flex: 0 0 calc(100% / var(--items-per-screen));
   max-width: calc(100% / var(--items-per-screen));
   aspect-ratio: 16 / 9;
-  padding: var(--img-gap);
   border-radius: var(--border-radius);
+
+  /* removed padding because it was messing responsive */
+  padding: var(--img-gap);
 }
 
 .handle {
@@ -106,12 +108,12 @@ body {
 
 .progress-bar {
   display: flex;
+  flex-wrap: wrap;
   gap: 0.25rem;
 }
 
 .progress-item {
   flex: 0 0 1.5rem;
-  flex-wrap: wrap;
   min-width: 1.5rem;
   height: 0.5rem;
   background-color: rgba(255, 255, 255, 0.5);
@@ -124,4 +126,9 @@ body {
 body {
   background-color: #333;
   color: white;
+}
+@media (max-width: 450px) {
+  .slider > img {
+    padding: 0.2rem;
+  }
 }
