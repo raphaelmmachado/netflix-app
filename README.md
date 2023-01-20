@@ -23,7 +23,7 @@
 - Client Side Rendering
 - Static Site Generator
 - Server Side Rendering
-- Hydratation
+- Hydration
 - Props Interface
 
 ## Maiores dificuldades?
