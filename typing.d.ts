@@ -47,6 +47,43 @@ interface IVideo {
   published_at?: string | Date;
   id: number;
 }
+interface YTitems {
+  items: YTIds[];
+}
+interface YTIds {
+  kind: string;
+  etag: string;
+  id: {
+    kind: string;
+    videoId: string;
+  };
+  snippet: {
+    publishedAt: string;
+    channelId: string;
+    title: string;
+    description: string;
+    thumbnails: {
+      default: {
+        url: string;
+        width: number;
+        height: number;
+      };
+      medium: {
+        url: string;
+        width: number;
+        height: number;
+      };
+      height: {
+        url: string;
+        width: number;
+        height: number;
+      };
+    };
+    channelTitle: string;
+    liveBroadcastContent?: string;
+    publishTime: string | Date;
+  };
+}
 export interface Element {
   type:
     | "Bloopers"

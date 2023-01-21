@@ -1,6 +1,6 @@
 import { Dispatch, SetStateAction } from "react";
 import { Movie } from "../../../../typing";
-import apiConfiguration from "../../../../utils/apiConfiguration";
+import apiConfiguration from "../../../../constants/apiConfiguration";
 import Paragraph from "./info/Paragraph";
 import MovieInfoModal from "./info/MovieInfoModal";
 import FormateDateToBR from "../../../../utils/formatDate";
@@ -32,7 +32,11 @@ export default function InfoModal({
              bg-black p-4 rounded-sm shadow-md shadow-black/30 min-h-full"
             >
               <MovieInfoModal
-                title={selectedMovie.title}
+                title={
+                  selectedMovie.title ??
+                  selectedMovie.name ??
+                  selectedMovie.original_name
+                }
                 overview={selectedMovie.overview}
               />
             </div>

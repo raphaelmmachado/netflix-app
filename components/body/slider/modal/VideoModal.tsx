@@ -8,12 +8,13 @@ import {
 import { Context } from "../../../../context/ContextProvider";
 import YoutubeIcon from "./video/YoutubeIcon";
 import XMarkIcon from "@heroicons/react/24/solid/XMarkIcon";
-import { IVideo, Movie } from "../../../../typing";
+import { IVideo, Movie, YTIds, YTitems } from "../../../../typing";
 import LikeButton from "./video/LikeButton";
 import DislikeButton from "./video/DislikeButton";
 import PaperAirplaneIcon from "@heroicons/react/24/solid/PaperAirplaneIcon";
 import MediaComponent from "./video/MediaComponent";
 import getPTBRTrailers from "../../../../utils/getTrailers";
+import searchYoutubeVideos from "../../../../utils/searchYoutubeVideos";
 
 interface Props {
   showVideoModal: boolean;
@@ -30,7 +31,8 @@ export default function VideoModal({
 }: Props) {
   const { liked, disliked, setDisliked, setLiked } = useContext(Context);
   const [showVideo, setShowVideo] = useState(false);
-  const [video, setVideo] = useState<IVideo[] | undefined>(undefined);
+  const [videos, setVideos] = useState<IVideo[] | undefined>(undefined);
+  const [yVideos, setYVideos] = useState<YTIds[]>([]);
   const [videoIndex, setVideoIndex] = useState(0);
   const handleLikeButton = (id: number) => {
     if (!liked.includes(id)) {
@@ -57,23 +59,36 @@ export default function VideoModal({
       );
     }
   };
+
   type Results = {
     results: IVideo[];
   };
-  //TODO FETCH MOVIES INDIVIDUALLY
+  //check if DB has video
   useEffect(() => {
     getPTBRTrailers({ mediaType, selectedMovie })
       .then(({ results }: Results) => {
         if (results.length < 1) {
-          setVideo(undefined);
-          setShowVideo(false);
+          setVideos(undefined);
+          searchOnYT();
         } else {
-          setVideo(results);
+          setVideos(results);
         }
       })
       .catch((error) => console.log(error));
-    return () => setVideo(undefined);
+    return () => setVideos(undefined);
   }, [selectedMovie]);
+  //if not search on youtube
+  function searchOnYT() {
+    searchYoutubeVideos(
+      `${selectedMovie.title ?? selectedMovie.name} trailer oficial`,
+      "snippet"
+    )
+      .then((res: YTIds[]) => {
+        console.log(res);
+        setYVideos(res);
+      })
+      .catch((err) => console.log(err));
+  }
 
   // const rateMovie = async (rating: number) => {
   //   try {
@@ -88,7 +103,6 @@ export default function VideoModal({
   //     console.error(err);
   //   }
   // };
-  console.log(Boolean(video));
 
   return (
     <>
@@ -115,7 +129,12 @@ export default function VideoModal({
                   }}
                 />
               </div>
-              <button onClick={() => setShowVideoModal(false)}>
+              <button
+                onClick={() => {
+                  setShowVideo(false);
+                  setShowVideoModal(false);
+                }}
+              >
                 <XMarkIcon className="w-8 h-8 text-white hover:bg-gray/30 rounded-sm" />
               </button>
             </header>
@@ -123,9 +142,10 @@ export default function VideoModal({
               {showVideo && (
                 <MediaComponent
                   videoIndex={videoIndex}
-                  selectedVideo={video}
+                  selectedVideo={videos}
+                  youtubeVideos={yVideos}
                   clearVideo={() => {
-                    setVideo(undefined);
+                    setVideos(undefined);
                     setShowVideo(false);
                   }}
                 />
@@ -133,29 +153,39 @@ export default function VideoModal({
             </main>
             <footer className="w-full bg-black flex flex-wrap gap-4 border-t border-gray">
               <>
-                {video ? (
-                  video?.map((item, i) => {
-                    return (
-                      <div
-                        className="flex gap-2 cursor-pointer hover:underline p-2"
-                        key={item.id}
-                        onClick={() => {
-                          setVideoIndex(i);
-                          setShowVideo(true);
-                        }}
-                      >
-                        <h1>{item.type}</h1>
-                        {item.site === "YouTube" && (
+                {videos
+                  ? videos?.map((item, i) => {
+                      return (
+                        <div
+                          className="video-modal-movie-links"
+                          key={item.id}
+                          onClick={() => {
+                            setVideoIndex(i);
+                            setShowVideo(true);
+                          }}
+                        >
+                          <h1>{item.type}</h1>
+                          {item.site === "YouTube" && (
+                            <YoutubeIcon pathFill="#b9090b" />
+                          )}
+                        </div>
+                      );
+                    })
+                  : yVideos?.map((item, i) => {
+                      return (
+                        <div
+                          className="video-modal-movie-links"
+                          key={item.id.videoId}
+                          onClick={() => {
+                            setVideoIndex(i);
+                            setShowVideo(true);
+                          }}
+                        >
+                          <h1>Trailer</h1>
                           <YoutubeIcon pathFill="#b9090b" />
-                        )}
-                      </div>
-                    );
-                  })
-                ) : (
-                  <h3 className="bg-black text-center text-xl text-red">
-                    Não encontramos video em português!
-                  </h3>
-                )}
+                        </div>
+                      );
+                    })}
               </>
             </footer>
           </div>

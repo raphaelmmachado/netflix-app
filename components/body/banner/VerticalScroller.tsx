@@ -18,7 +18,7 @@ export default function VerticalScroller({
       <aside className="vertical-scroller">
         <div
           id="prev-component-button"
-          className="cursor-pointer"
+          className="vertical-scroller-arrows"
           onClick={() => goUp()}
         >
           <ChevronUpIcon className="w-8 h-8" />
@@ -29,14 +29,14 @@ export default function VerticalScroller({
             onClick={() => setIndex(i)}
             id="vertical-bars"
             key={i}
-            className={`hidden md:inline-flex w-2  h-0 md:h-5 hover:cursor-pointer transition-transform ${
-              index === i ? "bg-red " : "bg-white/50"
+            className={`vertical-scroller-bars ${
+              index === i ? "bg-red" : "bg-white/50"
             } `}
           ></div>
         ))}
         <div
           id="next-component-button"
-          className="cursor-pointer"
+          className="vertical-scroller-arrows"
           onClick={() => goDown()}
         >
           <ChevronDownIcon className="w-8 h-8" />

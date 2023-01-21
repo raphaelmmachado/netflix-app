@@ -53,4 +53,4 @@ Tive muitos problemas com essa api já que nem todos os filmes possuem video. E 
 
 Usei context api para criar uma seção com filmes adicionados numa lista
 
-Simplesmente não consigo formatar a data para estilo brasileiro, parece ser algum bug no nextjs 13. Algumas respostas da api vem sem "release_date" então essa propriedade pode não existir, mesmo fazendo todo tipo de checkagem se há essa proprieade com Object.prototype.hasOwn(obj, "release_date") ainda assim recebo erro, isso acontece com outras propriedades mas consegui consertar
+Ao tentar fazer fetch dos trailers eu estava tendo muito trabalho com o useState pois ele funciona de forma e assíncrona. Então eu tive que colocar um useEffect no componente em que mostra o video

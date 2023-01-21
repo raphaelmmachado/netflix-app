@@ -1,12 +1,19 @@
+//next
 import { GetServerSideProps } from "next";
+import { useRouter } from "next/router";
 import Head from "next/head";
+//context
 import { Context } from "../context/ContextProvider";
-import { useContext } from "react";
+import { useContext, useEffect } from "react";
 //components
 import MainContainer from "../components/body/MainContainer";
-//local
+//types
 import { IRequests, IComponents } from "../typing";
-import { requests } from "../utils/requests";
+//utils
+import { requests } from "../constants/requests";
+//hooks
+import { useAuthState } from "react-firebase-hooks/auth";
+import { auth } from "../utils/firebaseConfig";
 import useScroll from "../hooks/useScroll";
 
 export default function App({
@@ -34,7 +41,13 @@ export default function App({
   // this custom hook increments index if user scrolls down
   // or decrements if scrolls up
   const { index, setIndex } = useScroll(COMPONENTS.length);
-
+  //custom hook to get authorized user info
+  const [user, loading] = useAuthState(auth);
+  // if user is not logged in, take him to login page
+  const route = useRouter();
+  useEffect(() => {
+    if (!loading && !user) route.push("/auth/login");
+  }, [auth]);
   return (
     <>
       <Head>
@@ -43,6 +56,7 @@ export default function App({
         <meta name="viewport" content="width=device-width, initial-scale=1" />
         <link rel="icon" href="/favicon.ico" />
       </Head>
+
       {COMPONENTS.map((component: IComponents, i) => {
         if (i === index) {
           return (

@@ -16,7 +16,6 @@ export function ContextProvider({ children }: IProvider) {
   const [liked, setLiked] = useState([]);
   const [disliked, setDisliked] = useState([]);
   const [myList, setMyList] = useState([]);
-
   return (
     <Context.Provider
       value={{

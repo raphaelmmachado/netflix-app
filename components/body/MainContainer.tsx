@@ -11,8 +11,7 @@ import ListButton from "./banner/ListButton";
 import DetailsButton from "./banner/DetailsButton";
 import VerticalScroller from "./banner/VerticalScroller";
 import { Movie } from "../../typing";
-import IMG_BASE_URL from "../../utils/bgImageBaseUrl";
-import movieFound from "../../utils/movieFound";
+import tmdbApiConfig from "../../constants/apiConfiguration";
 
 interface Props {
   movies: Movie[];
@@ -47,14 +46,15 @@ export default function MainContainer({
   //add movie to a list when
   const handleAddToList = (movie: Movie) => {
     if (myList.some((item) => item.id === movie.id)) {
-      setMyList((myList: Movie[]) =>
-        [...myList].filter((item) => item.id !== movie.id)
+      setMyList((prevList: Movie[]) =>
+        [...prevList].filter((item) => item.id !== movie.id)
       );
     } else {
-      setMyList((myList: Movie[]) => [...myList, movie]);
+      setMyList((prevList: Movie[]) => [...prevList, movie]);
     }
   };
-
+  const BASE_URL = tmdbApiConfig.images.secure_base_url;
+  const SIZE = tmdbApiConfig.images.backdrop_sizes[2];
   //
   return (
     <>
@@ -65,10 +65,9 @@ export default function MainContainer({
           id="banner"
           className="banner"
           style={{
-            backgroundImage: `url(${IMG_BASE_URL}${selectedMovie?.backdrop_path})`,
+            backgroundImage: `url(${BASE_URL}${SIZE}/${selectedMovie?.backdrop_path})`,
           }}
         >
-          {" "}
           <div className="banner-wrapper" id="banner-wrapper">
             <Header setIndex={(i: number) => setIndex(i)} />
             <div className="banner-center" id="banner-center">

@@ -1,7 +1,7 @@
 import { GetServerSideProps } from "next";
 import { Movie } from "../../typing";
-import { movieRequests } from "../../utils/moviesRequests";
-import apiConfiguration from "../../utils/apiConfiguration";
+import { movieRequests } from "../../constants/moviesRequests";
+import apiConfiguration from "../../constants/apiConfiguration";
 import Image from "next/image";
 import Header from "../../components/body/header/Header";
 import Top10Badge from "../../components/movies/Top10Badge";

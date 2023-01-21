@@ -1,13 +1,15 @@
-import { IVideo, Movie } from "../../../../../typing";
+import { IVideo, Movie, YTIds, YTitems } from "../../../../../typing";
 
 interface Props {
   videoIndex: number;
   selectedVideo?: IVideo[];
+  youtubeVideos: YTIds[];
   clearVideo: () => void;
 }
 export default function MediaComponent({
   videoIndex,
   selectedVideo,
+  youtubeVideos,
   clearVideo,
 }: Props) {
   return (
@@ -24,7 +26,16 @@ export default function MediaComponent({
           allowFullScreen
         ></iframe>
       ) : (
-        <h1>Problema ao tocar o video 🤡</h1>
+        <iframe
+          onEnded={() => clearVideo()}
+          onCompositionEnd={() => clearVideo()}
+          id="modal-video"
+          className="aspect-video w-full"
+          src={`https://www.youtube.com/embed/${youtubeVideos[videoIndex].id.videoId}`}
+          title={youtubeVideos[videoIndex].snippet.title}
+          allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
+          allowFullScreen
+        ></iframe>
       )}
     </>
   );

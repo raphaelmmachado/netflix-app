@@ -1,13 +1,19 @@
+import { useEffect, useState } from "react";
 import Image from "next/image";
 import useWindowSize from "../../../hooks/useWindowSize";
-import { useEffect, useState } from "react";
+
 import NavLinks from "./links/NavLinks";
+import { useAuthState } from "react-firebase-hooks/auth";
+import { auth } from "../../../utils/firebaseConfig";
+
 interface Props {
   setIndex: (i: number) => void;
 }
+
 export default function Header({ setIndex }: Props) {
   const [mobile, setMobile] = useState(false);
   const { width } = useWindowSize();
+  const [user, loading] = useAuthState(auth);
 
   useEffect(() => {
     if (width !== undefined) {
@@ -18,7 +24,7 @@ export default function Header({ setIndex }: Props) {
       }
     }
   }, [width]);
-
+  const placeholderIMG = "/assets/ProfileIMG.svg";
   return (
     <header>
       {" "}
@@ -54,19 +60,17 @@ export default function Header({ setIndex }: Props) {
                   className="bg-transparent text-white px-2 "
                 /> */}
               </div>
-              <div className="flex items-center gap-4">
-                {/* <GiftIcon className="icon" />
-                <BellIcon className="text-white h-5 w-5" /> */}
-                {/* <span className="flex items-center gap-1">
+              {user && (
+                <div className="flex items-center gap-4">
+                  <h1 className="text-sm">{user?.displayName}</h1>
                   <Image
-                    src="/assets/ProfileIMG.svg"
+                    src={`${user?.photoURL}`}
                     alt="user"
                     width={32}
                     height={32}
-                  />
-                  <Bars3Icon className="text-white h-6 w-6" />
-                </span> */}
-              </div>
+                  />{" "}
+                </div>
+              )}
             </div>
           </nav>
         </>
@@ -83,27 +87,30 @@ export default function Header({ setIndex }: Props) {
                 priority
               />
             </div>
-            {/* <div className="flex gap-4 items-center">
-              <>
+            <div className="flex gap-4 items-center">
+              {/* <>
                 <MagnifyingGlassIcon
                   height={24}
                   width={24}
                   className="text-white"
                 />
-              </>
+              </> */}
 
-              <div className="flex items-center">
-                <Image
-                  src="/assets/ProfileIMG.svg"
-                  alt="user"
-                  width={32}
-                  height={32}
-                />{" "}
-                <>
+              {user && (
+                <div className="flex items-center bg-red">
+                  <h1 className="text-sm">{user?.displayName}</h1>
+                  <Image
+                    src={`${user ? user.photoURL : placeholderIMG}`}
+                    alt="user"
+                    width={32}
+                    height={32}
+                  />{" "}
+                  {/* <>
                   <Bars3Icon className="h-8 w-8" />
-                </>
-              </div>
-            </div> */}
+                </> */}
+                </div>
+              )}
+            </div>
           </nav>
         </>
       )}
