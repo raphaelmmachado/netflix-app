@@ -15,7 +15,8 @@ import { requests } from "../constants/requests";
 import { useAuthState } from "react-firebase-hooks/auth";
 import { auth } from "../utils/firebaseConfig";
 import useScroll from "../hooks/useScroll";
-
+//TODO FIREBASE REDIRECT
+//TODO FONTS NOT LOADING IN PRODUCTION
 export default function App({
   trendingNow,
   topRated,
