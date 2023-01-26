@@ -6,6 +6,7 @@ import {
   CSSProperties,
   Dispatch,
   SetStateAction,
+  useCallback,
 } from "react";
 import Image from "next/image";
 import useWindowSize from "../../../hooks/useWindowSize";
@@ -45,6 +46,13 @@ export default function MovieSlider({
   const [progressBarItems, setProgressBarItems] = useState(0);
   const { width } = useWindowSize();
   const memoWidth = useMemo(() => width, [width]);
+
+  const handleHover = useCallback(
+    (movie: Movie) => {
+      setSelectedMovie(movie);
+    },
+    [selectedMovie]
+  );
 
   //set sliders items per screen based on screen width
   useEffect(() => {
@@ -115,7 +123,7 @@ export default function MovieSlider({
               return (
                 <Image
                   key={i}
-                  onMouseEnter={() => setSelectedMovie(movie)}
+                  onMouseEnter={() => handleHover(movie)}
                   src={`${imgUrl}${backdropSize[1]}${movie.backdrop_path}`}
                   width={285}
                   height={171}

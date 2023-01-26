@@ -1,11 +1,18 @@
+import { useRouter } from "next/router";
+
 interface Props {
   title: string;
-  setIndex: () => void;
+  path?: string;
 }
-export default function NavLinks({ title, setIndex }: Props) {
+export default function NavLinks({ title, path }: Props) {
+  const route = useRouter();
+
   return (
     <>
-      <li onClick={() => setIndex()} className="hover:text-red cursor-pointer">
+      <li
+        onClick={() => path && route.push(path)}
+        className="hover:text-red cursor-pointer"
+      >
         {title}
       </li>
     </>

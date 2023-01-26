@@ -1,13 +1,9 @@
 // Import the functions you need from the SDKs you need
-import {
-  getAuth,
-  GoogleAuthProvider,
-  FacebookAuthProvider,
-  signInWithPopup,
-} from "firebase/auth";
-import { initializeApp } from "firebase/app";
+import { getApp, getApps, initializeApp } from "firebase/app";
+import { getAuth } from "firebase/auth";
+import { getDatabase, child, get, ref } from "firebase/database";
 
-// TODO: Add SDKs for Firebase products that you want to use
+//  Add SDKs for Firebase products that you want to use
 // https://firebase.google.com/docs/web/setup#available-libraries
 
 // Your web app's Firebase configuration
@@ -20,12 +16,30 @@ const firebaseConfig = {
   messagingSenderId: process.env.NEXT_PUBLIC_MESSAGE_SENDER_ID,
   appId: process.env.NEXT_PUBLIC_APP_ID,
   measurementId: process.env.NEXT_PUBLIC_MEASUREMENT_ID,
+  //add on vercel
+  databaseURL: process.env.NEXT_PUBLIC_DATABASE_URL,
 };
 // Initialize Firebase
-const app = initializeApp(firebaseConfig);
+const app = !getApps().length ? initializeApp(firebaseConfig) : getApp();
+
+const database = getDatabase(app);
 const auth = getAuth();
-const googleProvider = new GoogleAuthProvider();
-const facebookProvider = new FacebookAuthProvider();
+
+const db = ref(database);
+
+// const query = `${user?.uid}/list`;
+
+const fetchDB = async (query: string) => {
+  try {
+    const snapshot = await get(child(db, query));
+    if (snapshot.exists()) {
+      return snapshot.val();
+    }
+  } catch (e) {
+    console.log(e);
+  }
+};
+
 // const popup = signInWithPopup(auth, provider);
 
-export { googleProvider, facebookProvider, auth, app };
+export { auth, app, database, fetchDB };

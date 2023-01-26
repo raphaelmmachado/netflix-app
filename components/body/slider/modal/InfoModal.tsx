@@ -16,7 +16,6 @@ export default function InfoModal({
   selectedMovie,
   setShowInfoModal,
 }: Props) {
-  const date = FormateDateToBR(selectedMovie?.release_date);
   return (
     <>
       {showInfoModal ? (

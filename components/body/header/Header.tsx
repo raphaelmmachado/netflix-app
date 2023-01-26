@@ -1,20 +1,14 @@
 import { useEffect, useState } from "react";
 import Image from "next/image";
 import useWindowSize from "../../../hooks/useWindowSize";
-
 import NavLinks from "./links/NavLinks";
 import { useAuthState } from "react-firebase-hooks/auth";
 import { auth } from "../../../utils/firebaseConfig";
 
-interface Props {
-  setIndex: (i: number) => void;
-}
-
-export default function Header({ setIndex }: Props) {
+export default function Header() {
   const [mobile, setMobile] = useState(false);
   const { width } = useWindowSize();
   const [user, loading] = useAuthState(auth);
-
   useEffect(() => {
     if (width !== undefined) {
       if (width < 3) {
@@ -40,11 +34,11 @@ export default function Header({ setIndex }: Props) {
                 priority
               />
               <ul className="header-nav-ul">
-                <NavLinks title="Início" setIndex={() => setIndex(0)} />
-                <NavLinks title="Séries" setIndex={() => setIndex(2)} />
-                <NavLinks title="Filmes" setIndex={() => setIndex(1)} />
-                <NavLinks title="Lançamentos" setIndex={() => setIndex(0)} />
-                <NavLinks title="Minha Lista" setIndex={() => setIndex(7)} />
+                <NavLinks title="Início" path="/" />
+                <NavLinks title="Séries" />
+                <NavLinks title="Filmes" />
+                <NavLinks title="Lançamentos" />
+                <NavLinks title="Minha Lista" path="/minha_lista" />
               </ul>
             </div>
             <div className="header-nav-right" id="nav--right-div">
@@ -61,7 +55,7 @@ export default function Header({ setIndex }: Props) {
                 /> */}
               </div>
               {user && (
-                <div className="flex items-center gap-4">
+                <div className="flex items-center gap-2">
                   <h1 className="text-sm">{user?.displayName}</h1>
                   <Image
                     src={`${user?.photoURL}`}
@@ -97,7 +91,7 @@ export default function Header({ setIndex }: Props) {
               </> */}
 
               {user && (
-                <div className="flex items-center bg-red">
+                <div className="flex items-center gap-2">
                   <h1 className="text-sm">{user?.displayName}</h1>
                   <Image
                     src={`${user ? user.photoURL : placeholderIMG}`}

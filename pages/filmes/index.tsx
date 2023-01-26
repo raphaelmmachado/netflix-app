@@ -4,7 +4,7 @@ import { movieRequests } from "../../constants/moviesRequests";
 import apiConfiguration from "../../constants/apiConfiguration";
 import Image from "next/image";
 import Header from "../../components/body/header/Header";
-import Top10Badge from "../../components/movies/Top10Badge";
+import Top10Badge from "../../components/filmes/Top10Badge";
 interface Props {
   page1: Movie[];
   page2: Movie[];
@@ -14,7 +14,7 @@ export default function App({ page1, page2 }: Props) {
   const posterSize = apiConfiguration.images.poster_sizes[3];
   return (
     <main>
-      <Header setIndex={() => () => {}} />
+      <Header />
 
       <section
         className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-6 auto-cols-fr

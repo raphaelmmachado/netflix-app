@@ -1,64 +1,38 @@
 //hooks
-import {
-  Dispatch,
-  SetStateAction,
-  useState,
-  useContext,
-  useCallback,
-  useEffect,
-} from "react";
-import { useSwipeable } from "react-swipeable";
+import { useState, useContext, useCallback, useEffect } from "react";
 import { ref, set } from "firebase/database";
 import { useAuthState } from "react-firebase-hooks/auth";
 import { auth, database } from "../../utils/firebaseConfig";
 //context
 //components
 import Image from "next/image";
-import MovieSlider from "./slider/MovieSlider";
-import Header from "./header/Header";
-import BannerText from "./banner/BannerText";
-import PlayButton from "./banner/PlayButton";
-import ListButton from "./banner/ListButton";
-import DetailsButton from "./banner/DetailsButton";
-import VerticalScroller from "./banner/VerticalScroller";
-import Loading from "../auth/Loading";
+import MovieSlider from "../body/slider/MovieSlider";
+import Header from "../body/header/Header";
+import BannerText from "../body/banner/BannerText";
+import PlayButton from "../body/banner/PlayButton";
+import ListButton from "../body/banner/ListButton";
+import DetailsButton from "../body/banner/DetailsButton";
 //types
 import { Movie } from "../../typing";
 //constants
 import tmdbApiConfig from "../../constants/apiConfiguration";
 import { Context } from "../../context/ContextProvider";
+import ArrowUpIcon from "@heroicons/react/24/solid/ArrowUpIcon";
 
 interface Props {
   movies: Movie[];
   children?: JSX.Element | JSX.Element[];
   title: string;
-  bars: number;
-  index: number;
-  setIndex: Dispatch<SetStateAction<number>>;
   mediaType?: "tv" | "movie";
 }
 
-export default function MainContainer({
-  movies,
-  title,
-  mediaType,
-  bars,
-  index,
-  setIndex,
-}: Props) {
+export default function MainContainer({ movies, title, mediaType }: Props) {
   const [selectedMovie, setSelectedMovie] = useState<Movie>(movies[0]);
   const [showVideoModal, setShowVideoModal] = useState(false);
   const [showInfoModal, setShowInfoModal] = useState(false);
   const [user] = useAuthState(auth);
 
   const { myList, setMyList } = useContext(Context);
-
-  // change index when user swipes
-  const swipeHandler = useSwipeable({
-    onSwipedUp: () =>
-      setIndex((prev) => (prev + 1 > bars - 1 ? prev : prev + 1)),
-    onSwipedDown: () => setIndex((prev) => (prev - 1 < 0 ? prev : prev - 1)),
-  });
 
   // add movie to user list
   const handleAddToList = (movie: Movie) => {
@@ -71,6 +45,7 @@ export default function MainContainer({
     }
     writeUserList();
   };
+
   const writeUserList = useCallback(async () => {
     if (myList.length > 0)
       await set(ref(database, `${user?.uid}/list`), myList);
@@ -88,7 +63,6 @@ export default function MainContainer({
       {selectedMovie ? (
         // banner
         <main
-          {...swipeHandler}
           id="banner"
           className="banner"
           style={{
@@ -124,20 +98,6 @@ export default function MainContainer({
                   <DetailsButton showModal={() => setShowInfoModal(true)} />
                 </div>
               </section>
-
-              <VerticalScroller
-                bars={bars}
-                index={index}
-                setIndex={(i) => setIndex(i)}
-                goUp={() =>
-                  setIndex((prev: number) => (prev - 1 < 0 ? prev : --prev))
-                }
-                goDown={() =>
-                  setIndex((prev: number) =>
-                    prev + 1 > bars - 1 ? prev : ++prev
-                  )
-                }
-              />
             </div>
             <MovieSlider
               movies={movies}
@@ -153,7 +113,22 @@ export default function MainContainer({
           </div>
         </main>
       ) : (
-        <Loading />
+        // IN CASE SELECTED MOVIE CAN NOT BE ACESSED
+        <main className=" bg-black">
+          <section className="min-h-[100vh] w-full flex flex-col items-center justify-center gap-4">
+            <Image
+              src="/assets/NetflixLogoSvg.svg"
+              alt="netflix-logo"
+              width={200}
+              height={100}
+            />
+            <h1>Lista de filmes vazia</h1>
+            <button className="bg-white rounded-md text-black font-bold px-6 gap-2 py-2">
+              <ArrowUpIcon />
+              <>Voltar</>
+            </button>
+          </section>
+        </main>
       )}
     </>
   );

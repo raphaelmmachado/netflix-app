@@ -8,15 +8,14 @@ import {
   signInWithPopup,
 } from "firebase/auth";
 import { getAnalytics } from "firebase/analytics";
-import {
-  googleProvider,
-  facebookProvider,
-  auth,
-  app,
-} from "../../utils/firebaseConfig";
+import { auth, app } from "../../utils/firebaseConfig";
 
 export default function Login() {
+  const googleProvider = new GoogleAuthProvider();
+  const facebookProvider = new FacebookAuthProvider();
+
   const route = useRouter();
+
   const loginWithGoogle = async () => {
     try {
       const analytics = getAnalytics(app);
@@ -54,7 +53,6 @@ export default function Login() {
     }
   };
   //TODO ENVIRONMENTS VARIABLES VERCEL
-  //TODO YOUTUBE API PARA PESQUISAR VIDEOS QUE NAO FORAM ENCONTRADOS NA DB
   return (
     <main className="grid place-content-center place-items-center min-h-screen">
       <section className="flex flex-col justify-around gap-4 p-16  rounded-md  bg-gray/5 min-h-[600px]">

@@ -1,20 +1,21 @@
 //next
 import { GetServerSideProps } from "next";
-import { useRouter } from "next/router";
 import Head from "next/head";
+import { useRouter } from "next/router";
 //context
-import { Context } from "../context/ContextProvider";
-import { useContext, useEffect } from "react";
+import { useEffect } from "react";
 //components
 import MainContainer from "../components/body/MainContainer";
+import Loading from "../components/auth/Loading";
 //types
-import { IRequests, IComponents } from "../typing";
+import { IRequests, IComponents, Movie } from "../typing";
 //utils
 import { requests } from "../constants/requests";
 //hooks
 import { useAuthState } from "react-firebase-hooks/auth";
-import { auth } from "../utils/firebaseConfig";
+import { auth, fetchDB } from "../utils/firebaseConfig";
 import useScroll from "../hooks/useScroll";
+
 //TODO FIREBASE REDIRECT
 //TODO FONTS NOT LOADING IN PRODUCTION
 export default function App({
@@ -26,8 +27,13 @@ export default function App({
   trendingSeries,
   popularMovies,
 }: IRequests) {
+  //if user not logged send him to login page
+  useEffect(() => {
+    if (!user && !loading) {
+      route.push("/auth/login");
+    }
+  }, []);
   // context array of movies added to list
-  const { myList } = useContext(Context);
   // components made of data coming from server
   const COMPONENTS: IComponents[] = [
     [trendingNow, "Em destaque"],
@@ -37,18 +43,16 @@ export default function App({
     [actionMovies, "Filmes de ação", "movie"],
     [comedyMovies, "Filmes de comédia", "movie"],
     [horrorMovies, "Filmes de terror", "movie"],
-    [myList, "Minha lista"],
   ];
   // this custom hook increments index if user scrolls down
   // or decrements if scrolls up
   const { index, setIndex } = useScroll(COMPONENTS.length);
-  //custom hook to get authorized user info
+  // hook to get authorized user info
   const [user, loading] = useAuthState(auth);
-  // if user is not logged in, take him to login page
   const route = useRouter();
-  useEffect(() => {
-    if (!loading && !user) route.push("/auth/login");
-  }, [auth]);
+
+  if (loading) return <Loading />;
+
   return (
     <>
       <Head>

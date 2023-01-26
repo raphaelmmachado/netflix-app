@@ -69,7 +69,7 @@ export default function VideoModal({
       .then(({ results }: Results) => {
         if (results.length < 1) {
           setVideos(undefined);
-          searchOnYT();
+          // searchOnYT();
         } else {
           setVideos(results);
         }
@@ -153,39 +153,46 @@ export default function VideoModal({
             </main>
             <footer className="w-full bg-black flex flex-wrap gap-4 border-t border-gray">
               <>
-                {videos
-                  ? videos?.map((item, i) => {
-                      return (
-                        <div
-                          className="video-modal-movie-links"
-                          key={item.id}
-                          onClick={() => {
-                            setVideoIndex(i);
-                            setShowVideo(true);
-                          }}
-                        >
-                          <h1>{item.type}</h1>
-                          {item.site === "YouTube" && (
-                            <YoutubeIcon pathFill="#b9090b" />
-                          )}
-                        </div>
-                      );
-                    })
-                  : yVideos?.map((item, i) => {
-                      return (
-                        <div
-                          className="video-modal-movie-links"
-                          key={item.id.videoId}
-                          onClick={() => {
-                            setVideoIndex(i);
-                            setShowVideo(true);
-                          }}
-                        >
-                          <h1>Trailer</h1>
+                {videos &&
+                  videos?.map((item, i) => {
+                    return (
+                      <div
+                        className="video-modal-movie-links"
+                        key={item.id}
+                        onClick={() => {
+                          setVideoIndex(i);
+                          setShowVideo(true);
+                        }}
+                      >
+                        <h1>{item.type}</h1>
+                        {item.site === "YouTube" && (
                           <YoutubeIcon pathFill="#b9090b" />
-                        </div>
-                      );
-                    })}
+                        )}
+                      </div>
+                    );
+                  })}
+                {yVideos &&
+                  !videos &&
+                  yVideos?.map((item, i) => {
+                    return (
+                      <div
+                        className="video-modal-movie-links"
+                        key={item.id.videoId}
+                        onClick={() => {
+                          setVideoIndex(i);
+                          setShowVideo(true);
+                        }}
+                      >
+                        <h1>Trailer</h1>
+                        <YoutubeIcon pathFill="#b9090b" />
+                      </div>
+                    );
+                  })}
+                {!yVideos && !videos && (
+                  <h1 className="text-red pl-1">
+                    Não encontramos trailers em português
+                  </h1>
+                )}
               </>
             </footer>
           </div>

@@ -1,4 +1,4 @@
-# Netflix Clone (incompleto)
+# Netflix Clone
 
 ## Applicação criada com npx-create-next-app --typescript
 
@@ -44,6 +44,8 @@ Me deparei com um Hydration Error e descobri que a causa era configuracao de res
 
 Desisti de usar o swiper porque achei que não combinou muito então eu peguei como referencia o video do Kyle (WebDev Simplified) e criei uma versão react do slider dele. Implementei uma função minha onde pego o tamanho da tela pelo custom hook (useWindowSize) e dependendo do tamanho da tela eu atribuo o valor "Items Per Screen". Também possibilitei navegar sliders clicando na "Progress Bar"
 
+Depois de terminado o slider, tive a ideia de mudar o background de acordo com o filme que foi ativado com o evento (hover) com um efeito de transição
+
 Eu precisava fazer o fetch do trailer dos videos de cada lista. Mas como estou aprendendo next eu não queria fazer no client side. Então eu usei Promise.all e carreguei cada trailer no server side. Alguns filmes não possui link do trailer na DB por isso o botão fica como "indisponivel".
 
 Refiz toda a estrutura de código da página inicial, ao invés de colocar uma stack de componentes, eu gerei componentes de uma array com os dados de todos os componentes anteriores. O componente que será renderizado será o que estiver com o index igual ao index ativo.
@@ -53,5 +55,12 @@ Tive muitos problemas com essa api já que nem todos os filmes possuem video. E 
 
 Usei context api para criar uma seção com filmes adicionados numa lista
 
-Ao tentar fazer fetch dos trailers eu estava tendo muito trabalho com o useState pois ele funciona de forma e assíncrona. Então eu tive que colocar um useEffect no componente em que mostra o video
-Simplesmente não consigo formatar a data para estilo brasileiro. Algumas respostas da api vem sem "release_date" então essa propriedade pode não existir, mesmo fazendo todo tipo de checkagem se há essa proprieade com Object.prototype.hasOwn(obj, "release_date") ainda assim recebo erro, isso acontece com outras propriedades.
+Aprendi a usar firebase para criar login com google e facebook.
+
+Também usei firebase como database para a lista de filmes do usuario.
+
+Tive muita dificuldade para sincronizar a lista de usuarios da DB com context api sem ter infinity loop.
+
+Priemeiramente eu tinha pensado em fazer lista como mais uma seção para rolar para baixo, mas acabei fazendo separando em sua própria página
+
+Para resolver o problema de que alguns filmes não possui trailer em português na DB, resolvi usar a API do youtube, pesquisar "nome do filme" + "trailer oficial", configurei para retornar no máximo 5 itens e de preferencia videos brasileiros, então gerei botões que selecionam o id e enviam para o componente.
