@@ -40,7 +40,7 @@ export default function App({
   // hook to get authorized user info
   const [user, loading] = useAuthState(auth);
 
-  if (loading) return <Loading />;
+  if (loading && !user) return <Loading />;
 
   return (
     <>

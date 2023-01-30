@@ -15,7 +15,10 @@ import DislikeButton from "./video/DislikeButton";
 import MediaComponent from "./video/MediaComponent";
 import getPTBRTrailers from "../../utils/getTrailers";
 import searchYoutubeVideos from "../../utils/searchYoutubeVideos";
-
+import {
+  handleLikeButton,
+  handleDislikeButton,
+} from "../../utils/handleLikeButtons";
 interface Props {
   showVideoModal: boolean;
   selectedMovie: Movie;
@@ -36,32 +39,6 @@ export default function VideoModal({
   const [yVideos, setYVideos] = useState<YTIds[]>([]);
   const [videoIndex, setVideoIndex] = useState(0);
 
-  const handleLikeButton = (id: number) => {
-    if (!liked.includes(id)) {
-      setDisliked((prevDisliked: number[]) =>
-        [...prevDisliked].filter((dislikedIds) => dislikedIds !== id)
-      );
-      setLiked((prevLiked: number[]) => [...prevLiked, id]);
-    } else {
-      setLiked((prevLiked: number[]) =>
-        [...prevLiked].filter((likedIds) => likedIds !== id)
-      );
-    }
-  };
-
-  const handleDislikeButton = (id: number) => {
-    if (!disliked.includes(id)) {
-      setLiked((prevLiked: number[]) =>
-        [...prevLiked].filter((likedIds) => likedIds !== id)
-      );
-      setDisliked((prevDisliked: number[]) => [...prevDisliked, id]);
-    } else {
-      setDisliked((prevDisliked: number[]) =>
-        [...prevDisliked].filter((dislikedIds) => dislikedIds !== id)
-      );
-    }
-  };
-
   type Results = {
     results: IVideo[];
   };
@@ -72,7 +49,8 @@ export default function VideoModal({
       .then(({ results }: Results) => {
         if (results.length < 1) {
           setVideos(undefined);
-          searchOnYT();
+          //TODO uncomment this
+          // searchOnYT();
         } else {
           setVideos(results);
         }
@@ -108,14 +86,21 @@ export default function VideoModal({
                   includes={liked.includes(selectedMovie.id)}
                   handleClick={() => {
                     const id = selectedMovie.id;
-                    if (id) handleLikeButton(id);
+                    if (id)
+                      handleLikeButton({ id, liked, setLiked, setDisliked });
                   }}
                 />
                 <DislikeButton
                   includes={disliked.includes(selectedMovie.id)}
                   handleClick={() => {
                     const id = selectedMovie.id;
-                    if (id) handleDislikeButton(id);
+                    if (id)
+                      handleDislikeButton({
+                        id,
+                        disliked,
+                        setLiked,
+                        setDisliked,
+                      });
                   }}
                 />
               </div>

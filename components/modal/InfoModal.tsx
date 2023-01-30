@@ -1,20 +1,27 @@
 import { Dispatch, SetStateAction, useContext } from "react";
 import { Context } from "../../context/ContextProvider";
 import { Movie } from "../../typing";
+import getMovieDetails from "../../utils/getMovieDetails";
 import MovieInfoModal from "./info/MovieInfoModal";
 import XButton from "./info/XButton";
 interface Props {
   showInfoModal: boolean;
   selectedMovie: Movie;
   setShowInfoModal: Dispatch<SetStateAction<boolean>>;
+  mediaType?: "tv" | "movie";
 }
 //TODO TENTAR MELHORAR ESSA TELA TA MUITO SIMPLES
+// DESFAZER A PARTE DE ENVIAR 'SELECTED MOVIE' PARA ESTE COMPONENT
+// FAZER CLIENT SIDE FETCH...
 export default function InfoModal({
   showInfoModal,
   selectedMovie,
   setShowInfoModal,
+  mediaType,
 }: Props) {
   const { setModalOpen } = useContext(Context);
+
+  getMovieDetails({ selectedMovie, mediaType }).then((res) => console.log(res));
   return (
     <>
       {showInfoModal ? (

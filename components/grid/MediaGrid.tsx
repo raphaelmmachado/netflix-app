@@ -43,10 +43,11 @@ export default function MediaGrid({ media, mediaType }: Props) {
        lg:grid-cols-6 auto-cols-fr place-content-center
        place-items-center gap-x-10 gap-y-16 px-12 py-8 pt-32"
       >
-        {media.map((movie) => {
+        {media.map((movie, i) => {
           return (
             <>
               <Card
+                key={movie.id + i}
                 movie={movie}
                 setShowVideo={setShowVideo}
                 setShowInfo={setShowInfo}

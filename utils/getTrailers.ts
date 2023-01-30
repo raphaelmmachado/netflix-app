@@ -1,9 +1,10 @@
 import { getSecret } from "./getSecret";
 const BASE_URL = "https://api.themoviedb.org/3";
-// https://api.themoviedb.org/3/tv/{tv_id}/videos?api_key=<<api_key>>&language=pt-BR
-// https://api.themoviedb.org/3/movie/{movie_id}/videos?api_key=<<api_key>>&language=pt-BR
 import axios from "axios";
 import { Movie } from "../typing";
+
+// https://api.themoviedb.org/3/tv/{tv_id}/videos?api_key=<<api_key>>&language=pt-BR
+// https://api.themoviedb.org/3/movie/{movie_id}/videos?api_key=<<api_key>>&language=pt-BR
 
 interface Props {
   selectedMovie: Movie;

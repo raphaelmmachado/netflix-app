@@ -17,6 +17,7 @@ import { Movie } from "../../../typing";
 //components
 import InfoModal from "../../modal/InfoModal";
 import VideoModal from "../../modal/VideoModal";
+import enterKeyPressed from "../../../utils/checkKeyboardKeys";
 
 interface IMovieSlider {
   movies: Movie[];
@@ -123,7 +124,11 @@ export default function MovieSlider({
               return (
                 <div className="card" key={i}>
                   <Image
+                    tabIndex={i}
                     onClick={() => selectAMovie(movie)}
+                    onKeyDown={(e) =>
+                      enterKeyPressed(e.code) && selectAMovie(movie)
+                    }
                     src={`${imgUrl}${backdropSize[1]}${movie.backdrop_path}`}
                     alt="movie-pic"
                     width={315}
@@ -150,6 +155,7 @@ export default function MovieSlider({
         showInfoModal={showInfoModal}
         selectedMovie={selectedMovie}
         setShowInfoModal={setShowInfoModal}
+        mediaType={mediaType}
       />
       <VideoModal
         selectedMovie={selectedMovie}

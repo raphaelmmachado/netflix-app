@@ -6,6 +6,7 @@ import { useAuthState } from "react-firebase-hooks/auth";
 import { auth } from "../../utils/firebaseConfig";
 import { useRouter } from "next/router";
 import LogoutIcon from "@heroicons/react/20/solid/ArrowLeftOnRectangleIcon";
+import enterKeyPressed from "../../utils/checkKeyboardKeys";
 interface Props {
   className: string;
 }
@@ -38,14 +39,17 @@ export default function Header({ className }: Props) {
               {mobile ? (
                 <Image
                   onClick={() => router.push("/")}
+                  onKeyDown={(e) => enterKeyPressed(e.code) && router.push("/")}
                   src="/favicon.ico"
                   alt="logo"
                   width={32}
                   height={32}
                   className="hover:cursor-pointer"
+                  tabIndex={0}
                 />
               ) : (
                 <Image
+                  onKeyDown={(e) => enterKeyPressed(e.code) && router.push("/")}
                   onClick={() => router.push("/")}
                   src="/assets/NetflixLogoSvg.svg"
                   alt="logo"
@@ -53,6 +57,7 @@ export default function Header({ className }: Props) {
                   height={30}
                   priority
                   className="hover:cursor-pointer"
+                  tabIndex={0}
                 />
               )}
               <ul className="header-nav-ul">
@@ -66,13 +71,19 @@ export default function Header({ className }: Props) {
                 <>
                   <div
                     onClick={() => setModal((prev) => !prev)}
+                    onKeyDown={(e) =>
+                      enterKeyPressed(e.code) && setModal((prev) => !prev)
+                    }
                     className="flex items-center gap-2"
                   >
                     {!mobile && (
-                      <h1 className="text-sm">{user?.displayName}</h1>
+                      <a className="text-sm" tabIndex={0}>
+                        {user?.displayName}
+                      </a>
                     )}
                     <Image
                       src={`${user?.photoURL}`}
+                      tabIndex={0}
                       alt="user"
                       width={40}
                       height={40}
@@ -80,16 +91,21 @@ export default function Header({ className }: Props) {
                     />
                   </div>
                   {modal && (
-                    <div
+                    <a
                       onClick={() => {
                         auth.signOut().then(() => router.push("/login"));
                       }}
+                      onKeyDown={(e) =>
+                        enterKeyPressed(e.code) &&
+                        auth.signOut().then(() => router.push("/login"))
+                      }
+                      tabIndex={0}
                       className="w-fit bg-white text-red flex absolute top-12 -right-3
                    items-center gap-3 px-2 py-1 rounded-sm shadow-md hover:cursor-pointer"
                     >
                       <LogoutIcon className="w-7 h-7" />
                       Sair
-                    </div>
+                    </a>
                   )}
                 </>
               )}
