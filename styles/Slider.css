@@ -34,7 +34,7 @@ body {
   transition: transform 250ms ease-in-out;
 }
 
-.slider > img {
+.slider > .card {
   flex: 0 0 calc(100% / var(--items-per-screen));
   max-width: calc(100% / var(--items-per-screen));
   aspect-ratio: 16 / 9;

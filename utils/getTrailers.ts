@@ -4,10 +4,12 @@ const BASE_URL = "https://api.themoviedb.org/3";
 // https://api.themoviedb.org/3/movie/{movie_id}/videos?api_key=<<api_key>>&language=pt-BR
 import axios from "axios";
 import { Movie } from "../typing";
+
 interface Props {
   selectedMovie: Movie;
   mediaType?: "tv" | "movie";
 }
+
 export default async function getTrailers({ mediaType, selectedMovie }: Props) {
   try {
     const { secret } = await getSecret().then((res) => res);

@@ -7,6 +7,7 @@ const nextConfig = {
       "image.tmdb.org",
       "assets.nflxext.com/",
       "lh3.googleusercontent.com",
+      "genotipia.com",
     ],
   },
 };

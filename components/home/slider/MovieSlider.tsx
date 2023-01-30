@@ -15,8 +15,8 @@ import apiConfiguration from "../../../constants/apiConfiguration";
 //typing
 import { Movie } from "../../../typing";
 //components
-import InfoModal from "./modal/InfoModal";
-import VideoModal from "./modal/VideoModal";
+import InfoModal from "../../modal/InfoModal";
+import VideoModal from "../../modal/VideoModal";
 
 interface IMovieSlider {
   movies: Movie[];
@@ -47,7 +47,7 @@ export default function MovieSlider({
   const { width } = useWindowSize();
   const memoWidth = useMemo(() => width, [width]);
 
-  const handleHover = useCallback(
+  const selectAMovie = useCallback(
     (movie: Movie) => {
       setSelectedMovie(movie);
     },
@@ -121,18 +121,23 @@ export default function MovieSlider({
             {/* CARDS */}
             {movies.map((movie: Movie, i) => {
               return (
-                <Image
-                  key={i}
-                  onMouseEnter={() => handleHover(movie)}
-                  src={`${imgUrl}${backdropSize[1]}${movie.backdrop_path}`}
-                  width={285}
-                  height={171}
-                  alt="movie-pic"
-                  className="cursor-pointer media-card"
-                />
+                <div className="card" key={i}>
+                  <Image
+                    onClick={() => selectAMovie(movie)}
+                    src={`${imgUrl}${backdropSize[1]}${movie.backdrop_path}`}
+                    alt="movie-pic"
+                    width={315}
+                    height={177}
+                    className="hover:cursor-pointer rounded-sm ring-black hover:ring-white ring-2"
+                  />
+                  <p className="absolute bg-black/60 w-full text-center text-sm px-1">
+                    {movie.name ?? movie.title}
+                  </p>
+                </div>
               );
             })}
           </div>
+
           {/* ARROW RIGHT */}
           <div
             onClick={incrementSliderIndex}

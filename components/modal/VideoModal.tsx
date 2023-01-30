@@ -5,16 +5,16 @@ import {
   useEffect,
   useState,
 } from "react";
-import { Context } from "../../../../context/ContextProvider";
+
+import { Context } from "../../context/ContextProvider";
 import YoutubeIcon from "./video/YoutubeIcon";
 import XMarkIcon from "@heroicons/react/24/solid/XMarkIcon";
-import { IVideo, Movie, YTIds, YTitems } from "../../../../typing";
+import { IVideo, Movie, YTIds } from "../../typing";
 import LikeButton from "./video/LikeButton";
 import DislikeButton from "./video/DislikeButton";
-import PaperAirplaneIcon from "@heroicons/react/24/solid/PaperAirplaneIcon";
 import MediaComponent from "./video/MediaComponent";
-import getPTBRTrailers from "../../../../utils/getTrailers";
-import searchYoutubeVideos from "../../../../utils/searchYoutubeVideos";
+import getPTBRTrailers from "../../utils/getTrailers";
+import searchYoutubeVideos from "../../utils/searchYoutubeVideos";
 
 interface Props {
   showVideoModal: boolean;
@@ -29,11 +29,13 @@ export default function VideoModal({
   setShowVideoModal,
   mediaType,
 }: Props) {
-  const { liked, disliked, setDisliked, setLiked } = useContext(Context);
+  const { liked, disliked, setDisliked, setLiked, setModalOpen } =
+    useContext(Context);
   const [showVideo, setShowVideo] = useState(false);
   const [videos, setVideos] = useState<IVideo[] | undefined>(undefined);
   const [yVideos, setYVideos] = useState<YTIds[]>([]);
   const [videoIndex, setVideoIndex] = useState(0);
+
   const handleLikeButton = (id: number) => {
     if (!liked.includes(id)) {
       setDisliked((prevDisliked: number[]) =>
@@ -63,13 +65,14 @@ export default function VideoModal({
   type Results = {
     results: IVideo[];
   };
+
   //check if DB has video
   useEffect(() => {
     getPTBRTrailers({ mediaType, selectedMovie })
       .then(({ results }: Results) => {
         if (results.length < 1) {
           setVideos(undefined);
-          // searchOnYT();
+          searchOnYT();
         } else {
           setVideos(results);
         }
@@ -77,6 +80,7 @@ export default function VideoModal({
       .catch((error) => console.log(error));
     return () => setVideos(undefined);
   }, [selectedMovie]);
+
   //if not search on youtube
   function searchOnYT() {
     searchYoutubeVideos(
@@ -89,20 +93,6 @@ export default function VideoModal({
       })
       .catch((err) => console.log(err));
   }
-
-  // const rateMovie = async (rating: number) => {
-  //   try {
-  //     const { secret } = await getSecret().then((res) => res);
-  //     const url = `${base_url}${selectedMovie.id}/rating?api_key=${secret}`;
-  //     const res = await fetch(url, {
-  //       method: "POST",
-  //       headers: { "Content-Type": "application/json;charset=utf-8" },
-  //       body: JSON.stringify({ value: rating }),
-  //     });
-  //   } catch (err) {
-  //     console.error(err);
-  //   }
-  // };
 
   return (
     <>
@@ -135,7 +125,10 @@ export default function VideoModal({
                   setShowVideoModal(false);
                 }}
               >
-                <XMarkIcon className="w-8 h-8 text-white hover:bg-gray/30 rounded-sm" />
+                <XMarkIcon
+                  onClick={() => setModalOpen(false)}
+                  className="w-8 h-8 text-white hover:bg-gray/30 rounded-sm"
+                />
               </button>
             </header>
             <main className="max-w-full">

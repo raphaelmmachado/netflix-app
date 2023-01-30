@@ -128,6 +128,8 @@ interface IContext {
   setDisliked: Dispatch<SetStateAction<number[]>>;
   myList: Movie[];
   setMyList: Dispatch<SetStateAction<Movie[]>>;
+  modalOpen: boolean;
+  setModalOpen: Dispatch<SetStateAction<boolean>>;
 }
 
 interface IComponents {

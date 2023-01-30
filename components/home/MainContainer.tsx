@@ -10,12 +10,10 @@ import {
 import { useSwipeable } from "react-swipeable";
 import { ref, set } from "firebase/database";
 import { useAuthState } from "react-firebase-hooks/auth";
-import { auth, database } from "../../utils/firebaseConfig";
+import { auth, database, fetchDB } from "../../utils/firebaseConfig";
 //context
 //components
-import Image from "next/image";
 import MovieSlider from "./slider/MovieSlider";
-import Header from "./header/Header";
 import BannerText from "./banner/BannerText";
 import PlayButton from "./banner/PlayButton";
 import ListButton from "./banner/ListButton";
@@ -27,6 +25,8 @@ import { Movie } from "../../typing";
 //constants
 import tmdbApiConfig from "../../constants/apiConfiguration";
 import { Context } from "../../context/ContextProvider";
+//utils
+import addMovieToList from "../../utils/addMovieToList";
 
 interface Props {
   movies: Movie[];
@@ -51,7 +51,7 @@ export default function MainContainer({
   const [showInfoModal, setShowInfoModal] = useState(false);
   const [user] = useAuthState(auth);
 
-  const { myList, setMyList } = useContext(Context);
+  const { myList, setMyList, setModalOpen } = useContext(Context);
 
   // change index when user swipes
   const swipeHandler = useSwipeable({
@@ -60,19 +60,21 @@ export default function MainContainer({
     onSwipedDown: () => setIndex((prev) => (prev - 1 < 0 ? prev : prev - 1)),
   });
 
-  // add movie to user list
-  const handleAddToList = (movie: Movie) => {
-    if (myList.some((item) => item.id === movie.id)) {
-      setMyList((prevList: Movie[]) =>
-        [...prevList].filter((item) => item.id !== movie.id)
-      );
-    } else {
-      setMyList((prevList: Movie[]) => [...prevList, movie]);
-    }
-    writeUserList();
-  };
+  // when component loads, get items from firebase and put it in context list
+  const getList = useCallback(
+    () =>
+      fetchDB(`${user?.uid}/list`)
+        .then((res: Movie[]) => setMyList(res))
+        .catch((e) => console.log(e)),
+    [myList]
+  );
+
+  useEffect(() => {
+    getList();
+  }, []);
+
   const writeUserList = useCallback(async () => {
-    if (myList.length > 0)
+    if (myList && myList.length > 0)
       await set(ref(database, `${user?.uid}/list`), myList);
   }, [myList]);
 
@@ -96,7 +98,6 @@ export default function MainContainer({
           }}
         >
           <div className="banner-wrapper" id="banner-wrapper">
-            <Header />
             <div className="banner-center" id="banner-center">
               <section className="banner-center-left" id="banner-center-left">
                 <BannerText
@@ -110,6 +111,7 @@ export default function MainContainer({
                   <PlayButton
                     showModal={() => {
                       setShowVideoModal(true);
+                      setModalOpen(true);
                     }}
                   />
                   <ListButton
@@ -118,10 +120,16 @@ export default function MainContainer({
                       myList.some((item) => item.id === selectedMovie.id)
                     }
                     addToList={() => {
-                      handleAddToList(selectedMovie);
+                      addMovieToList(selectedMovie, myList, setMyList);
+                      writeUserList();
                     }}
                   />
-                  <DetailsButton showModal={() => setShowInfoModal(true)} />
+                  <DetailsButton
+                    showModal={() => {
+                      setShowInfoModal(true);
+                      setModalOpen(true);
+                    }}
+                  />
                 </div>
               </section>
 

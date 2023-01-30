@@ -1,12 +1,15 @@
+import axios from "axios";
+
 const base_url = "https://api.themoviedb.org/3/movie/";
+
 const getSecret = async () => {
-  const res = await fetch("api/requestSecret");
-  const data = await res.json();
+  const fetch = axios.create({ baseURL: "/" });
+  const { data } = await fetch("api/requestSecret");
   return data;
 };
 const getYTAPIsecret = async () => {
-  const res = await fetch("api/ytapisecret");
-  const data = await res.json();
+  const fetch = axios.create({ baseURL: "/" });
+  const { data } = await fetch("api/ytapisecret");
   return data;
 };
 

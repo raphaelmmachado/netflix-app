@@ -1,21 +1,20 @@
-import { Dispatch, SetStateAction } from "react";
-import { Movie } from "../../../../typing";
-import apiConfiguration from "../../../../constants/apiConfiguration";
-import Paragraph from "./info/Paragraph";
+import { Dispatch, SetStateAction, useContext } from "react";
+import { Context } from "../../context/ContextProvider";
+import { Movie } from "../../typing";
 import MovieInfoModal from "./info/MovieInfoModal";
-import FormateDateToBR from "../../../../utils/formatDate";
 import XButton from "./info/XButton";
-import MoviePoster from "./info/MoviePoster";
 interface Props {
   showInfoModal: boolean;
   selectedMovie: Movie;
   setShowInfoModal: Dispatch<SetStateAction<boolean>>;
 }
+//TODO TENTAR MELHORAR ESSA TELA TA MUITO SIMPLES
 export default function InfoModal({
   showInfoModal,
   selectedMovie,
   setShowInfoModal,
 }: Props) {
+  const { setModalOpen } = useContext(Context);
   return (
     <>
       {showInfoModal ? (
@@ -24,7 +23,12 @@ export default function InfoModal({
         grid place-content-start z-50 top-0 left-0 font-medium"
         >
           <div className="flex flex-col p-4 ">
-            <XButton setShowInfoModal={() => setShowInfoModal(false)} />
+            <XButton
+              setShowInfoModal={() => {
+                setShowInfoModal(false);
+                setModalOpen(false);
+              }}
+            />
 
             <div
               className="flex flex-col-reverse md:flex-row gap-4

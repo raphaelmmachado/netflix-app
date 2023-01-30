@@ -1,11 +1,8 @@
 //next
 import { GetServerSideProps } from "next";
 import Head from "next/head";
-import { useRouter } from "next/router";
-//context
-import { useEffect } from "react";
 //components
-import MainContainer from "../components/body/MainContainer";
+import MainContainer from "../components/home/MainContainer";
 import Loading from "../components/auth/Loading";
 //types
 import { IRequests, IComponents, Movie } from "../typing";
@@ -13,10 +10,10 @@ import { IRequests, IComponents, Movie } from "../typing";
 import { requests } from "../constants/requests";
 //hooks
 import { useAuthState } from "react-firebase-hooks/auth";
-import { auth, fetchDB } from "../utils/firebaseConfig";
+import { auth } from "../utils/firebaseConfig";
 import useScroll from "../hooks/useScroll";
-
-//TODO FIREBASE REDIRECT
+import Header from "../components/header/Header";
+//TODO REMOVE SCROLL WHEN MODAL IS OPEN
 //TODO FONTS NOT LOADING IN PRODUCTION
 export default function App({
   trendingNow,
@@ -27,13 +24,6 @@ export default function App({
   trendingSeries,
   popularMovies,
 }: IRequests) {
-  //if user not logged send him to login page
-  useEffect(() => {
-    if (!user && !loading) {
-      route.push("/auth/login");
-    }
-  }, []);
-  // context array of movies added to list
   // components made of data coming from server
   const COMPONENTS: IComponents[] = [
     [trendingNow, "Em destaque"],
@@ -49,7 +39,6 @@ export default function App({
   const { index, setIndex } = useScroll(COMPONENTS.length);
   // hook to get authorized user info
   const [user, loading] = useAuthState(auth);
-  const route = useRouter();
 
   if (loading) return <Loading />;
 
@@ -57,11 +46,14 @@ export default function App({
     <>
       <Head>
         <title>Netflix</title>
-        <meta name="description" content="Fake Netflix" />
+        <meta
+          name="description"
+          content="Netflix - Assista ao melhores filmes"
+        />
         <meta name="viewport" content="width=device-width, initial-scale=1" />
         <link rel="icon" href="/favicon.ico" />
       </Head>
-
+      <Header className="bg-transparent" />
       {COMPONENTS.map((component: IComponents, i) => {
         if (i === index) {
           return (

@@ -20,7 +20,7 @@
   } */
   .banner-wrapper {
     @apply flex flex-col justify-evenly sm:justify-between bg-gradient-to-r
-    from-black via-black/70 to-black/25 absolute h-full w-full;
+    from-black via-black/70 to-black/25 absolute h-full w-full pt-20;
   }
   .banner-center {
     @apply flex flex-col sm:flex-row justify-between items-center;
@@ -50,13 +50,14 @@
     rounded-md;
   }
   .header-nav {
-    @apply flex justify-between py-6 md:px-16;
+    @apply fixed z-10 top-0 left-0 right-0 flex justify-between items-center
+     p-4 md:py-6 md:px-16;
   }
   .header-nav-left {
     @apply flex gap-8 items-center;
   }
   .header-nav-ul {
-    @apply flex text-smokewt gap-4 items-center;
+    @apply flex text-smokewt gap-3 items-center;
   }
   .header-nav-right {
     @apply flex items-center gap-2;
@@ -74,10 +75,10 @@
     @apply text-xl tracking-wide font-bold
     border-l-4 border-red pl-2 mb-2 md:mb-0;
   }
-  .slider-card {
-    @apply w-[285px] h-[171px] relative;
+  .card {
+    @apply max-w-[177px] max-h-fit
+    relative flex flex-col justify-end items-center;
   }
-
   .vertical-scroller {
     @apply flex flex-col self-start sm:self-auto items-center gap-2 lg:px-8;
   }
@@ -173,9 +174,7 @@ a:not([class]) {
 img,
 video,
 picture {
-  max-width: 100%;
   display: block;
-  height: auto;
 }
 
 /* Inherit fonts for inputs and buttons */

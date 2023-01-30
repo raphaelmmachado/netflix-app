@@ -1,6 +1,6 @@
 # Netflix Clone
 
-## Applicação criada com npx-create-next-app --typescript
+## Aplicação criada com npx-create-next-app --typescript
 
 ## Feito com:
 
@@ -14,8 +14,7 @@
 
 ## Por que a escolha de nextjs / typescript
 
-- Porque eu precisava dar um passo a frente, sair da zona de conforto
-  e aprender essas tecnologias que sao muito requisitadas
+- Porque eu precisava dar um passo a frente e aprende sobre mais formas de renderizar a página
 
 ## O que estou aprendendo?
 
@@ -34,11 +33,11 @@
 
 ### Como está sendo desenvolver esse projeto?
 
+Busquei no figma algumas inspirações para montar o design da página
+
 Basicamente estou aprendendo buscando no google e lendo documentação o que está tornando bem cansativo.
 
 Sigo sofrendo muito para resolver erro de tipo JSX.IntrinsicAttributes.
-
-Depois de apanhar bastante para o typescript, resolvi procurar no youtube e achei este video que me ajudou bastante: https://www.youtube.com/watch?v=cwqNAkwhKqw&t=4399s
 
 Me deparei com um Hydration Error e descobri que a causa era configuracao de responsividade do swiper js para resolver bastar configurar slidesperview como auto
 
@@ -61,6 +60,8 @@ Também usei firebase como database para a lista de filmes do usuario.
 
 Tive muita dificuldade para sincronizar a lista de usuarios da DB com context api sem ter infinity loop.
 
-Priemeiramente eu tinha pensado em fazer lista como mais uma seção para rolar para baixo, mas acabei fazendo separando em sua própria página
+Primeiramente eu tinha pensado em fazer "minha lista" como mais uma seção para rolar para baixo, mas acabei fazendo separando em sua própria página
 
-Para resolver o problema de que alguns filmes não possui trailer em português na DB, resolvi usar a API do youtube, pesquisar "nome do filme" + "trailer oficial", configurei para retornar no máximo 5 itens e de preferencia videos brasileiros, então gerei botões que selecionam o id e enviam para o componente.
+Para resolver o problema de que alguns filmes não possuir trailer em português na DB, resolvi usar a API do youtube, pesquisar "nome do filme" + "trailer oficial", configurei para retornar no máximo 5 itens e de preferencia videos brasileiros, então gerei botões que selecionam o id e enviam para o componente.
+
+Na página de filmes e séries, usei o recurso do Nextjs onde posso criar páginas dinamicas de acordo com o id passado na URL. Então eu fiz uma função que faz o fetch da página de filmes da TMDB de acordo com esse id da URL.

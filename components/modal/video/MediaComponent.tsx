@@ -1,4 +1,4 @@
-import { IVideo, Movie, YTIds, YTitems } from "../../../../../typing";
+import { IVideo, Movie, YTIds } from "../../../typing";
 
 interface Props {
   videoIndex: number;

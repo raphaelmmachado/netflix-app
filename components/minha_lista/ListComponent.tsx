@@ -6,12 +6,11 @@ import { auth, database } from "../../utils/firebaseConfig";
 //context
 //components
 import Image from "next/image";
-import MovieSlider from "../body/slider/MovieSlider";
-import Header from "../body/header/Header";
-import BannerText from "../body/banner/BannerText";
-import PlayButton from "../body/banner/PlayButton";
-import ListButton from "../body/banner/ListButton";
-import DetailsButton from "../body/banner/DetailsButton";
+import MovieSlider from "../home/slider/MovieSlider";
+import BannerText from "../home/banner/BannerText";
+import PlayButton from "../home/banner/PlayButton";
+import ListButton from "../home/banner/ListButton";
+import DetailsButton from "../home/banner/DetailsButton";
 //types
 import { Movie } from "../../typing";
 //constants
@@ -26,7 +25,7 @@ interface Props {
   mediaType?: "tv" | "movie";
 }
 
-export default function MainContainer({ movies, title, mediaType }: Props) {
+export default function ListComponent({ movies, title, mediaType }: Props) {
   const [selectedMovie, setSelectedMovie] = useState<Movie>(movies[0]);
   const [showVideoModal, setShowVideoModal] = useState(false);
   const [showInfoModal, setShowInfoModal] = useState(false);
@@ -70,7 +69,6 @@ export default function MainContainer({ movies, title, mediaType }: Props) {
           }}
         >
           <div className="banner-wrapper" id="banner-wrapper">
-            <Header />
             <div className="banner-center" id="banner-center">
               <section className="banner-center-left" id="banner-center-left">
                 <BannerText

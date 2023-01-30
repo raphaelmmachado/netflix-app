@@ -8,6 +8,8 @@ const initialContextValue: IContext = {
   setDisliked: () => {},
   myList: [],
   setMyList: () => {},
+  modalOpen: false,
+  setModalOpen: () => {},
 };
 
 export const Context = createContext<IContext>(initialContextValue);
@@ -16,7 +18,7 @@ export function ContextProvider({ children }: IProvider) {
   const [liked, setLiked] = useState([]);
   const [disliked, setDisliked] = useState([]);
   const [myList, setMyList] = useState([]);
-
+  const [modalOpen, setModalOpen] = useState(false);
   return (
     <Context.Provider
       value={{
@@ -26,6 +28,8 @@ export function ContextProvider({ children }: IProvider) {
         setDisliked,
         myList,
         setMyList,
+        modalOpen,
+        setModalOpen,
       }}
     >
       {children}
