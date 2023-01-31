@@ -32,7 +32,7 @@ export default function Login() {
       // The AuthCredential type that was used.
       const credential = GoogleAuthProvider.credentialFromError(error);
       // ...
-      console.error(errorCode, errorMessage, email, credential);
+      console.error({ errorCode, errorMessage, email, credential });
     }
   };
   const loginWithFacebook = async () => {
@@ -84,6 +84,7 @@ export default function Login() {
             width={280}
             height={150}
             alt="netflix-logo"
+            priority
             className="self-center object-cover "
           />
           <h1 className="text-2xl break-words">

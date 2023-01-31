@@ -5,7 +5,7 @@ import NavLinks from "./NavLinks";
 import { useAuthState } from "react-firebase-hooks/auth";
 import { auth } from "../../utils/firebaseConfig";
 import { useRouter } from "next/router";
-import LogoutIcon from "@heroicons/react/20/solid/ArrowLeftOnRectangleIcon";
+import LogoutIcon from "@heroicons/react/20/solid/ArrowRightOnRectangleIcon";
 import enterKeyPressed from "../../utils/checkKeyboardKeys";
 interface Props {
   className: string;
@@ -100,8 +100,8 @@ export default function Header({ className }: Props) {
                         auth.signOut().then(() => router.push("/login"))
                       }
                       tabIndex={0}
-                      className="w-fit bg-white text-red flex absolute top-12 -right-3
-                   items-center gap-3 px-2 py-1 rounded-sm shadow-md hover:cursor-pointer"
+                      className="w-fit bg-black text-white border-2 border-gray flex absolute top-12 -right-3
+                   items-center gap-3 px-2 py-1 rounded-md shadow-md hover:cursor-pointer"
                     >
                       <LogoutIcon className="w-7 h-7" />
                       Sair

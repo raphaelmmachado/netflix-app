@@ -5,6 +5,7 @@ export default function Loading() {
       <div>
         <Image
           src={"/assets/NetflixLogoSvg.svg"}
+          priority
           width={280}
           height={150}
           alt="netflix-logo"

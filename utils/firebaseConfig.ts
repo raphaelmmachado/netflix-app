@@ -16,7 +16,6 @@ const firebaseConfig = {
   messagingSenderId: process.env.NEXT_PUBLIC_MESSAGE_SENDER_ID,
   appId: process.env.NEXT_PUBLIC_APP_ID,
   measurementId: process.env.NEXT_PUBLIC_MEASUREMENT_ID,
-  //add on vercel
   databaseURL: process.env.NEXT_PUBLIC_DATABASE_URL,
 };
 // Initialize Firebase
@@ -26,8 +25,6 @@ const database = getDatabase(app);
 const auth = getAuth();
 
 const db = ref(database);
-
-// const query = `${user?.uid}/list`;
 
 const fetchDB = async (query: string) => {
   try {
@@ -39,7 +36,5 @@ const fetchDB = async (query: string) => {
     console.log(e);
   }
 };
-
-// const popup = signInWithPopup(auth, provider);
 
 export { auth, app, database, fetchDB };

@@ -119,6 +119,7 @@ export default function ListComponent({ movies, title, mediaType }: Props) {
               alt="netflix-logo"
               width={200}
               height={100}
+              priority
             />
             <h1>Lista de filmes vazia</h1>
             <button className="bg-white rounded-md text-black font-bold px-6 gap-2 py-2">

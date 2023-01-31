@@ -1,6 +1,12 @@
-import { Dispatch, SetStateAction, useContext } from "react";
+import {
+  Dispatch,
+  SetStateAction,
+  useContext,
+  useState,
+  useEffect,
+} from "react";
 import { Context } from "../../context/ContextProvider";
-import { Movie } from "../../typing";
+import { Movie, MovieDetails } from "../../typing";
 import getMovieDetails from "../../utils/getMovieDetails";
 import MovieInfoModal from "./info/MovieInfoModal";
 import XButton from "./info/XButton";
@@ -21,7 +27,6 @@ export default function InfoModal({
 }: Props) {
   const { setModalOpen } = useContext(Context);
 
-  getMovieDetails({ selectedMovie, mediaType }).then((res) => console.log(res));
   return (
     <>
       {showInfoModal ? (

@@ -47,7 +47,7 @@ export default function MediaGrid({ media, mediaType }: Props) {
           return (
             <>
               <Card
-                key={movie.id + i}
+                key={movie.id}
                 movie={movie}
                 setShowVideo={setShowVideo}
                 setShowInfo={setShowInfo}

@@ -10,7 +10,6 @@ export default function DefaultButton({ showModal }: Props) {
         className="banner-button bg-midgray/70 text-smokewt"
       >
         <InformationCircleIcon className="text-smokewt h-6 w-6" />
-        <>Sinopse</>
       </button>
     </>
   );

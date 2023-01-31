@@ -1,8 +1,8 @@
-interface Props {
+interface MovieDetails {
   title: string;
   overview: string;
 }
-export default function MovieInfoModal({ title, overview }: Props) {
+export default function MovieInfoModal({ title, overview }: MovieDetails) {
   return (
     <div>
       <header className="text-center text-xl border-b border-midgray  text-white mb-8">

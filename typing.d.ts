@@ -139,7 +139,7 @@ interface IComponents {
 }
 [];
 
-export interface IMovie {
+export interface MovieDetails {
   adult: boolean;
   backdrop_path: string | null;
   belongs_to_collection: null | {};
@@ -148,6 +148,7 @@ export interface IMovie {
   homepage: string | null;
   id: number;
   imdb_id: string | null;
+  name?: string;
   original_language: string;
   original_title: string;
   overview: string | null;
