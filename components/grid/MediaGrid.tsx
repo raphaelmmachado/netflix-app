@@ -1,40 +1,35 @@
 import { useRouter } from "next/router";
-import { useCallback, useState } from "react";
+import { useContext } from "react";
+import { Context } from "../../context/ContextProvider";
 import { ArrowLeftIcon, ArrowRightIcon } from "@heroicons/react/24/solid";
 import VideoModal from "../modal/VideoModal";
-import { Movie } from "../../typing";
-import Card from "./Card";
 import InfoModal from "../modal/InfoModal";
+import { MediaType, Movie } from "../../typing";
+import Card from "./Card";
 
-interface Props {
+interface Props extends MediaType {
   media: Movie[];
-  mediaType: "filmes" | "series";
 }
 
 export default function MediaGrid({ media, mediaType }: Props) {
-  const [showVideo, setShowVideo] = useState(false);
-  const [showInfo, setShowInfo] = useState(false);
-  const [selectedMovie, setSelectedMovie] = useState<Movie>();
+  const { selectedMovie, showVideoModal, showInfoModal } = useContext(Context);
   const router = useRouter();
 
+  //parse query to number
   let page = router.query.page ? +router.query.page : undefined;
 
-  const handlePrevPage = () => {
+  const path = mediaType === "movie" ? "filmes" : "series";
+
+  const previousPage = () => {
     if (page && page > 1) {
-      router.push(`/${mediaType}/${--page}`);
+      router.push(`/${path}/${--page}`);
     }
   };
-  const handleNextPage = () => {
+  const nextPage = () => {
     if (page) {
-      router.push(`/${mediaType}/${++page}`);
+      router.push(`/${path}/${++page}`);
     }
   };
-  const selectAMovie = useCallback(
-    (movie: Movie) => {
-      setSelectedMovie(movie);
-    },
-    [selectedMovie]
-  );
 
   return (
     <>
@@ -44,50 +39,27 @@ export default function MediaGrid({ media, mediaType }: Props) {
        place-items-center gap-x-10 gap-y-16 px-12 py-8 pt-32"
       >
         {media.map((movie, i) => {
-          return (
-            <>
-              <Card
-                key={movie.id}
-                movie={movie}
-                setShowVideo={setShowVideo}
-                setShowInfo={setShowInfo}
-                selectAMovie={selectAMovie}
-              />
-            </>
-          );
+          return <Card key={movie.id} movie={movie} />;
         })}
       </section>
       <footer className="w-full flex justify-center gap-4 mt-12">
         {page && page > 1 && (
           <ArrowLeftIcon
-            onClick={handlePrevPage}
+            onClick={previousPage}
             className=" w-6 h-6 cursor-pointer text-gray"
           />
         )}
         <div className="text-gray">Página {page}</div>
         {page && (
           <ArrowRightIcon
-            onClick={handleNextPage}
+            onClick={nextPage}
             className="text-gray w-6 h-6 cursor-pointer"
           />
         )}
       </footer>
 
-      {showVideo && selectedMovie && (
-        <VideoModal
-          selectedMovie={selectedMovie}
-          showVideoModal={showVideo}
-          setShowVideoModal={setShowVideo}
-          mediaType={mediaType === "filmes" ? "movie" : "tv"}
-        />
-      )}
-      {showInfo && selectedMovie && (
-        <InfoModal
-          selectedMovie={selectedMovie}
-          showInfoModal={showInfo}
-          setShowInfoModal={setShowInfo}
-        />
-      )}
+      {showVideoModal && selectedMovie && <VideoModal mediaType={mediaType} />}
+      {showInfoModal && selectedMovie && <InfoModal mediaType={mediaType} />}
     </>
   );
 }

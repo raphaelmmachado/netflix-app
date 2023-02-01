@@ -19,19 +19,22 @@ import { Context } from "../../context/ContextProvider";
 import ArrowUpIcon from "@heroicons/react/24/solid/ArrowUpIcon";
 
 interface Props {
-  movies: Movie[];
+  media: Movie[];
   children?: JSX.Element | JSX.Element[];
   title: string;
   mediaType?: "tv" | "movie";
 }
 
-export default function ListComponent({ movies, title, mediaType }: Props) {
-  const [selectedMovie, setSelectedMovie] = useState<Movie>(movies[0]);
-  const [showVideoModal, setShowVideoModal] = useState(false);
-  const [showInfoModal, setShowInfoModal] = useState(false);
+export default function ListComponent({ media, title, mediaType }: Props) {
   const [user] = useAuthState(auth);
 
-  const { myList, setMyList } = useContext(Context);
+  const {
+    selectedMovie,
+    setShowVideoModal,
+    setShowInfoModal,
+    myList,
+    setMyList,
+  } = useContext(Context);
 
   // add movie to user list
   const handleAddToList = (movie: Movie) => {
@@ -97,17 +100,7 @@ export default function ListComponent({ movies, title, mediaType }: Props) {
                 </div>
               </section>
             </div>
-            <MovieSlider
-              movies={movies}
-              title={title}
-              mediaType={mediaType}
-              selectedMovie={selectedMovie}
-              setSelectedMovie={(movie) => setSelectedMovie(movie)}
-              showInfoModal={showInfoModal}
-              showVideoModal={showVideoModal}
-              setShowVideoModal={setShowVideoModal}
-              setShowInfoModal={setShowInfoModal}
-            />
+            <MovieSlider media={media} title={title} mediaType={mediaType} />
           </div>
         </main>
       ) : (

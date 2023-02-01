@@ -12,7 +12,7 @@ export default function App() {
     <>
       <Header className="bg-transparent" />
       {myList && myList.length > 0 ? (
-        <ListComponent movies={myList} title="Minha Lista" />
+        <ListComponent media={myList} title="Minha Lista" />
       ) : (
         <Loading />
       )}

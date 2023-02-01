@@ -5,7 +5,7 @@ import Head from "next/head";
 import MainContainer from "../components/home/MainContainer";
 import Loading from "../components/auth/Loading";
 //types
-import { IRequests, IComponents, Movie } from "../typing";
+import { IRequests, IComponents } from "../typing";
 //utils
 import { requests } from "../constants/requests";
 //hooks
@@ -13,7 +13,6 @@ import { useAuthState } from "react-firebase-hooks/auth";
 import { auth } from "../utils/firebaseConfig";
 import useScroll from "../hooks/useScroll";
 import Header from "../components/header/Header";
-//TODO REMOVE SCROLL WHEN MODAL IS OPEN
 //TODO FONTS NOT LOADING IN PRODUCTION
 export default function App({
   trendingNow,
@@ -41,7 +40,7 @@ export default function App({
   const [user, loading] = useAuthState(auth);
 
   if (loading && !user) return <Loading />;
-
+  //TODO TESTAR ESSA BRANCH, SE NAO ENCONTRAR ERROS, FAZER MERGE
   return (
     <>
       <Head>
@@ -59,7 +58,7 @@ export default function App({
           return (
             <MainContainer
               key={i}
-              movies={component[0]}
+              media={component[0]}
               title={component[1]}
               mediaType={component[2]}
               bars={COMPONENTS.length}

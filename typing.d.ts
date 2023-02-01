@@ -117,11 +117,19 @@ interface IRequests {
   trendingSeriesTrailers: IResultsTrailers[];
   popularMoviesTrailers: IResultsTrailers[];
 }
-
+interface MediaType {
+  mediaType?: "tv" | "movie";
+}
 interface IProvider {
   children: JSX.Element | JSX.Element[] | ReactNode;
 }
 interface IContext {
+  selectedMovie: Movie | undefined;
+  setSelectedMovie: Dispatch<SetStateAction<Movie>>;
+  showVideoModal: boolean;
+  setShowVideoModal: Dispatch<SetStateAction<boolean>>;
+  showInfoModal: boolean;
+  setShowInfoModal: Dispatch<SetStateAction<boolean>>;
   liked: number[];
   setLiked: Dispatch<SetStateAction<number[]>>;
   disliked: number[];

@@ -23,7 +23,7 @@ export default function App({ movies, page }: Props) {
         <link rel="icon" href="/favicon.ico" />
       </Head>
       <Header className={"bg-black  border-b-2 border-gray/10"} />
-      <MediaGrid media={movies} mediaType="filmes" />
+      <MediaGrid media={movies} mediaType={"movie"} />
     </main>
   );
 }

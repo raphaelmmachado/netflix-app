@@ -1,28 +1,34 @@
 import Image from "next/image";
-import { Dispatch, SetStateAction, useState } from "react";
-import apiConfiguration from "../../constants/apiConfiguration";
-import { Movie } from "../../typing";
+import { useState, useContext, useCallback } from "react";
+import { Context } from "../../context/ContextProvider";
+import PlayButton from "./PlayButton";
 import AddToListButton from "./AddToListButton";
 import Details from "./Details";
-import PlayButton from "./PlayButton";
+import { Movie } from "../../typing";
+import apiConfiguration from "../../constants/apiConfiguration";
 
 interface Props {
   movie: Movie;
-  setShowVideo: Dispatch<SetStateAction<boolean>>;
-  setShowInfo: Dispatch<SetStateAction<boolean>>;
-  selectAMovie: (movie: Movie) => void;
 }
 
-export default function Card({
-  movie,
-  setShowVideo,
-  selectAMovie,
-  setShowInfo,
-}: Props) {
+export default function Card({ movie }: Props) {
   const [showButtons, setShowButtons] = useState(false);
+  const {
+    selectedMovie,
+    setSelectedMovie,
+    setShowVideoModal,
+    setShowInfoModal,
+  } = useContext(Context);
+
   const url = apiConfiguration.images.base_url;
   const posterSize = apiConfiguration.images.poster_sizes[3];
 
+  const selectAMovie = useCallback(
+    (movie: Movie) => {
+      setSelectedMovie(movie);
+    },
+    [selectedMovie]
+  );
   return (
     <>
       <div
@@ -44,7 +50,7 @@ export default function Card({
             <PlayButton
               showVideo={() => {
                 selectAMovie(movie);
-                setShowVideo(true);
+                setShowVideoModal(true);
               }}
             />
 
@@ -52,7 +58,7 @@ export default function Card({
             <Details
               showInfo={() => {
                 selectAMovie(movie);
-                setShowInfo(true);
+                setShowInfoModal(true);
               }}
             />
           </>

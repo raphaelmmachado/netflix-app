@@ -1,39 +1,33 @@
-import {
-  Dispatch,
-  SetStateAction,
-  useContext,
-  useEffect,
-  useState,
-} from "react";
+import { useContext, useEffect, useState } from "react";
 
 import { Context } from "../../context/ContextProvider";
+//components
 import YoutubeIcon from "./video/YoutubeIcon";
-import XMarkIcon from "@heroicons/react/24/solid/XMarkIcon";
-import { IVideo, Movie, YTIds } from "../../typing";
-import LikeButton from "./video/LikeButton";
 import DislikeButton from "./video/DislikeButton";
+import LikeButton from "./video/LikeButton";
 import MediaComponent from "./video/MediaComponent";
+import XMarkIcon from "@heroicons/react/24/solid/XMarkIcon";
+// typing
+import { IVideo, MediaType, YTIds } from "../../typing";
+//utils
 import getPTBRTrailers from "../../utils/getTrailers";
 import searchYoutubeVideos from "../../utils/searchYoutubeVideos";
 import {
   handleLikeButton,
   handleDislikeButton,
 } from "../../utils/handleLikeButtons";
-interface Props {
-  showVideoModal: boolean;
-  selectedMovie: Movie;
-  setShowVideoModal: Dispatch<SetStateAction<boolean>>;
-  mediaType?: "tv" | "movie";
-}
 
-export default function VideoModal({
-  selectedMovie,
-  showVideoModal,
-  setShowVideoModal,
-  mediaType,
-}: Props) {
-  const { liked, disliked, setDisliked, setLiked, setModalOpen } =
-    useContext(Context);
+export default function VideoModal({ mediaType }: MediaType) {
+  const {
+    selectedMovie,
+    showVideoModal,
+    setShowVideoModal,
+    liked,
+    disliked,
+    setDisliked,
+    setLiked,
+    setModalOpen,
+  } = useContext(Context);
   const [showVideo, setShowVideo] = useState(false);
   const [videos, setVideos] = useState<IVideo[] | undefined>(undefined);
   const [yVideos, setYVideos] = useState<YTIds[]>([]);
@@ -45,36 +39,38 @@ export default function VideoModal({
 
   //check if DB has video
   useEffect(() => {
-    getPTBRTrailers({ mediaType, selectedMovie })
-      .then(({ results }: Results) => {
-        if (results.length < 1) {
-          setVideos(undefined);
-          //TODO uncomment this
-          // searchOnYT();
-        } else {
-          setVideos(results);
-        }
-      })
-      .catch((error) => console.log(error));
+    selectedMovie &&
+      getPTBRTrailers({ mediaType, selectedMovie })
+        .then(({ results }: Results) => {
+          if (results.length < 1) {
+            setVideos(undefined);
+            //TODO uncomment this
+            // searchOnYT();
+          } else {
+            setVideos(results);
+          }
+        })
+        .catch((error) => console.log(error));
     return () => setVideos(undefined);
   }, [selectedMovie]);
 
   //if not search on youtube
   function searchOnYT() {
-    searchYoutubeVideos(
-      `${selectedMovie.title ?? selectedMovie.name} trailer oficial`,
-      "snippet"
-    )
-      .then((res: YTIds[]) => {
-        console.log(res);
-        setYVideos(res);
-      })
-      .catch((err) => console.log(err));
+    selectedMovie &&
+      searchYoutubeVideos(
+        `${selectedMovie.title ?? selectedMovie.name} trailer oficial`,
+        "snippet"
+      )
+        .then((res: YTIds[]) => {
+          console.log(res);
+          setYVideos(res);
+        })
+        .catch((err) => console.log(err));
   }
 
   return (
     <>
-      {showVideoModal && (
+      {showVideoModal && selectedMovie && (
         <section id="modal" className="video-modal">
           <div className="video-modal-container" id="video-modal-container">
             <header className="video-modal-header" id="modal_header">

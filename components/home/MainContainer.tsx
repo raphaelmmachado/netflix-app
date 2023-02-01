@@ -2,7 +2,6 @@
 import {
   Dispatch,
   SetStateAction,
-  useState,
   useContext,
   useCallback,
   useEffect,
@@ -19,6 +18,8 @@ import PlayButton from "./banner/PlayButton";
 import ListButton from "./banner/ListButton";
 import DetailsButton from "./banner/DetailsButton";
 import VerticalScroller from "./banner/VerticalScroller";
+import InfoModal from "../modal/InfoModal";
+import VideoModal from "../modal/VideoModal";
 import Loading from "../auth/Loading";
 //types
 import { Movie } from "../../typing";
@@ -29,7 +30,7 @@ import { Context } from "../../context/ContextProvider";
 import addMovieToList from "../../utils/addMovieToList";
 
 interface Props {
-  movies: Movie[];
+  media: Movie[];
   children?: JSX.Element | JSX.Element[];
   title: string;
   bars: number;
@@ -39,19 +40,24 @@ interface Props {
 }
 
 export default function MainContainer({
-  movies,
+  media,
   title,
   mediaType,
   bars,
   index,
   setIndex,
 }: Props) {
-  const [selectedMovie, setSelectedMovie] = useState<Movie>(movies[0]);
-  const [showVideoModal, setShowVideoModal] = useState(false);
-  const [showInfoModal, setShowInfoModal] = useState(false);
   const [user] = useAuthState(auth);
 
-  const { myList, setMyList, setModalOpen } = useContext(Context);
+  const {
+    selectedMovie,
+    setSelectedMovie,
+    setShowVideoModal,
+    setShowInfoModal,
+    myList,
+    setMyList,
+    setModalOpen,
+  } = useContext(Context);
 
   // change index when user swipes
   const swipeHandler = useSwipeable({
@@ -70,9 +76,11 @@ export default function MainContainer({
   );
 
   useEffect(() => {
+    setSelectedMovie(media[0]);
     getList();
   }, []);
 
+  // put list on firebase DB
   const writeUserList = useCallback(async () => {
     if (myList && myList.length > 0)
       await set(ref(database, `${user?.uid}/list`), myList);
@@ -88,7 +96,6 @@ export default function MainContainer({
   return (
     <>
       {selectedMovie ? (
-        // banner
         <main
           {...swipeHandler}
           id="banner"
@@ -147,18 +154,11 @@ export default function MainContainer({
                 }
               />
             </div>
-            <MovieSlider
-              movies={movies}
-              title={title}
-              mediaType={mediaType}
-              selectedMovie={selectedMovie}
-              setSelectedMovie={(movie) => setSelectedMovie(movie)}
-              showInfoModal={showInfoModal}
-              showVideoModal={showVideoModal}
-              setShowVideoModal={setShowVideoModal}
-              setShowInfoModal={setShowInfoModal}
-            />
+
+            <MovieSlider media={media} title={title} />
           </div>
+          <InfoModal mediaType={mediaType} />
+          <VideoModal mediaType={mediaType} />
         </main>
       ) : (
         <Loading />

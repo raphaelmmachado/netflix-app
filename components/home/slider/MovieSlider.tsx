@@ -4,10 +4,10 @@ import {
   useEffect,
   useMemo,
   CSSProperties,
-  Dispatch,
-  SetStateAction,
   useCallback,
+  useContext,
 } from "react";
+import { Context } from "../../../context/ContextProvider";
 import Image from "next/image";
 import useWindowSize from "../../../hooks/useWindowSize";
 //utils
@@ -15,36 +15,21 @@ import apiConfiguration from "../../../constants/apiConfiguration";
 //typing
 import { Movie } from "../../../typing";
 //components
-import InfoModal from "../../modal/InfoModal";
-import VideoModal from "../../modal/VideoModal";
 import enterKeyPressed from "../../../utils/checkKeyboardKeys";
 
 interface IMovieSlider {
-  movies: Movie[];
-  selectedMovie: Movie;
+  media: Movie[];
   title: string;
   mediaType?: "tv" | "movie";
-  setSelectedMovie: Dispatch<SetStateAction<Movie>>;
-  showVideoModal: boolean;
-  showInfoModal: boolean;
-  setShowInfoModal: Dispatch<SetStateAction<boolean>>;
-  setShowVideoModal: Dispatch<SetStateAction<boolean>>;
 }
 
-export default function MovieSlider({
-  movies,
-  title,
-  mediaType,
-  selectedMovie,
-  setSelectedMovie,
-  showVideoModal,
-  showInfoModal,
-  setShowInfoModal,
-  setShowVideoModal,
-}: IMovieSlider) {
+export default function MovieSlider({ media, title, mediaType }: IMovieSlider) {
   const [itemsPerScreen, setItemsPerScreen] = useState(4);
   const [sliderIndex, setSliderIndex] = useState(0);
   const [progressBarItems, setProgressBarItems] = useState(0);
+
+  const { selectedMovie, setSelectedMovie } = useContext(Context);
+
   const { width } = useWindowSize();
   const memoWidth = useMemo(() => width, [width]);
 
@@ -59,10 +44,10 @@ export default function MovieSlider({
   useEffect(() => {
     if (memoWidth !== undefined) {
       setItemsPerScreen(memoWidth);
-      const math = Math.ceil(movies.length / itemsPerScreen);
+      const math = Math.ceil(media.length / itemsPerScreen);
       setProgressBarItems(math);
     }
-  }, [movies.length, memoWidth, itemsPerScreen]);
+  }, [media.length, memoWidth, itemsPerScreen]);
 
   const incrementSliderIndex = () => {
     setSliderIndex((prev) => {
@@ -120,7 +105,7 @@ export default function MovieSlider({
             className="slider"
           >
             {/* CARDS */}
-            {movies.map((movie: Movie, i) => {
+            {media.map((movie: Movie, i) => {
               return (
                 <div className="card" key={i}>
                   <Image
@@ -150,19 +135,6 @@ export default function MovieSlider({
           ></div>
         </div>
       </main>
-
-      <InfoModal
-        showInfoModal={showInfoModal}
-        selectedMovie={selectedMovie}
-        setShowInfoModal={setShowInfoModal}
-        mediaType={mediaType}
-      />
-      <VideoModal
-        selectedMovie={selectedMovie}
-        showVideoModal={showVideoModal}
-        setShowVideoModal={setShowVideoModal}
-        mediaType={mediaType}
-      />
     </section>
   );
 }
