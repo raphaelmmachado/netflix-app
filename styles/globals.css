@@ -14,10 +14,6 @@
     @apply min-h-[100.1vh] relative bg-cover object-cover
      bg-center bg-no-repeat transition-all ease-linear duration-500;
   }
-  /* .media-banner {
-    @apply absolute bg-contain bg-center bg-no-repeat object-cover
-    aspect-video w-full transition-all duration-1000;
-  } */
   .banner-wrapper {
     @apply flex flex-col justify-evenly sm:justify-between bg-gradient-to-r
     from-black via-black/70 to-black/25 absolute h-full w-full pt-20;
@@ -76,7 +72,7 @@
     border-l-4 border-red pl-2 mb-2 md:mb-0;
   }
   .card {
-    @apply max-w-[177px] max-h-fit
+    @apply max-w-[177px] max-h-fit 
     relative flex flex-col justify-end items-center;
   }
   .vertical-scroller {
@@ -107,7 +103,8 @@
     text-smokewt font-bold py-2 px-3 rounded-sm hover:bg-gray/30;
   }
   .video-modal-movie-links {
-    @apply flex gap-2 cursor-pointer hover:underline p-2;
+    @apply flex items-center gap-2 cursor-pointer bg-smokewt text-black
+    font-semibold rounded-md text-sm px-2 m-1 shadow-lg w-fit;
   }
   .icon {
     @apply text-white h-5 w-5;

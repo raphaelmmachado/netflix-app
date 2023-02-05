@@ -2,19 +2,19 @@ import { Context } from "../../context/ContextProvider";
 import { useContext } from "react";
 import PlusIcon from "@heroicons/react/24/solid/PlusIcon";
 import CheckIcon from "@heroicons/react/24/solid/CheckIcon";
-import { Movie } from "../../typing";
-import addMovieToList from "../../utils/addMovieToList";
+import { Media } from "../../typing";
+import addMovieToList from "../../utils/addMediaToList";
 
 interface Props {
-  movie: Movie;
+  media: Media;
 }
-export default function PlayButton({ movie }: Props) {
+export default function PlayButton({ media }: Props) {
   const { myList, setMyList } = useContext(Context);
-  const added = myList && myList.some((item) => item.id === movie.id);
+  const added = myList && myList.some((item) => item.id === media.id);
 
   return (
     <div
-      onClick={() => addMovieToList(movie, myList, setMyList)}
+      onClick={() => addMovieToList(media, myList, setMyList)}
       className={`${
         added ? "bg-def_gray-400" : "bg-black"
       } rounded-full absolute w-10 h-10

@@ -40,7 +40,7 @@ export default function App({
   const [user, loading] = useAuthState(auth);
 
   if (loading && !user) return <Loading />;
-  //TODO TESTAR ESSA BRANCH, SE NAO ENCONTRAR ERROS, FAZER MERGE
+
   return (
     <>
       <Head>
@@ -58,7 +58,7 @@ export default function App({
           return (
             <MainContainer
               key={i}
-              media={component[0]}
+              medias={component[0]}
               title={component[1]}
               mediaType={component[2]}
               bars={COMPONENTS.length}

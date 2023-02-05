@@ -1,4 +1,4 @@
-//hooks
+//hooks //context
 import {
   Dispatch,
   SetStateAction,
@@ -6,11 +6,10 @@ import {
   useCallback,
   useEffect,
 } from "react";
+import { Context } from "../../context/ContextProvider";
 import { useSwipeable } from "react-swipeable";
 import { ref, set } from "firebase/database";
 import { useAuthState } from "react-firebase-hooks/auth";
-import { auth, database, fetchDB } from "../../utils/firebaseConfig";
-//context
 //components
 import MovieSlider from "./slider/MovieSlider";
 import BannerText from "./banner/BannerText";
@@ -22,15 +21,15 @@ import InfoModal from "../modal/InfoModal";
 import VideoModal from "../modal/VideoModal";
 import Loading from "../auth/Loading";
 //types
-import { Movie } from "../../typing";
+import { Media } from "../../typing";
 //constants
 import tmdbApiConfig from "../../constants/apiConfiguration";
-import { Context } from "../../context/ContextProvider";
 //utils
-import addMovieToList from "../../utils/addMovieToList";
+import addMovieToList from "../../utils/addMediaToList";
+import { auth, database, fetchDB } from "../../utils/firebaseConfig";
 
 interface Props {
-  media: Movie[];
+  medias: Media[];
   children?: JSX.Element | JSX.Element[];
   title: string;
   bars: number;
@@ -40,7 +39,7 @@ interface Props {
 }
 
 export default function MainContainer({
-  media,
+  medias,
   title,
   mediaType,
   bars,
@@ -50,8 +49,8 @@ export default function MainContainer({
   const [user] = useAuthState(auth);
 
   const {
-    selectedMovie,
-    setSelectedMovie,
+    selectedMedia,
+    setSelectedMedia,
     setShowVideoModal,
     setShowInfoModal,
     myList,
@@ -70,13 +69,13 @@ export default function MainContainer({
   const getList = useCallback(
     () =>
       fetchDB(`${user?.uid}/list`)
-        .then((res: Movie[]) => setMyList(res))
+        .then((res: Media[]) => setMyList(res))
         .catch((e) => console.log(e)),
     [myList]
   );
 
   useEffect(() => {
-    setSelectedMovie(media[0]);
+    setSelectedMedia(medias[0]);
     getList();
   }, []);
 
@@ -95,24 +94,24 @@ export default function MainContainer({
   //
   return (
     <>
-      {selectedMovie ? (
+      {selectedMedia ? (
         <main
           {...swipeHandler}
           id="banner"
           className="banner"
           style={{
-            backgroundImage: `url(${BASE_URL}${SIZE}/${selectedMovie?.backdrop_path})`,
+            backgroundImage: `url(${BASE_URL}${SIZE}/${selectedMedia?.backdrop_path})`,
           }}
         >
           <div className="banner-wrapper" id="banner-wrapper">
             <div className="banner-center" id="banner-center">
               <section className="banner-center-left" id="banner-center-left">
                 <BannerText
-                  title={selectedMovie.title ?? selectedMovie.name}
-                  description={selectedMovie.overview}
-                  rating={selectedMovie.vote_average.toFixed(1)}
-                  release_date={selectedMovie?.release_date}
-                  typeOfShow={selectedMovie.media_type}
+                  title={selectedMedia.title ?? selectedMedia.name}
+                  description={selectedMedia.overview}
+                  rating={selectedMedia.vote_average.toFixed(1)}
+                  release_date={selectedMedia?.release_date}
+                  typeOfShow={selectedMedia.media_type}
                 />
                 <div className="banner-center-left-buttons">
                   <PlayButton
@@ -124,10 +123,10 @@ export default function MainContainer({
                   <ListButton
                     added={
                       myList &&
-                      myList.some((item) => item.id === selectedMovie.id)
+                      myList.some((item) => item.id === selectedMedia.id)
                     }
                     addToList={() => {
-                      addMovieToList(selectedMovie, myList, setMyList);
+                      addMovieToList(selectedMedia, myList, setMyList);
                       writeUserList();
                     }}
                   />
@@ -155,7 +154,7 @@ export default function MainContainer({
               />
             </div>
 
-            <MovieSlider media={media} title={title} />
+            <MovieSlider medias={medias} title={title} />
           </div>
           <InfoModal mediaType={mediaType} />
           <VideoModal mediaType={mediaType} />

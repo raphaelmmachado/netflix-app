@@ -1,12 +1,12 @@
 import { GetServerSideProps } from "next";
-import { Movie } from "../../typing";
+import { Media } from "../../typing";
 import { movieRequests } from "../../constants/moviesRequests";
 import Header from "../../components/header/Header";
 import MediaGrid from "../../components/grid/MediaGrid";
 import Head from "next/head";
 
 interface Props {
-  movies: Movie[];
+  movies: Media[];
   page: string | string[] | undefined;
 }
 
@@ -23,7 +23,7 @@ export default function App({ movies, page }: Props) {
         <link rel="icon" href="/favicon.ico" />
       </Head>
       <Header className={"bg-black  border-b-2 border-gray/10"} />
-      <MediaGrid media={movies} mediaType={"movie"} />
+      <MediaGrid medias={movies} mediaType={"movie"} />
     </main>
   );
 }

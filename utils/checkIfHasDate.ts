@@ -1,10 +1,10 @@
-import { Movie } from "../typing";
+import { Media } from "../typing";
 
-const checkIfHasDate = (selectedMovie: Movie) => {
+const checkIfHasDate = (selectedMedia: Media) => {
   if (
-    Object.hasOwn(selectedMovie, "release_date") ||
-    "release_date" in selectedMovie ||
-    selectedMovie["release_date"]
+    Object.hasOwn(selectedMedia, "release_date") ||
+    "release_date" in selectedMedia ||
+    selectedMedia["release_date"]
   ) {
     return true;
   } else {

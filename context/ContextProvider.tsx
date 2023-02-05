@@ -1,17 +1,13 @@
 import { createContext, useState } from "react";
-import { IProvider, IContext, Movie } from "../typing";
+import { IProvider, IContext, Media } from "../typing";
 
 const initialContextValue: IContext = {
-  selectedMovie: undefined,
-  setSelectedMovie: () => {},
+  selectedMedia: undefined,
+  setSelectedMedia: () => {},
   showVideoModal: false,
   setShowVideoModal: () => {},
   showInfoModal: false,
   setShowInfoModal: () => {},
-  liked: [],
-  setLiked: () => {},
-  disliked: [],
-  setDisliked: () => {},
   myList: [],
   setMyList: () => {},
   modalOpen: false,
@@ -21,26 +17,21 @@ const initialContextValue: IContext = {
 export const Context = createContext<IContext>(initialContextValue);
 
 export function ContextProvider({ children }: IProvider) {
-  const [selectedMovie, setSelectedMovie] = useState<Movie>();
+  const [selectedMedia, setSelectedMedia] = useState<Media>();
   const [showVideoModal, setShowVideoModal] = useState<boolean>(false);
   const [showInfoModal, setShowInfoModal] = useState<boolean>(false);
-  const [myList, setMyList] = useState<Movie[]>([]);
+  const [myList, setMyList] = useState<Media[]>([]);
   const [modalOpen, setModalOpen] = useState(false);
-  const [liked, setLiked] = useState([]);
-  const [disliked, setDisliked] = useState([]);
+
   return (
     <Context.Provider
       value={{
-        selectedMovie,
-        setSelectedMovie,
+        selectedMedia,
+        setSelectedMedia,
         showVideoModal,
         setShowVideoModal,
         showInfoModal,
         setShowInfoModal,
-        liked,
-        setLiked,
-        disliked,
-        setDisliked,
         myList,
         setMyList,
         modalOpen,

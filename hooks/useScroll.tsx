@@ -1,4 +1,4 @@
-import { useEffect, useState, useContext, useCallback } from "react";
+import { useEffect, useState, useContext } from "react";
 import { Context } from "../context/ContextProvider";
 
 export default function useScroll(length: number) {

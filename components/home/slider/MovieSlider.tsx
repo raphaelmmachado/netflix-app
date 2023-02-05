@@ -13,41 +13,45 @@ import useWindowSize from "../../../hooks/useWindowSize";
 //utils
 import apiConfiguration from "../../../constants/apiConfiguration";
 //typing
-import { Movie } from "../../../typing";
+import { Media } from "../../../typing";
 //components
 import enterKeyPressed from "../../../utils/checkKeyboardKeys";
 
 interface IMovieSlider {
-  media: Movie[];
+  medias: Media[];
   title: string;
   mediaType?: "tv" | "movie";
 }
 
-export default function MovieSlider({ media, title, mediaType }: IMovieSlider) {
+export default function MovieSlider({
+  medias,
+  title,
+  mediaType,
+}: IMovieSlider) {
   const [itemsPerScreen, setItemsPerScreen] = useState(4);
   const [sliderIndex, setSliderIndex] = useState(0);
   const [progressBarItems, setProgressBarItems] = useState(0);
 
-  const { selectedMovie, setSelectedMovie } = useContext(Context);
+  const { selectedMedia, setSelectedMedia } = useContext(Context);
 
   const { width } = useWindowSize();
   const memoWidth = useMemo(() => width, [width]);
 
-  const selectAMovie = useCallback(
-    (movie: Movie) => {
-      setSelectedMovie(movie);
+  const selectAMedia = useCallback(
+    (media: Media) => {
+      setSelectedMedia(media);
     },
-    [selectedMovie]
+    [selectedMedia]
   );
 
   //set sliders items per screen based on screen width
   useEffect(() => {
     if (memoWidth !== undefined) {
       setItemsPerScreen(memoWidth);
-      const math = Math.ceil(media.length / itemsPerScreen);
+      const math = Math.ceil(medias.length / itemsPerScreen);
       setProgressBarItems(math);
     }
-  }, [media.length, memoWidth, itemsPerScreen]);
+  }, [medias.length, memoWidth, itemsPerScreen]);
 
   const incrementSliderIndex = () => {
     setSliderIndex((prev) => {
@@ -105,23 +109,23 @@ export default function MovieSlider({ media, title, mediaType }: IMovieSlider) {
             className="slider"
           >
             {/* CARDS */}
-            {media.map((movie: Movie, i) => {
+            {medias.map((media: Media, i) => {
               return (
                 <div className="card" key={i}>
                   <Image
                     tabIndex={i}
-                    onClick={() => selectAMovie(movie)}
+                    onClick={() => selectAMedia(media)}
                     onKeyDown={(e) =>
-                      enterKeyPressed(e.code) && selectAMovie(movie)
+                      enterKeyPressed(e.code) && selectAMedia(media)
                     }
-                    src={`${imgUrl}${backdropSize[1]}${movie.backdrop_path}`}
+                    src={`${imgUrl}${backdropSize[1]}/${media.backdrop_path}`}
                     alt="movie-pic"
                     width={315}
                     height={177}
-                    className="hover:cursor-pointer rounded-sm ring-black hover:ring-white ring-2"
+                    className="hover:cursor-pointer rounded-md ring-black hover:ring-white ring-2"
                   />
-                  <p className="absolute bg-black/60 w-full text-center text-sm px-1">
-                    {movie.name ?? movie.title}
+                  <p className="absolute bg-black/60 w-[98%] text-center text-sm">
+                    {media.name ?? media.title}
                   </p>
                 </div>
               );

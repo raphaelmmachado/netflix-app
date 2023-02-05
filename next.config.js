@@ -8,6 +8,7 @@ const nextConfig = {
       "assets.nflxext.com/",
       "lh3.googleusercontent.com",
       "genotipia.com",
+      "flagcdn.com",
     ],
   },
 };

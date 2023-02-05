@@ -32,87 +32,83 @@ export default function Header({ className }: Props) {
 
   return (
     <header>
-      {
-        <>
-          <nav className={`header-nav ${className}`}>
-            <div className="header-nav-left flex" id="nav--left-div">
-              {mobile ? (
+      <nav className={`header-nav ${className}`}>
+        <div className="header-nav-left flex" id="nav--left-div">
+          {mobile ? (
+            <Image
+              onClick={() => router.push("/")}
+              onKeyDown={(e) => enterKeyPressed(e.code) && router.push("/")}
+              src="/favicon.ico"
+              alt="logo"
+              width={32}
+              height={32}
+              className="hover:cursor-pointer"
+              tabIndex={0}
+            />
+          ) : (
+            <Image
+              onKeyDown={(e) => enterKeyPressed(e.code) && router.push("/")}
+              onClick={() => router.push("/")}
+              src="/assets/NetflixLogoSvg.svg"
+              alt="logo"
+              width={111}
+              height={30}
+              priority
+              className="hover:cursor-pointer"
+              tabIndex={0}
+            />
+          )}
+          <ul className="header-nav-ul">
+            <NavLinks title="Séries" path="/series/1" />
+            <NavLinks title="Filmes" path="/filmes/1" />
+            <NavLinks title="Minha Lista" path="/minha_lista" />
+          </ul>
+        </div>
+        <div className="header-nav-right relative" id="nav--right-div">
+          {user && (
+            <>
+              <div
+                onClick={() => setModal((prev) => !prev)}
+                onKeyDown={(e) =>
+                  enterKeyPressed(e.code) && setModal((prev) => !prev)
+                }
+                className="flex items-center gap-2"
+              >
+                {!mobile && (
+                  <a className="text-sm" tabIndex={0}>
+                    {user?.displayName}
+                  </a>
+                )}
                 <Image
-                  onClick={() => router.push("/")}
-                  onKeyDown={(e) => enterKeyPressed(e.code) && router.push("/")}
-                  src="/favicon.ico"
-                  alt="logo"
-                  width={32}
-                  height={32}
-                  className="hover:cursor-pointer"
+                  src={`${user?.photoURL}`}
                   tabIndex={0}
+                  alt="user"
+                  width={40}
+                  height={40}
+                  className="rounded-sm shadow-md hover:cursor-pointer"
                 />
-              ) : (
-                <Image
-                  onKeyDown={(e) => enterKeyPressed(e.code) && router.push("/")}
-                  onClick={() => router.push("/")}
-                  src="/assets/NetflixLogoSvg.svg"
-                  alt="logo"
-                  width={111}
-                  height={30}
-                  priority
-                  className="hover:cursor-pointer"
+              </div>
+              {modal && (
+                <a
+                  onClick={() => {
+                    auth.signOut().then(() => router.push("/login"));
+                  }}
+                  onKeyDown={(e) =>
+                    enterKeyPressed(e.code) &&
+                    auth.signOut().then(() => router.push("/login"))
+                  }
                   tabIndex={0}
-                />
+                  className="w-fit bg-red text-white flex absolute top-12 -right-0
+                   items-center gap-3 px-4 py-2 rounded-md shadow-md hover:cursor-pointer"
+                >
+                  <LogoutIcon className="w-5 h-5" />
+                  Sair
+                </a>
               )}
-              <ul className="header-nav-ul">
-                <NavLinks title="Séries" path="/series/1" />
-                <NavLinks title="Filmes" path="/filmes/1" />
-                <NavLinks title="Minha Lista" path="/minha_lista" />
-              </ul>
-            </div>
-            <div className="header-nav-right relative" id="nav--right-div">
-              {user && (
-                <>
-                  <div
-                    onClick={() => setModal((prev) => !prev)}
-                    onKeyDown={(e) =>
-                      enterKeyPressed(e.code) && setModal((prev) => !prev)
-                    }
-                    className="flex items-center gap-2"
-                  >
-                    {!mobile && (
-                      <a className="text-sm" tabIndex={0}>
-                        {user?.displayName}
-                      </a>
-                    )}
-                    <Image
-                      src={`${user?.photoURL}`}
-                      tabIndex={0}
-                      alt="user"
-                      width={40}
-                      height={40}
-                      className="rounded-sm shadow-md hover:cursor-pointer"
-                    />
-                  </div>
-                  {modal && (
-                    <a
-                      onClick={() => {
-                        auth.signOut().then(() => router.push("/login"));
-                      }}
-                      onKeyDown={(e) =>
-                        enterKeyPressed(e.code) &&
-                        auth.signOut().then(() => router.push("/login"))
-                      }
-                      tabIndex={0}
-                      className="w-fit bg-black text-white border-2 border-gray flex absolute top-12 -right-3
-                   items-center gap-3 px-2 py-1 rounded-md shadow-md hover:cursor-pointer"
-                    >
-                      <LogoutIcon className="w-7 h-7" />
-                      Sair
-                    </a>
-                  )}
-                </>
-              )}
-            </div>
-          </nav>
-        </>
-      }
+            </>
+          )}
+        </div>
+      </nav>
     </header>
   );
 }

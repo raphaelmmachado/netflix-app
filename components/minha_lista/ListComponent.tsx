@@ -12,24 +12,24 @@ import PlayButton from "../home/banner/PlayButton";
 import ListButton from "../home/banner/ListButton";
 import DetailsButton from "../home/banner/DetailsButton";
 //types
-import { Movie } from "../../typing";
+import { Media } from "../../typing";
 //constants
 import tmdbApiConfig from "../../constants/apiConfiguration";
 import { Context } from "../../context/ContextProvider";
 import ArrowUpIcon from "@heroicons/react/24/solid/ArrowUpIcon";
 
 interface Props {
-  media: Movie[];
+  medias: Media[];
   children?: JSX.Element | JSX.Element[];
   title: string;
   mediaType?: "tv" | "movie";
 }
 
-export default function ListComponent({ media, title, mediaType }: Props) {
+export default function ListComponent({ medias, title, mediaType }: Props) {
   const [user] = useAuthState(auth);
 
   const {
-    selectedMovie,
+    selectedMedia,
     setShowVideoModal,
     setShowInfoModal,
     myList,
@@ -37,13 +37,13 @@ export default function ListComponent({ media, title, mediaType }: Props) {
   } = useContext(Context);
 
   // add movie to user list
-  const handleAddToList = (movie: Movie) => {
+  const handleAddToList = (movie: Media) => {
     if (myList.some((item) => item.id === movie.id)) {
-      setMyList((prevList: Movie[]) =>
+      setMyList((prevList: Media[]) =>
         [...prevList].filter((item) => item.id !== movie.id)
       );
     } else {
-      setMyList((prevList: Movie[]) => [...prevList, movie]);
+      setMyList((prevList: Media[]) => [...prevList, movie]);
     }
     writeUserList();
   };
@@ -62,24 +62,24 @@ export default function ListComponent({ media, title, mediaType }: Props) {
   //
   return (
     <>
-      {selectedMovie ? (
+      {selectedMedia ? (
         // banner
         <main
           id="banner"
           className="banner"
           style={{
-            backgroundImage: `url(${BASE_URL}${SIZE}/${selectedMovie?.backdrop_path})`,
+            backgroundImage: `url(${BASE_URL}${SIZE}/${selectedMedia?.backdrop_path})`,
           }}
         >
           <div className="banner-wrapper" id="banner-wrapper">
             <div className="banner-center" id="banner-center">
               <section className="banner-center-left" id="banner-center-left">
                 <BannerText
-                  title={selectedMovie.title ?? selectedMovie.name}
-                  description={selectedMovie.overview}
-                  rating={selectedMovie.vote_average.toFixed(1)}
-                  release_date={selectedMovie?.release_date}
-                  typeOfShow={selectedMovie.media_type}
+                  title={selectedMedia.title ?? selectedMedia.name}
+                  description={selectedMedia.overview}
+                  rating={selectedMedia.vote_average.toFixed(1)}
+                  release_date={selectedMedia?.release_date}
+                  typeOfShow={selectedMedia.media_type}
                 />
                 <div className="banner-center-left-buttons">
                   <PlayButton
@@ -90,17 +90,17 @@ export default function ListComponent({ media, title, mediaType }: Props) {
                   <ListButton
                     added={
                       myList &&
-                      myList.some((item) => item.id === selectedMovie.id)
+                      myList.some((item) => item.id === selectedMedia.id)
                     }
                     addToList={() => {
-                      handleAddToList(selectedMovie);
+                      handleAddToList(selectedMedia);
                     }}
                   />
                   <DetailsButton showModal={() => setShowInfoModal(true)} />
                 </div>
               </section>
             </div>
-            <MovieSlider media={media} title={title} mediaType={mediaType} />
+            <MovieSlider medias={medias} title={title} mediaType={mediaType} />
           </div>
         </main>
       ) : (

@@ -1,15 +1,20 @@
+//next js
+import Head from "next/head";
 import Image from "next/image";
-import GoogleIcon from "../../components/auth/GoogleIcon";
-import FacebookIcon from "../../components/auth/FacebookIcon";
 import { useRouter } from "next/router";
+//firebase
 import {
   GoogleAuthProvider,
   FacebookAuthProvider,
   signInWithPopup,
 } from "firebase/auth";
-import { getAnalytics } from "firebase/analytics";
-import { auth, app } from "../../utils/firebaseConfig";
-import Head from "next/head";
+import { auth } from "../../utils/firebaseConfig";
+// cookies
+// icons
+import FacebookIcon from "../../components/auth/FacebookIcon";
+import GoogleIcon from "../../components/auth/GoogleIcon";
+//utils
+import { getGuestSesssionID, storeSessionId } from "../../utils/requestToken";
 
 export default function Login() {
   const googleProvider = new GoogleAuthProvider();
@@ -19,9 +24,14 @@ export default function Login() {
 
   const loginWithGoogle = async () => {
     try {
-      const analytics = getAnalytics(app);
+      await getGuestSesssionID()
+        .then(
+          (res) =>
+            res?.guest_session_id && storeSessionId(null, res?.guest_session_id)
+        )
+        .catch((err) => console.error(err));
+
       const result = await signInWithPopup(auth, googleProvider);
-      console.log(result);
       return result;
     } catch (error: any) {
       // Handle Errors here.
@@ -37,9 +47,7 @@ export default function Login() {
   };
   const loginWithFacebook = async () => {
     try {
-      const analytics = getAnalytics(app);
       const result = await signInWithPopup(auth, facebookProvider);
-      console.log(result);
       return result;
     } catch (error: any) {
       // Handle Errors here.
@@ -73,11 +81,11 @@ export default function Login() {
           fill
           priority
           src={bg}
-          className="absolute opacity-50"
+          className="absolute opacity-30"
         />
         <section
           className="flex flex-col justify-around gap-4
-       p-12 rounded-md bg-black/70 min-h-[600px] max-w-md absolute"
+       p-12 rounded-md  min-h-[600px] absolute"
         >
           <Image
             src={"/assets/NetflixLogoSvg.svg"}
@@ -95,11 +103,13 @@ export default function Login() {
           <div className="flex flex-col gap-6">
             <button
               onClick={() =>
-                loginWithGoogle().then((res) =>
-                  route.push("/").catch((err) => console.error(err))
-                )
+                loginWithGoogle()
+                  // FIXME uncomment me
+                  .then((res) =>
+                    route.push("/").catch((err) => console.error(err))
+                  )
               }
-              className="socials-buttons "
+              className="socials-buttons mx-8"
             >
               Entrar com google <GoogleIcon width="30" height="30" />
             </button>
@@ -109,13 +119,25 @@ export default function Login() {
                   route.push("/").catch((err) => console.error(err))
                 )
               }
-              className="socials-buttons"
+              className="socials-buttons mx-8"
             >
               Entrar com Facebook <FacebookIcon width="30" height="30" />
             </button>
           </div>
         </section>
       </main>
+      <footer className="font-normal text-sm">
+        Este site tem apenas o propósito de demonstrar minhas capacidades de
+        construir uma aplicação web. Para acessar a Netflix{" "}
+        <a
+          className="text-red"
+          href="https://netflix.com"
+          target="_blank"
+          rel="noreferrer"
+        >
+          clique aqui
+        </a>{" "}
+      </footer>
     </>
   );
 }

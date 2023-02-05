@@ -7,7 +7,7 @@ export default function DefaultButton({ showModal }: Props) {
     <>
       <button
         onClick={() => showModal()}
-        className="banner-button bg-midgray/70 text-smokewt"
+        className="banner-button bg-black text-smokewt"
       >
         <InformationCircleIcon className="text-smokewt h-6 w-6" />
       </button>
