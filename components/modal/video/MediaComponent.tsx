@@ -12,9 +12,10 @@ export default function MediaComponent({
   youtubeVideos,
   clearVideo,
 }: Props) {
+  //if DB has trailer, play selected trailer. else play selected youtube api generated video.
   return (
     <>
-      {selectedVideo ? (
+      {selectedVideo && selectedVideo?.length > 0 ? (
         <iframe
           onEnded={() => clearVideo()}
           onCompositionEnd={() => clearVideo()}

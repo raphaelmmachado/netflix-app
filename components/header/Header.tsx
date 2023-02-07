@@ -65,7 +65,7 @@ export default function Header({ className }: Props) {
           </ul>
         </div>
         <div className="header-nav-right relative" id="nav--right-div">
-          {user && (
+          {!loading && user && (
             <>
               <div
                 onClick={() => setModal((prev) => !prev)}

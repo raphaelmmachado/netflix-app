@@ -1,7 +1,9 @@
-export interface Genre {
-  id: number;
-  name: string;
+interface IComponents {
+  [0]: Media[];
+  [1]: string;
+  [2]?: "tv" | "movie";
 }
+[];
 
 export interface Media {
   poster_path: string | null;
@@ -25,7 +27,10 @@ export interface Media {
   origin_country?: string[];
   original_name?: string;
 }
-
+export interface Genre {
+  id: number;
+  name: string;
+}
 interface IVideoRequest {
   id: string | number;
   results: IVideo[];
@@ -84,7 +89,7 @@ interface YTIds {
     publishTime: string | Date;
   };
 }
-export interface Element {
+export interface VideoType {
   type:
     | "Bloopers"
     | "Featurette"
@@ -128,20 +133,11 @@ interface IContext {
   setSelectedMedia: Dispatch<SetStateAction<Media>>;
   showVideoModal: boolean;
   setShowVideoModal: Dispatch<SetStateAction<boolean>>;
-  showInfoModal: boolean;
-  setShowInfoModal: Dispatch<SetStateAction<boolean>>;
   myList: Media[];
   setMyList: Dispatch<SetStateAction<Media[]>>;
   modalOpen: boolean;
   setModalOpen: Dispatch<SetStateAction<boolean>>;
 }
-
-interface IComponents {
-  [0]: Media[];
-  [1]: string;
-  [2]?: "tv" | "movie";
-}
-[];
 
 export interface MovieDetails {
   adult: boolean;

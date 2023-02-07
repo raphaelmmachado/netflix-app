@@ -6,8 +6,6 @@ const initialContextValue: IContext = {
   setSelectedMedia: () => {},
   showVideoModal: false,
   setShowVideoModal: () => {},
-  showInfoModal: false,
-  setShowInfoModal: () => {},
   myList: [],
   setMyList: () => {},
   modalOpen: false,
@@ -19,7 +17,6 @@ export const Context = createContext<IContext>(initialContextValue);
 export function ContextProvider({ children }: IProvider) {
   const [selectedMedia, setSelectedMedia] = useState<Media>();
   const [showVideoModal, setShowVideoModal] = useState<boolean>(false);
-  const [showInfoModal, setShowInfoModal] = useState<boolean>(false);
   const [myList, setMyList] = useState<Media[]>([]);
   const [modalOpen, setModalOpen] = useState(false);
 
@@ -30,8 +27,6 @@ export function ContextProvider({ children }: IProvider) {
         setSelectedMedia,
         showVideoModal,
         setShowVideoModal,
-        showInfoModal,
-        setShowInfoModal,
         myList,
         setMyList,
         modalOpen,

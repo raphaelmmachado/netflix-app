@@ -1,7 +1,7 @@
 import { GetServerSideProps } from "next";
 import { useState } from "react";
 import Header from "../../../components/header/Header";
-import { IVideo, IVideoRequest, MediaDetails, YTitems } from "../../../typing";
+import { IVideo, IVideoRequest, MovieDetails, YTitems } from "../../../typing";
 import getMovieDetails from "../../../utils/getMovieDetails";
 import IndividualMedia from "../../../components/individual_media/IndividualMedia";
 import Head from "next/head";
@@ -9,7 +9,7 @@ import useHeader from "../../../hooks/useHeader";
 import { getServerSideTrailers } from "../../../utils/getTrailers";
 
 interface Props {
-  details: MediaDetails;
+  details: MovieDetails;
   trailer: IVideo[];
 }
 export default function App({ details, trailer }: Props) {
@@ -28,7 +28,9 @@ export default function App({ details, trailer }: Props) {
       </Head>
       <Header
         className={`transition-all ease-linear duration-50 bg-black ${
-          transparentNav ? "bg-opacity-5" : "bg-opacity-100"
+          transparentNav
+            ? "bg-opacity-0 hover:bg-opacity-100"
+            : "bg-opacity-100"
         }`}
       />
       <IndividualMedia details={media} trailer={trailer} />
@@ -41,7 +43,7 @@ export const getServerSideProps: GetServerSideProps = async (content) => {
   const type = "movie";
   const id = Number(queryID);
 
-  const details: MediaDetails = await getMovieDetails({ id, mediaType }).then(
+  const details: MovieDetails = await getMovieDetails({ id, mediaType }).then(
     (res) => res
   );
   const trailer: IVideoRequest = await getServerSideTrailers({

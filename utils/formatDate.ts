@@ -1,4 +1,4 @@
-export default function FormateDateToBR(arg: string | number | Date) {
+export default function FormateDateToBR(arg: string | Date) {
   let date = new Date(arg);
   if (isNaN(date.getTime())) {
     console.info(

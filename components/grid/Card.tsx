@@ -3,32 +3,30 @@ import { useState, useContext, useCallback } from "react";
 import { Context } from "../../context/ContextProvider";
 import PlayButton from "./PlayButton";
 import AddToListButton from "./AddToListButton";
-import Details from "./Details";
 import { Media } from "../../typing";
 import apiConfiguration from "../../constants/apiConfiguration";
+import FormateDateToBR from "../../utils/formatDate";
+import DetailsButton from "../home/banner/DetailsButton";
 
 interface Props {
   media: Media;
+  mediaType: "tv" | "movie";
 }
 
-export default function Card({ media }: Props) {
+export default function Card({ media, mediaType }: Props) {
   const [showButtons, setShowButtons] = useState(false);
-  const {
-    selectedMedia,
-    setSelectedMedia,
-    setShowVideoModal,
-    setShowInfoModal,
-  } = useContext(Context);
-
-  const url = apiConfiguration.images.base_url;
-  const posterSize = apiConfiguration.images.poster_sizes[3];
-
+  const { selectedMedia, setSelectedMedia, setShowVideoModal } =
+    useContext(Context);
   const selectAMovie = useCallback(
     (media: Media) => {
       setSelectedMedia(media);
     },
     [selectedMedia]
   );
+
+  const url = apiConfiguration.images.base_url;
+  const posterSize = apiConfiguration.images.poster_sizes[3];
+
   return (
     <>
       <div
@@ -55,11 +53,13 @@ export default function Card({ media }: Props) {
             />
 
             <AddToListButton media={media} />
-            <Details
-              showInfo={() => {
-                selectAMovie(media);
-                setShowInfoModal(true);
-              }}
+            <DetailsButton
+              className="rounded-full absolute flex items-center justify-center
+       bg-black border-2 border-gray w-10 h-10  -top-4 -left-4 hover:cursor-pointer"
+              id={media.id}
+              mediaType={mediaType}
+              selectedMediaType={media.media_type}
+              iconType={"solid"}
             />
           </>
         )}
@@ -67,7 +67,10 @@ export default function Card({ media }: Props) {
           {media.title ?? media.name}
           {" · "}
           <span className="text-midgray text-sm">
-            {media.release_date.substring(0, 4)}
+            {media.release_date
+              ? FormateDateToBR(media.release_date).toString().substring(6)
+              : media.first_air_date &&
+                FormateDateToBR(media.first_air_date).toString().substring(6)}
           </span>
           {" · "}
           <span className="text-def_green-400 text-sm">

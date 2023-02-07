@@ -3,7 +3,6 @@ import { useContext } from "react";
 import { Context } from "../../context/ContextProvider";
 import { ArrowLeftIcon, ArrowRightIcon } from "@heroicons/react/24/solid";
 import VideoModal from "../modal/VideoModal";
-import InfoModal from "../modal/InfoModal";
 import { MediaType, Media } from "../../typing";
 import Card from "./Card";
 
@@ -12,7 +11,7 @@ interface Props extends MediaType {
 }
 
 export default function MediaGrid({ medias, mediaType }: Props) {
-  const { selectedMedia, showVideoModal, showInfoModal } = useContext(Context);
+  const { selectedMedia, showVideoModal } = useContext(Context);
   const router = useRouter();
 
   //parse query to number
@@ -39,7 +38,7 @@ export default function MediaGrid({ medias, mediaType }: Props) {
        place-items-center gap-x-10 gap-y-16 px-12 py-8 pt-32"
       >
         {medias.map((media, i) => {
-          return <Card key={media.id} media={media} />;
+          return <Card key={media.id} media={media} mediaType={mediaType!} />;
         })}
       </section>
       <footer className="w-full flex justify-center gap-4 mt-12">
@@ -59,7 +58,6 @@ export default function MediaGrid({ medias, mediaType }: Props) {
       </footer>
 
       {showVideoModal && selectedMedia && <VideoModal mediaType={mediaType} />}
-      {showInfoModal && selectedMedia && <InfoModal mediaType={mediaType} />}
     </>
   );
 }

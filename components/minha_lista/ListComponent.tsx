@@ -22,19 +22,13 @@ interface Props {
   medias: Media[];
   children?: JSX.Element | JSX.Element[];
   title: string;
-  mediaType?: "tv" | "movie";
 }
 
-export default function ListComponent({ medias, title, mediaType }: Props) {
+export default function ListComponent({ medias, title }: Props) {
   const [user] = useAuthState(auth);
 
-  const {
-    selectedMedia,
-    setShowVideoModal,
-    setShowInfoModal,
-    myList,
-    setMyList,
-  } = useContext(Context);
+  const { selectedMedia, setShowVideoModal, myList, setMyList } =
+    useContext(Context);
 
   // add movie to user list
   const handleAddToList = (movie: Media) => {
@@ -59,11 +53,11 @@ export default function ListComponent({ medias, title, mediaType }: Props) {
 
   const BASE_URL = tmdbApiConfig.images.secure_base_url;
   const SIZE = tmdbApiConfig.images.backdrop_sizes[2];
+
   //
   return (
     <>
-      {selectedMedia ? (
-        // banner
+      {selectedMedia && (
         <main
           id="banner"
           className="banner"
@@ -80,6 +74,7 @@ export default function ListComponent({ medias, title, mediaType }: Props) {
                   rating={selectedMedia.vote_average.toFixed(1)}
                   release_date={selectedMedia?.release_date}
                   typeOfShow={selectedMedia.media_type}
+                  firstAired={selectedMedia.first_air_date!}
                 />
                 <div className="banner-center-left-buttons">
                   <PlayButton
@@ -96,30 +91,24 @@ export default function ListComponent({ medias, title, mediaType }: Props) {
                       handleAddToList(selectedMedia);
                     }}
                   />
-                  <DetailsButton showModal={() => setShowInfoModal(true)} />
+
+                  <DetailsButton
+                    selectedMediaType={selectedMedia.media_type}
+                    id={selectedMedia.id}
+                    className={"banner-button bg-black text-smokewt"}
+                    iconType={"outline"}
+                    // since in list we have mixed types. i did on
+                    mediaType={
+                      selectedMedia.title && !selectedMedia.name
+                        ? "movie"
+                        : "tv"
+                    }
+                  />
                 </div>
               </section>
             </div>
-            <MovieSlider medias={medias} title={title} mediaType={mediaType} />
+            <MovieSlider medias={medias} title={title} />
           </div>
-        </main>
-      ) : (
-        // IN CASE SELECTED MOVIE CAN NOT BE ACESSED
-        <main className=" bg-black">
-          <section className="min-h-[100vh] w-full flex flex-col items-center justify-center gap-4">
-            <Image
-              src="/assets/NetflixLogoSvg.svg"
-              alt="netflix-logo"
-              width={200}
-              height={100}
-              priority
-            />
-            <h1>Lista de filmes vazia</h1>
-            <button className="bg-white rounded-md text-black font-bold px-6 gap-2 py-2">
-              <ArrowUpIcon />
-              <>Voltar</>
-            </button>
-          </section>
         </main>
       )}
     </>

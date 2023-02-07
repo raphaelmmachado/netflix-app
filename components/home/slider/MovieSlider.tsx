@@ -20,14 +20,9 @@ import enterKeyPressed from "../../../utils/checkKeyboardKeys";
 interface IMovieSlider {
   medias: Media[];
   title: string;
-  mediaType?: "tv" | "movie";
 }
 
-export default function MovieSlider({
-  medias,
-  title,
-  mediaType,
-}: IMovieSlider) {
+export default function MovieSlider({ medias, title }: IMovieSlider) {
   const [itemsPerScreen, setItemsPerScreen] = useState(4);
   const [sliderIndex, setSliderIndex] = useState(0);
   const [progressBarItems, setProgressBarItems] = useState(0);

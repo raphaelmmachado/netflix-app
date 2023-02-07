@@ -1,7 +1,7 @@
 interface Props {
   title: string;
   originalTitle: string;
-  language: string;
+  release: string | Date;
   genres: Genre[];
 }
 interface Genre {
@@ -15,7 +15,7 @@ interface SpokenLanguage {
 export default function MediaHeader({
   title,
   originalTitle,
-  language,
+  release,
   genres,
 }: Props) {
   return (
@@ -28,7 +28,9 @@ export default function MediaHeader({
           {originalTitle}
           {" · "}
         </h1>
-        <p className="text-lg text-midgray font-medium">{language}</p>
+        <p className="text-lg text-midgray font-medium">
+          <>{release}</>
+        </p>
       </div>
       <div className="grid grid-flow-col place-content-start gap-4">
         {genres.map((genre, i) => {

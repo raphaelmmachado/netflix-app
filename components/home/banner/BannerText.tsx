@@ -6,6 +6,7 @@ interface Props {
   rating: number | string;
   release_date: string | Date | number;
   typeOfShow: string | boolean | undefined;
+  firstAired: string | Date | undefined;
 }
 
 export default function BannerText({
@@ -13,6 +14,7 @@ export default function BannerText({
   description,
   rating,
   release_date,
+  firstAired,
   typeOfShow,
 }: Props) {
   return (
@@ -28,7 +30,12 @@ export default function BannerText({
         <p className="text-def_green-400 ">Avaliação {rating} </p>{" "}
         {release_date && (
           <p className="text-gray">
-            <>Lançamento {release_date.toString().substring(0, 4)}</>
+            Lançamento {release_date.toString().substring(0, 4)}
+          </p>
+        )}
+        {!release_date && firstAired && (
+          <p className="text-gray">
+            Estreou em {firstAired.toString().substring(0, 4)}
           </p>
         )}
         {typeOfShow && (

@@ -8,8 +8,8 @@ import MediaHeader from "./title_desc/MediaHeader";
 import TitleDesc from "./title_desc/TitleDesc";
 import RatingBox from "./title_desc/RatingBox";
 import VideoLinks from "../modal/video/VideoLinks";
-import Xbutton from "../modal/info/XButton";
 import GlobeAltIcon from "@heroicons/react/24/outline/GlobeAltIcon";
+import XMarkIcon from "@heroicons/react/24/solid/XMarkIcon";
 //constants / utils
 import tmdbApiConfig from "../../constants/apiConfiguration";
 import mostSpokenLanguages from "../../constants/mostSpokenLanguages";
@@ -44,13 +44,13 @@ export default function IndividualMedia({ details, trailer }: Props) {
         "snippet"
       )
         .then((res: YTIds[]) => {
-          console.log(res);
           setYVideos(res);
         })
         .catch((err) => console.log(err));
   }
   const { hours, remainingMinutes } = calculateRuntime(details.runtime!);
   const langs = mostSpokenLanguages;
+  const hasTrailers = trailer.length > 0;
   return (
     <>
       <header className="bg-black min-h-[55vh] relative">
@@ -87,7 +87,7 @@ export default function IndividualMedia({ details, trailer }: Props) {
             <MediaHeader
               title={details.title}
               originalTitle={details.original_title}
-              language={langs[details.original_language]}
+              release={FormateDateToBR(details.release_date)}
               genres={details.genres}
             />
             <RatingBox votes={details.vote_average.toFixed(1)} />
@@ -119,14 +119,17 @@ export default function IndividualMedia({ details, trailer }: Props) {
             value={`${hours}h ${remainingMinutes}m`}
           />
           <TitleDesc
-            title={"Lançamento"}
-            value={FormateDateToBR(details.release_date)}
+            title={"Idioma Original"}
+            value={langs[details.original_language]}
           />
         </section>
-        <section className="my-8 bg-def_black">
+        <section className="my-8 px-8 bg-def_black">
           {showVideo && (
             <>
-              <Xbutton onClick={() => setShowVideo(false)} />
+              <XMarkIcon
+                onClick={() => setShowVideo(false)}
+                className="w-8 h-8 text-white hover:cursor-pointer bg-gray/30 rounded-sm"
+              />
               <MediaComponent
                 videoIndex={videoIndex}
                 selectedVideo={trailer}
@@ -142,21 +145,37 @@ export default function IndividualMedia({ details, trailer }: Props) {
           className="px-4 my-8 rounded-md bg-black/80
          grid grid-flow-col place-content-center"
         >
-          {trailer.map((item, i) => {
-            return (
-              <>
-                <VideoLinks
-                  key={i}
-                  type={item.type}
-                  site={item.site}
-                  onClick={() => {
-                    setVideoIndex(i);
-                    setShowVideo(true);
-                  }}
-                />
-              </>
-            );
-          })}
+          {trailer.length > 0
+            ? trailer.map((item, i) => {
+                return (
+                  <>
+                    <VideoLinks
+                      key={i}
+                      type={item.type}
+                      site={item.site}
+                      onClick={() => {
+                        setVideoIndex(i);
+                        setShowVideo(true);
+                      }}
+                    />
+                  </>
+                );
+              })
+            : yVideos.map((item, i) => {
+                return (
+                  <>
+                    <VideoLinks
+                      key={i}
+                      site="YouTube"
+                      type="Youtube"
+                      onClick={() => {
+                        setVideoIndex(i);
+                        setShowVideo(true);
+                      }}
+                    />
+                  </>
+                );
+              })}
         </div>
         <br />
         <section

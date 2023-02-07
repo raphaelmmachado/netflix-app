@@ -17,7 +17,6 @@ import PlayButton from "./banner/PlayButton";
 import ListButton from "./banner/ListButton";
 import DetailsButton from "./banner/DetailsButton";
 import VerticalScroller from "./banner/VerticalScroller";
-import InfoModal from "../modal/InfoModal";
 import VideoModal from "../modal/VideoModal";
 import Loading from "../auth/Loading";
 //types
@@ -52,7 +51,6 @@ export default function MainContainer({
     selectedMedia,
     setSelectedMedia,
     setShowVideoModal,
-    setShowInfoModal,
     myList,
     setMyList,
     setModalOpen,
@@ -91,7 +89,7 @@ export default function MainContainer({
 
   const BASE_URL = tmdbApiConfig.images.secure_base_url;
   const SIZE = tmdbApiConfig.images.backdrop_sizes[2];
-  //
+
   return (
     <>
       {selectedMedia ? (
@@ -111,6 +109,7 @@ export default function MainContainer({
                   description={selectedMedia.overview}
                   rating={selectedMedia.vote_average.toFixed(1)}
                   release_date={selectedMedia?.release_date}
+                  firstAired={selectedMedia.first_air_date!}
                   typeOfShow={selectedMedia.media_type}
                 />
                 <div className="banner-center-left-buttons">
@@ -131,10 +130,11 @@ export default function MainContainer({
                     }}
                   />
                   <DetailsButton
-                    showModal={() => {
-                      setShowInfoModal(true);
-                      setModalOpen(true);
-                    }}
+                    mediaType={mediaType!}
+                    selectedMediaType={selectedMedia.media_type}
+                    id={selectedMedia.id}
+                    className={"banner-button bg-black text-smokewt"}
+                    iconType={"outline"}
                   />
                 </div>
               </section>
@@ -156,7 +156,6 @@ export default function MainContainer({
 
             <MovieSlider medias={medias} title={title} />
           </div>
-          <InfoModal mediaType={mediaType} />
           <VideoModal mediaType={mediaType} />
         </main>
       ) : (
