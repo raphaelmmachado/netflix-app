@@ -13,7 +13,6 @@ import { useAuthState } from "react-firebase-hooks/auth";
 import { auth } from "../utils/firebaseConfig";
 import useScroll from "../hooks/useScroll";
 import Header from "../components/header/Header";
-//TODO FONTS NOT LOADING IN PRODUCTION
 export default function App({
   trendingNow,
   topRated,
@@ -23,6 +22,8 @@ export default function App({
   trendingSeries,
   popularMovies,
 }: IRequests) {
+  //TODO SERIES INDIVIDUAL PAGE
+
   // components made of data coming from server
   const COMPONENTS: IComponents[] = [
     [trendingNow, "Em destaque"],

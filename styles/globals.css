@@ -62,7 +62,7 @@
     @apply flex justify-between px-6;
   }
   .slider-section {
-    @apply shadow-2xl md:py-2;
+    @apply md:py-2;
   }
   .slider-section-header {
     @apply px-4 lg:px-14;
@@ -72,8 +72,11 @@
     border-l-4 border-red pl-2 mb-2 md:mb-0;
   }
   .card {
-    @apply max-w-[177px] max-h-fit 
-    relative flex flex-col justify-end items-center;
+    @apply max-h-fit 
+    relative flex justify-center items-end;
+  }
+  .poster {
+    @apply relative flex flex-col justify-end items-center;
   }
   .vertical-scroller {
     @apply flex flex-col self-start sm:self-auto items-center gap-2 lg:px-8;
@@ -119,8 +122,6 @@
 * {
   margin: 0;
   padding: 0;
-
-  /* console log */
 }
 
 /* Box sizing rules */

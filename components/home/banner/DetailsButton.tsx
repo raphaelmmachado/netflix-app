@@ -16,13 +16,9 @@ export default function DefaultButton({
   className,
   iconType,
 }: Props) {
-  //TODO CHECAR PORQUE NA LISTA OS FILMES NAO TEM TIPO
-  const checkIfIsMovie = (compType?: string, medType?: string | boolean) => {
-    console.log({ mediaType: compType, selectedMediaType: medType });
-  };
-  checkIfIsMovie(mediaType, selectedMediaType);
   return (
     <>
+      {/* CHECKING MEDIA TYPE */}
       <Link
         href={
           mediaType

@@ -65,3 +65,7 @@ Primeiramente eu tinha pensado em fazer "minha lista" como mais uma seção para
 Para resolver o problema de que alguns filmes não possuir trailer em português na DB, resolvi usar a API do youtube, pesquisar "nome do filme" + "trailer oficial", configurei para retornar no máximo 5 itens e de preferencia videos brasileiros, então gerei botões que selecionam o id e enviam para o componente.
 
 Na página de filmes e séries, usei o recurso do Nextjs onde posso criar páginas dinamicas de acordo com o id passado na URL. Então eu fiz uma função que faz o fetch da página de filmes da TMDB de acordo com esse id da URL.
+
+## Problemas para consetar
+
+Ao atualizar a página "minha lista" a lista de filme fica vazia, mesmo que tenha items. Deve ser algum problema de "effect", tentei de todas formas usar useEffect mas sempre termina em loop infinito. Então enquanto não conserto eu fiz que a página seja redirecionada para tela inicial se a lista estiver vazia

@@ -1,4 +1,5 @@
-import { useEffect, useState } from "react";
+import { useEffect, useState, useContext } from "react";
+import { Context } from "../../context/ContextProvider";
 import Image from "next/image";
 import useWindowSize from "../../hooks/useWindowSize";
 import NavLinks from "./NavLinks";
@@ -11,6 +12,7 @@ interface Props {
   className: string;
 }
 export default function Header({ className }: Props) {
+  const { myList } = useContext(Context);
   const [mobile, setMobile] = useState(false);
   const [modal, setModal] = useState(false);
   const { width } = useWindowSize();
@@ -61,7 +63,9 @@ export default function Header({ className }: Props) {
           <ul className="header-nav-ul">
             <NavLinks title="Séries" path="/series/1" />
             <NavLinks title="Filmes" path="/filmes/1" />
-            <NavLinks title="Minha Lista" path="/minha_lista" />
+            {myList.length > 0 && (
+              <NavLinks title="Minha Lista" path="/minha_lista" />
+            )}
           </ul>
         </div>
         <div className="header-nav-right relative" id="nav--right-div">

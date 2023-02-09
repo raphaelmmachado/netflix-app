@@ -57,7 +57,6 @@ export default function VideoModal({ mediaType }: MediaType) {
         "snippet"
       )
         .then((res: YTIds[]) => {
-          console.log(res);
           setYTAPIVideos(res);
         })
         .catch((err) => console.log(err));

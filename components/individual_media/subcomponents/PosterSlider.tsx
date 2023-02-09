@@ -13,40 +13,29 @@ import useWindowSize from "../../../hooks/useWindowSize";
 //utils
 import apiConfiguration from "../../../constants/apiConfiguration";
 //typing
-import { Media } from "../../../typing";
+import { Media, Season } from "../../../typing";
 //components
 import enterKeyPressed from "../../../utils/checkKeyboardKeys";
 
-interface IMovieSlider {
-  medias: Media[];
-  title: string;
+interface Props {
+  posters: Season[];
 }
-
-export default function MovieSlider({ medias, title }: IMovieSlider) {
-  const [itemsPerScreen, setItemsPerScreen] = useState(4);
+export default function MovieSlider({ posters }: Props) {
+  const [itemsPerScreen, setItemsPerScreen] = useState(8);
   const [sliderIndex, setSliderIndex] = useState(0);
   const [progressBarItems, setProgressBarItems] = useState(0);
-
-  const { selectedMedia, setSelectedMedia } = useContext(Context);
-
+  const [showDescription, setShowDescription] = useState(false);
   const { width } = useWindowSize();
   const memoWidth = useMemo(() => width, [width]);
-
-  const selectAMedia = useCallback(
-    (media: Media) => {
-      setSelectedMedia(media);
-    },
-    [selectedMedia]
-  );
 
   //set sliders items per screen based on screen width
   useEffect(() => {
     if (memoWidth !== undefined) {
-      setItemsPerScreen(memoWidth);
-      const math = Math.ceil(medias.length / itemsPerScreen);
+      setItemsPerScreen(memoWidth * 3);
+      const math = Math.ceil(posters.length / itemsPerScreen);
       setProgressBarItems(math);
     }
-  }, [medias.length, memoWidth, itemsPerScreen]);
+  }, [posters.length, memoWidth, itemsPerScreen]);
 
   const incrementSliderIndex = () => {
     setSliderIndex((prev) => {
@@ -61,15 +50,17 @@ export default function MovieSlider({ medias, title }: IMovieSlider) {
     });
   };
 
-  const imgUrl = apiConfiguration.images.secure_base_url;
-  const backdropSize = apiConfiguration.images.backdrop_sizes;
+  const BASE_URL = apiConfiguration.images.secure_base_url;
+  const POSTER_SIZE = apiConfiguration.images.poster_sizes[2];
 
   // This component has css classes mixed with tailwind classes
   return (
     <section className="slider-section" id="slider-section">
       <main className="flex flex-col gap-3" id="slider-row">
+        {/* HEADER */}
+
         <div className="header slider-section-header">
-          <h2 className="slider-title">{title}</h2>
+          <h2 className="text-midgray text-lg">Temporadas</h2>
           {/* PROGRESS BARS */}
           <div className="progress-bar hidden md:inline-flex">
             {Array(progressBarItems)
@@ -80,7 +71,7 @@ export default function MovieSlider({ medias, title }: IMovieSlider) {
                     onClick={() => setSliderIndex(i)}
                     key={i}
                     className={`progress-item cursor-pointer
-                 ${i === sliderIndex ? "active" : ""}`}
+                   ${i === sliderIndex ? "active" : ""}`}
                   ></div>
                 );
               })}
@@ -94,39 +85,33 @@ export default function MovieSlider({ medias, title }: IMovieSlider) {
           ></div>
           {/* SLIDER */}
           <div
-            id="slider"
+            id="poster-slider"
             style={
               {
                 "--slider-index": sliderIndex,
-                "--items-per-screen": itemsPerScreen,
+                "--posters-per-screen": itemsPerScreen,
               } as CSSProperties
             }
-            className="slider"
+            className="poster-slider relative"
           >
             {/* CARDS */}
-            {medias.map((media: Media, i) => {
+            {posters.map((media: Season, i) => {
               return (
-                <div className="card" key={i}>
+                <div className="poster" key={i}>
                   <Image
                     tabIndex={i}
-                    onClick={() => selectAMedia(media)}
-                    onKeyDown={(e) =>
-                      enterKeyPressed(e.code) && selectAMedia(media)
-                    }
-                    src={`${imgUrl}${backdropSize[1]}/${media.backdrop_path}`}
-                    alt="movie-pic"
-                    width={315}
-                    height={177}
+                    onMouseEnter={() => setShowDescription(true)}
+                    onMouseLeave={() => setShowDescription(false)}
+                    src={`${BASE_URL}${POSTER_SIZE}/${media.poster_path}`}
+                    alt={media.name}
+                    width={150}
+                    height={100}
                     className="hover:cursor-pointer rounded-md ring-black hover:ring-white ring-2"
                   />
-                  <span className="absolute w-[98%]">
-                    <h1 className="text-start text-lg px-2 py-1 text-smokewt bg-black/50 rounded-sm">
-                      {media.name ?? media.title}
-                    </h1>
-                  </span>
                 </div>
               );
             })}
+            {<div id="modal" className="absolute w-[500px] bg-black"></div>}
           </div>
 
           {/* ARROW RIGHT */}

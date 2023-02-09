@@ -139,7 +139,7 @@ interface IContext {
   setModalOpen: Dispatch<SetStateAction<boolean>>;
 }
 
-export interface MovieDetails {
+export interface MovieDetails extends SerieDetails {
   adult: boolean;
   backdrop_path: string | null;
   belongs_to_collection: null | {};
@@ -148,7 +148,6 @@ export interface MovieDetails {
   homepage: string | null;
   id: number;
   imdb_id: string | null;
-  name?: string;
   original_language: string;
   original_title: string;
   overview: string | null;
@@ -213,7 +212,7 @@ interface Token {
 interface Langs {
   [key: string]: string;
 }
-export interface SerieDetails {
+export interface SerieDetails extends MovieDetails {
   backdrop_path: string;
   created_by: CreatedBy[];
   episode_run_time: number[];

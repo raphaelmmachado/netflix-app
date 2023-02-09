@@ -17,16 +17,16 @@ export default function VerticalScroller({
   return (
     <>
       <aside className="vertical-scroller">
+        {/* GO UP */}
         <div
           tabIndex={0}
           id="prev-component-button"
           className="vertical-scroller-arrows"
           onClick={() => goUp()}
-          // onKeyDown={(e) => enterKeyPressed(e.code) && goUp()}
         >
           <ChevronUpIcon className="w-8 h-8" />
         </div>
-
+        {/* BARS */}
         {[...Array(bars).fill(" ")].map((bar, i, arr) => (
           <div
             onClick={() => setIndex(i)}
@@ -37,12 +37,12 @@ export default function VerticalScroller({
             } `}
           ></div>
         ))}
+        {/* GO DOWN */}
         <div
           tabIndex={0}
           id="next-component-button"
           className="vertical-scroller-arrows"
           onClick={() => goDown()}
-          // onKeyDown={(e) => enterKeyPressed(e.code) && goDown()}
         >
           <ChevronDownIcon className="w-8 h-8" />
         </div>

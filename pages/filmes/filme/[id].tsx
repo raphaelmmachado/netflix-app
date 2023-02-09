@@ -1,9 +1,8 @@
 import { GetServerSideProps } from "next";
-import { useState } from "react";
 import Header from "../../../components/header/Header";
 import { IVideo, IVideoRequest, MovieDetails, YTitems } from "../../../typing";
 import getMovieDetails from "../../../utils/getMovieDetails";
-import IndividualMedia from "../../../components/individual_media/IndividualMedia";
+import IndividualMovie from "../../../components/individual_media/IndividualMovie";
 import Head from "next/head";
 import useHeader from "../../../hooks/useHeader";
 import { getServerSideTrailers } from "../../../utils/getTrailers";
@@ -13,7 +12,6 @@ interface Props {
   trailer: IVideo[];
 }
 export default function App({ details, trailer }: Props) {
-  const [media] = useState(details);
   const transparentNav = useHeader();
   return (
     <>
@@ -33,7 +31,7 @@ export default function App({ details, trailer }: Props) {
             : "bg-opacity-100"
         }`}
       />
-      <IndividualMedia details={media} trailer={trailer} />
+      <IndividualMovie details={details} trailer={trailer} />
     </>
   );
 }

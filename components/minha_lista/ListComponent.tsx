@@ -1,11 +1,9 @@
 //hooks
-import { useState, useContext, useCallback, useEffect } from "react";
-import { ref, set } from "firebase/database";
-import { useAuthState } from "react-firebase-hooks/auth";
-import { auth, database } from "../../utils/firebaseConfig";
+import { useContext } from "react";
+import useList from "../../hooks/useList";
 //context
+import { Context } from "../../context/ContextProvider";
 //components
-import Image from "next/image";
 import MovieSlider from "../home/slider/MovieSlider";
 import BannerText from "../home/banner/BannerText";
 import PlayButton from "../home/banner/PlayButton";
@@ -15,20 +13,16 @@ import DetailsButton from "../home/banner/DetailsButton";
 import { Media } from "../../typing";
 //constants
 import tmdbApiConfig from "../../constants/apiConfiguration";
-import { Context } from "../../context/ContextProvider";
-import ArrowUpIcon from "@heroicons/react/24/solid/ArrowUpIcon";
 
 interface Props {
-  medias: Media[];
   children?: JSX.Element | JSX.Element[];
   title: string;
 }
 
-export default function ListComponent({ medias, title }: Props) {
-  const [user] = useAuthState(auth);
-
+export default function ListComponent({ title }: Props) {
   const { selectedMedia, setShowVideoModal, myList, setMyList } =
     useContext(Context);
+  const { writeUserList } = useList();
 
   // add movie to user list
   const handleAddToList = (movie: Media) => {
@@ -41,20 +35,10 @@ export default function ListComponent({ medias, title }: Props) {
     }
     writeUserList();
   };
-
-  const writeUserList = useCallback(async () => {
-    if (myList.length > 0)
-      await set(ref(database, `${user?.uid}/list`), myList);
-  }, [myList]);
-
-  useEffect(() => {
-    writeUserList();
-  }, [writeUserList]);
-
+  //image url
   const BASE_URL = tmdbApiConfig.images.secure_base_url;
   const SIZE = tmdbApiConfig.images.backdrop_sizes[2];
 
-  //
   return (
     <>
       {selectedMedia && (
@@ -107,7 +91,7 @@ export default function ListComponent({ medias, title }: Props) {
                 </div>
               </section>
             </div>
-            <MovieSlider medias={medias} title={title} />
+            <MovieSlider medias={myList} title={title} />
           </div>
         </main>
       )}

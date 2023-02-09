@@ -1,15 +1,8 @@
 //hooks //context
-import {
-  Dispatch,
-  SetStateAction,
-  useContext,
-  useCallback,
-  useEffect,
-} from "react";
+import { Dispatch, SetStateAction, useContext, useEffect } from "react";
 import { Context } from "../../context/ContextProvider";
 import { useSwipeable } from "react-swipeable";
-import { ref, set } from "firebase/database";
-import { useAuthState } from "react-firebase-hooks/auth";
+import useList from "../../hooks/useList";
 //components
 import MovieSlider from "./slider/MovieSlider";
 import BannerText from "./banner/BannerText";
@@ -25,7 +18,6 @@ import { Media } from "../../typing";
 import tmdbApiConfig from "../../constants/apiConfiguration";
 //utils
 import addMovieToList from "../../utils/addMediaToList";
-import { auth, database, fetchDB } from "../../utils/firebaseConfig";
 
 interface Props {
   medias: Media[];
@@ -45,8 +37,6 @@ export default function MainContainer({
   index,
   setIndex,
 }: Props) {
-  const [user] = useAuthState(auth);
-
   const {
     selectedMedia,
     setSelectedMedia,
@@ -56,37 +46,21 @@ export default function MainContainer({
     setModalOpen,
   } = useContext(Context);
 
+  // function to add item to firebase database
+  const { writeUserList } = useList();
+
   // change index when user swipes
   const swipeHandler = useSwipeable({
     onSwipedUp: () =>
       setIndex((prev) => (prev + 1 > bars - 1 ? prev : prev + 1)),
     onSwipedDown: () => setIndex((prev) => (prev - 1 < 0 ? prev : prev - 1)),
   });
-
-  // when component loads, get items from firebase and put it in context list
-  const getList = useCallback(
-    () =>
-      fetchDB(`${user?.uid}/list`)
-        .then((res: Media[]) => setMyList(res))
-        .catch((e) => console.log(e)),
-    [myList]
-  );
-
+  // select first movie of the slider as the default
   useEffect(() => {
     setSelectedMedia(medias[0]);
-    getList();
   }, []);
 
-  // put list on firebase DB
-  const writeUserList = useCallback(async () => {
-    if (myList && myList.length > 0)
-      await set(ref(database, `${user?.uid}/list`), myList);
-  }, [myList]);
-
-  useEffect(() => {
-    writeUserList();
-  }, [writeUserList]);
-
+  //tmdb image url
   const BASE_URL = tmdbApiConfig.images.secure_base_url;
   const SIZE = tmdbApiConfig.images.backdrop_sizes[2];
 
@@ -119,6 +93,7 @@ export default function MainContainer({
                       setModalOpen(true);
                     }}
                   />
+
                   <ListButton
                     added={
                       myList &&

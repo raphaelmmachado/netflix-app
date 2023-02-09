@@ -1,26 +1,25 @@
 import { ref, set } from "firebase/database";
+import { useCallback, useContext, useEffect } from "react";
 import { useAuthState } from "react-firebase-hooks/auth";
-
-import { useCallback, useEffect, useContext } from "react";
 import { Context } from "../context/ContextProvider";
 import { Media } from "../typing";
 import { auth, database, fetchDB } from "../utils/firebaseConfig";
 
-export default function GetList() {
+export default function useList() {
   const { myList, setMyList } = useContext(Context);
   const [user] = useAuthState(auth);
-
+  // when component loads, get items from firebase and put it in context list
   const getList = useCallback(
     () =>
       fetchDB(`${user?.uid}/list`)
-        .then((res: Media[]) => setMyList(res))
+        .then((res: Media[]) => res.length > 0 && setMyList(res))
         .catch((e) => console.log(e)),
     [myList]
   );
 
   useEffect(() => {
     getList();
-  }, []);
+  }, [user]);
 
   // put list on firebase DB
   const writeUserList = useCallback(async () => {
@@ -31,5 +30,5 @@ export default function GetList() {
   useEffect(() => {
     writeUserList();
   }, [writeUserList]);
-  return myList;
+  return { writeUserList, getList, myList };
 }
