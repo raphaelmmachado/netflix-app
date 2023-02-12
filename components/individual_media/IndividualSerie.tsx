@@ -51,8 +51,12 @@ export default function IndividualSerie({ details, trailer }: Props) {
             <MediaHeader
               title={details.name}
               originalTitle={details.original_name}
-              release={FormateDateToBR(details.first_air_date)}
-              last={FormateDateToBR(details.last_air_date)}
+              release={FormateDateToBR(details.first_air_date, {
+                dateStyle: "medium",
+              })}
+              last={FormateDateToBR(details.last_air_date, {
+                dateStyle: "short",
+              })}
               genres={details.genres}
             />
             <RatingBox votes={details.vote_average.toFixed(1)} />
@@ -91,11 +95,15 @@ export default function IndividualSerie({ details, trailer }: Props) {
             />
             <TitleDesc
               title={"Estreou em"}
-              value={FormateDateToBR(details.first_air_date)}
+              value={FormateDateToBR(details.first_air_date, {
+                dateStyle: "medium",
+              })}
             />
             <TitleDesc
               title={"Ultimo episódio em"}
-              value={FormateDateToBR(details.last_air_date)}
+              value={FormateDateToBR(details.last_air_date, {
+                dateStyle: "medium",
+              })}
             />
             <br />
           </div>

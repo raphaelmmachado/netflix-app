@@ -24,11 +24,11 @@ export async function getTrailers({ mediaType, type, id }: Props) {
       )
       .then((res) => res);
 
-    if (status !== 200) console.warn(statusText);
+    if (status !== 200) console.warn("Failed to get trailers");
 
     return data;
   } catch (e) {
-    return console.error(e);
+    return console.warn("Failed to get trailers");
   }
 }
 export async function getServerSideTrailers({ mediaType, type, id }: Props) {
@@ -41,10 +41,10 @@ export async function getServerSideTrailers({ mediaType, type, id }: Props) {
       )
       .then((res) => res);
 
-    if (status !== 200) console.warn(statusText);
+    if (status !== 200) console.warn("Failed to get trailers");
 
     return data;
   } catch (e) {
-    return console.error(e);
+    return console.error("Failed to get trailers");
   }
 }

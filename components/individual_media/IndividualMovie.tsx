@@ -50,7 +50,9 @@ export default function IndividualMovie({ details, trailer }: Props) {
             <MediaHeader
               title={details.title}
               originalTitle={details.original_title}
-              release={FormateDateToBR(details.release_date)}
+              release={FormateDateToBR(details.release_date, {
+                dateStyle: "medium",
+              })}
               genres={details.genres}
             />
             <RatingBox votes={details.vote_average.toFixed(1)} />

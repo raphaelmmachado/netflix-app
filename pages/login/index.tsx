@@ -15,7 +15,10 @@ import FacebookIcon from "../../components/auth/FacebookIcon";
 import GoogleIcon from "../../components/auth/GoogleIcon";
 //utils
 import { getGuestSesssionID, storeSessionId } from "../../utils/requestToken";
-
+import tmdbConfig from "../../constants/apiConfiguration";
+const BASE_URL = tmdbConfig.images.secure_base_url;
+const LOGO_SIZE = tmdbConfig.images.logo_sizes[3];
+const NETFLIX_LOGO = "/wwemzKWzjKYJFfCeiB57q3r4Bcm.png";
 export default function Login() {
   const googleProvider = new GoogleAuthProvider();
   const facebookProvider = new FacebookAuthProvider();
@@ -88,7 +91,7 @@ export default function Login() {
        p-12 rounded-md  min-h-[600px] absolute"
         >
           <Image
-            src={"/assets/NetflixLogoSvg.svg"}
+            src={`${BASE_URL}${LOGO_SIZE}${NETFLIX_LOGO}`}
             width={280}
             height={150}
             alt="netflix-logo"
@@ -103,11 +106,9 @@ export default function Login() {
           <div className="flex flex-col gap-6">
             <button
               onClick={() =>
-                loginWithGoogle()
-                  // FIXME uncomment me
-                  .then((res) =>
-                    route.push("/").catch((err) => console.error(err))
-                  )
+                loginWithGoogle().then((res) =>
+                  route.push("/").catch((err) => console.error(err))
+                )
               }
               className="socials-buttons mx-8"
             >

@@ -19,30 +19,30 @@
     from-black via-black/70 to-black/25 absolute h-full w-full pt-20;
   }
   .banner-center {
-    @apply flex flex-col sm:flex-row justify-between items-center;
+    @apply flex flex-col sm:flex-row justify-center sm:justify-between items-center flex-grow;
   }
   .banner-center-left {
     @apply flex flex-col justify-center gap-4 md:py-4
     px-4 md:px-14;
   }
-  .banner-center-left-text {
-    @apply text-white text-start font-bold line-clamp-3 md:line-clamp-1
-    text-4xl md:text-5xl pb-2;
+  .banner-center-left-title {
+    @apply text-white text-start font-bold line-clamp-2
+    text-3xl sm:text-4xl lg:text-5xl pb-2;
   }
   .banner-center-left-smallinfo {
     @apply flex items-center gap-8 text-sm lg:text-base;
   }
   .banner-center-left-description {
-    @apply text-white/80 max-w-fit text-base md:text-lg  
-    md:max-w-[50vw] line-clamp-5 md:line-clamp-4 lg:line-clamp-3 tracking-wide;
+    @apply text-white/80 max-w-fit  
+    md:max-w-[50vw] line-clamp-2 sm:line-clamp-3 tracking-wide;
   }
   .banner-center-left-buttons {
-    @apply grid grid-flow-col place-content-center place-items-center md:place-content-start
+    @apply grid grid-flow-col place-content-start 
      text-sm sm:text-base gap-2 sm:gap-6;
   }
   .banner-button {
     @apply flex flex-row items-center justify-evenly
-     gap-2 text-black font-bold px-2 py-2 md:py-2 md:px-6
+     gap-2 text-black font-bold px-4 py-2 md:py-2 md:px-6
     rounded-md;
   }
   .header-nav {
@@ -50,7 +50,7 @@
      p-4 md:py-6 md:px-16;
   }
   .header-nav-left {
-    @apply flex gap-8 items-center;
+    @apply flex gap-8 items-center text-sm sm:text-base;
   }
   .header-nav-ul {
     @apply flex text-smokewt gap-3 items-center;
@@ -62,14 +62,14 @@
     @apply flex justify-between px-6;
   }
   .slider-section {
-    @apply md:py-2;
+    @apply sm:py-2;
   }
   .slider-section-header {
     @apply px-4 lg:px-14;
   }
   .slider-title {
     @apply text-xl tracking-wide font-bold
-    border-l-4 border-red pl-2 mb-2 md:mb-0;
+    border-l-4 border-red pl-2 mb-2 md:mb-0 hidden sm:block;
   }
   .card {
     @apply max-h-fit 
@@ -79,10 +79,11 @@
     @apply relative flex flex-col justify-end items-center;
   }
   .vertical-scroller {
-    @apply flex flex-col self-start sm:self-auto items-center gap-2 lg:px-8;
+    @apply flex flex-col self-center sm:self-auto
+     items-center gap-2  px-4 sm:py-0;
   }
   .vertical-scroller-bars {
-    @apply hidden sm:inline-flex w-2  h-0 sm:h-5 hover:cursor-pointer transition-transform;
+    @apply hover:cursor-pointer transition-transform;
   }
   .vertical-scroller-arrows {
     @apply cursor-pointer;

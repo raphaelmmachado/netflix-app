@@ -9,13 +9,14 @@ import VideoLinks from "./video/VideoLinks";
 // typing
 import { IVideo, MediaType, YTIds } from "../../typing";
 //utils
+import { movieGenres, tvGenres } from "../../constants/genres";
 import { getTrailers } from "../../utils/getTrailers";
 import { searchYoutubeVideos } from "../../utils/searchYoutubeVideos";
 import apiConfiguration from "../../constants/apiConfiguration";
 import mostSpokenLanguages from "../../constants/mostSpokenLanguages";
+import VideoTags from "./video/VideoTags";
 const base_url = apiConfiguration.images.secure_base_url;
 const size = apiConfiguration.images.poster_sizes[2];
-const langs = mostSpokenLanguages;
 
 export default function VideoModal({ mediaType }: MediaType) {
   const { selectedMedia, showVideoModal, setShowVideoModal, setModalOpen } =
@@ -38,24 +39,35 @@ export default function VideoModal({ mediaType }: MediaType) {
         .then(({ results }: Results) => {
           if (results.length < 1) {
             setDBVideos(undefined);
-            //FIXME uncomment this
-            // searchOnYT();
+            searchOnYT();
           } else {
             setDBVideos(results);
           }
         })
-        .catch((error) => console.log(error));
+        .catch((error) =>
+          console.log({
+            error: error,
+            mensagem:
+              "Não encontramos video em português. Usaremos API do youtube para buscar videos",
+          })
+        );
 
     return () => setDBVideos(undefined);
   }, [showVideoModal]);
 
   //if not search on youtube
   function searchOnYT() {
+    let query = "";
+    if (selectedMedia?.title) {
+      query = `filme ${selectedMedia.title} trailer teaser oficial`;
+    }
+    if (selectedMedia?.name || selectedMedia?.original_name) {
+      query = `serie ${
+        selectedMedia.name ?? selectedMedia.original_name
+      } cena trailer oficial`;
+    }
     selectedMedia &&
-      searchYoutubeVideos(
-        `${selectedMedia.title ?? selectedMedia.name} trailer oficial`,
-        "snippet"
-      )
+      searchYoutubeVideos(query, "snippet")
         .then((res: YTIds[]) => {
           setYTAPIVideos(res);
         })
@@ -73,22 +85,13 @@ export default function VideoModal({ mediaType }: MediaType) {
                   selectedMedia.name ??
                   selectedMedia.original_name}
               </h1>
-              <div className="flex gap-1">
-                {selectedMedia?.original_language && (
-                  <span className=" bg-midgray w-fit font-thin px-2 rounded-md ">
-                    {langs[selectedMedia.original_language]}
-                  </span>
-                )}
-                {selectedMedia?.release_date && (
-                  <span className="bg-midgray w-fit font-thin px-2 rounded-md">
-                    {selectedMedia?.release_date.substring(0, 4)}
-                  </span>
-                )}
-              </div>
+
               <span className="flex items-center gap-3">
-                <button onClick={() => setShowVideo(false)}>
-                  <FilmIcon className="w-7 h-7 text-white  hover:bg-gray/30 rounded-sm" />
-                </button>
+                {showVideo && (
+                  <button onClick={() => setShowVideo(false)}>
+                    <FilmIcon className="w-7 h-7 text-white  hover:bg-gray/30 rounded-sm" />
+                  </button>
+                )}
 
                 <button
                   onClick={() => {
@@ -113,21 +116,19 @@ export default function VideoModal({ mediaType }: MediaType) {
                   }}
                 />
               ) : (
-                <article className="flex justify-between p-4 bg-black">
-                  <div>
+                <article className="grid grid-rows-1 grid-cols-2 place-content-center place-items-start p-4 bg-black">
+                  <div className="font-thin place-self-center">
                     {" "}
-                    <p className="max-w-[400px] font-thin">
-                      {selectedMedia.overview}
-                    </p>
+                    <p>{selectedMedia.overview}</p>
                   </div>
-
                   <Image
                     src={`${base_url}${size}/${selectedMedia?.poster_path}`}
                     width={170}
                     height={285}
                     alt="poster image"
-                    className=""
+                    className="place-self-center"
                   />
+                  <VideoTags mediaType={mediaType} />
                 </article>
               )}
             </main>
@@ -153,8 +154,8 @@ export default function VideoModal({ mediaType }: MediaType) {
                     return (
                       <VideoLinks
                         key={i}
-                        site={"Youtube"}
-                        type={"YT Video"}
+                        site={"YouTube"}
+                        type={"Youtube"}
                         onClick={() => {
                           setVideoIndex(i);
                           setShowVideo(true);

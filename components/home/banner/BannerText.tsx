@@ -1,12 +1,13 @@
 import Image from "next/image";
-
+import { tvGenres, movieGenres } from "../../../constants/genres";
+import FormateDateToBR from "../../../utils/formatDate";
 interface Props {
   title: string;
   description: string;
   rating: number | string;
-  release_date: string | Date | number;
-  typeOfShow: string | boolean | undefined;
-  firstAired: string | Date | undefined;
+  release_date: string;
+  mediaType: "tv" | "movie";
+  genres: number[];
 }
 
 export default function BannerText({
@@ -14,31 +15,32 @@ export default function BannerText({
   description,
   rating,
   release_date,
-  firstAired,
-  typeOfShow,
+  genres,
+  mediaType,
 }: Props) {
   return (
     <>
       {" "}
-      <h1 className="banner-center-left-text" id="banner-text-h1">
+      <h1 className="banner-center-left-title " id="banner-text-h1">
         {title}
       </h1>
       <div
         className="banner-center-left-smallinfo"
         id="banner-text-small-text-info"
       >
-        <p className="text-def_green-400 ">Avaliação {rating} </p>{" "}
+        <p className={`${rating > 5 ? "text-def_green-300" : "text-smokewt"}`}>
+          Avaliação {rating.toString()}
+        </p>{" "}
         {release_date && (
           <p className="text-gray">
-            Lançamento {release_date.toString().substring(0, 4)}
+            {`${
+              mediaType === "movie" ? "Lançado em " : "Estreou em "
+            }${FormateDateToBR(release_date, {
+              dateStyle: "medium",
+            }).toString()}`}
           </p>
         )}
-        {!release_date && firstAired && (
-          <p className="text-gray">
-            Estreou em {firstAired.toString().substring(0, 4)}
-          </p>
-        )}
-        {typeOfShow && (
+        {
           <div className="flex gap-1 items-center">
             <Image
               alt="netflix-logo"
@@ -46,9 +48,9 @@ export default function BannerText({
               width={20}
               src={"/favicon.ico"}
             />
-            <span>{typeOfShow === "tv" ? "Série" : "Filme"}</span>
+            <span>{mediaType === "tv" ? "Série" : "Filme"}</span>
           </div>
-        )}
+        }
       </div>
       <p
         className="banner-center-left-description"
@@ -56,6 +58,17 @@ export default function BannerText({
       >
         {description}
       </p>
+      <div className="flex gap-1">
+        {genres.map((item, i, arr) => (
+          <span key={i} className="text-gray">
+            {`${
+              mediaType === "movie"
+                ? movieGenres[item].name
+                : tvGenres[item].name
+            }${i !== arr.length - 1 && arr.length > 1 ? ` · ` : ""}`}
+          </span>
+        ))}
+      </div>
     </>
   );
 }

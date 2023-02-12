@@ -1,13 +1,21 @@
+//react / next
 import { useEffect, useState, useContext } from "react";
-import { Context } from "../../context/ContextProvider";
+import { useRouter } from "next/router";
 import Image from "next/image";
-import useWindowSize from "../../hooks/useWindowSize";
-import NavLinks from "./NavLinks";
+//firebase
 import { useAuthState } from "react-firebase-hooks/auth";
 import { auth } from "../../utils/firebaseConfig";
-import { useRouter } from "next/router";
+//context
+import { Context } from "../../context/ContextProvider";
+//custom hook
+import useWindowSize from "../../hooks/useWindowSize";
+//components
+import NetflixLogo from "../NetflixLogo";
+import NavLinks from "./NavLinks";
 import LogoutIcon from "@heroicons/react/20/solid/ArrowRightOnRectangleIcon";
+//utils
 import enterKeyPressed from "../../utils/checkKeyboardKeys";
+
 interface Props {
   className: string;
 }
@@ -37,28 +45,31 @@ export default function Header({ className }: Props) {
       <nav className={`header-nav ${className}`}>
         <div className="header-nav-left flex" id="nav--left-div">
           {mobile ? (
-            <Image
+            <div
+              className="w-0 px-4 hover:cursor-pointer"
+              tabIndex={0}
               onClick={() => router.push("/")}
               onKeyDown={(e) => enterKeyPressed(e.code) && router.push("/")}
-              src="/favicon.ico"
-              alt="logo"
-              width={32}
-              height={32}
-              className="hover:cursor-pointer"
-              tabIndex={0}
-            />
+            >
+              <NetflixLogo
+                svg={{ width: "120", height: "50", fill: "none" }}
+                path={{ fill: "#b9090b" }}
+                rect={{ width: "80", height: "140", fill: "white" }}
+              />
+            </div>
           ) : (
-            <Image
-              onKeyDown={(e) => enterKeyPressed(e.code) && router.push("/")}
-              onClick={() => router.push("/")}
-              src="/assets/NetflixLogoSvg.svg"
-              alt="logo"
-              width={111}
-              height={30}
-              priority
+            <div
               className="hover:cursor-pointer"
               tabIndex={0}
-            />
+              onKeyDown={(e) => enterKeyPressed(e.code) && router.push("/")}
+              onClick={() => router.push("/")}
+            >
+              <NetflixLogo
+                svg={{ width: "111", height: "50", fill: "none" }}
+                path={{ fill: "#b9090b" }}
+                rect={{ width: "500", height: "140", fill: "white" }}
+              />
+            </div>
           )}
           <ul className="header-nav-ul">
             <NavLinks title="Séries" path="/series/1" />

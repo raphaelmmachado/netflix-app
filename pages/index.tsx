@@ -7,7 +7,7 @@ import Loading from "../components/auth/Loading";
 //types
 import { IRequests, IComponents } from "../typing";
 //utils
-import { requests } from "../constants/requests";
+import { requests } from "../constants/serverSideRequests";
 //hooks
 import { useAuthState } from "react-firebase-hooks/auth";
 import { auth } from "../utils/firebaseConfig";
@@ -15,24 +15,22 @@ import useScroll from "../hooks/useScroll";
 import Header from "../components/header/Header";
 export default function App({
   trendingNow,
-  topRated,
-  comedyMovies,
-  horrorMovies,
+  topRatedMovies,
   actionMovies,
-  trendingSeries,
-  popularMovies,
+  familyMovies,
+  horrorMovies,
+  topRatedSeries,
+  brazilianMovies,
 }: IRequests) {
-  //TODO SERIES INDIVIDUAL PAGE
-
   // components made of data coming from server
   const COMPONENTS: IComponents[] = [
     [trendingNow, "Em destaque"],
-    [popularMovies, "Filmes populares", "movie"],
-    [trendingSeries, "Series em destaque", "tv"],
-    [topRated, "Melhores avaliados", "movie"],
-    [actionMovies, "Filmes de ação", "movie"],
-    [comedyMovies, "Filmes de comédia", "movie"],
+    [topRatedSeries, "Series de Sucesso", "tv"],
+    [topRatedMovies, "Filmes de Sucesso", "movie"],
+    [actionMovies, "Filmes de Ação", "movie"],
     [horrorMovies, "Filmes de terror", "movie"],
+    [brazilianMovies, "Filmes Nacionais", "movie"],
+    [familyMovies, "Filmes para família", "movie"],
   ];
   // this custom hook increments index if user scrolls down
   // or decrements if scrolls up
@@ -84,30 +82,30 @@ export const getServerSideProps: GetServerSideProps = async (content) => {
   const [
     trendingMovies,
     topRatedMovies,
-    actionMovies,
-    comedyMovies,
+    familyMovies,
     horrorMovies,
-    trendingSeries,
-    popularMovies,
+    topRatedSeries,
+    brazilianMovies,
+    actionMovies,
   ] = await Promise.all([
     fetch(requests.fetchTrending).then((res) => res.json()),
-    fetch(requests.fecthTopRated).then((res) => res.json()),
-    fetch(requests.fetchActionMovies).then((res) => res.json()),
-    fetch(requests.fetchComedyMovies).then((res) => res.json()),
+    fetch(requests.fecthTopRatedMovies).then((res) => res.json()),
+    fetch(requests.fetchFamilyMovies).then((res) => res.json()),
     fetch(requests.fetchHorrorMovies).then((res) => res.json()),
-    fetch(requests.fetchTrendingSeries).then((res) => res.json()),
-    fetch(requests.fetchPopularMovies).then((res) => res.json()),
+    fetch(requests.fetchTopRatedSeries).then((res) => res.json()),
+    fetch(requests.fetchBrazilianMovies).then((res) => res.json()),
+    fetch(requests.fetchActionMovies).then((res) => res.json()),
   ]);
 
   return {
     props: {
-      trendingNow: trendingMovies.results,
-      topRated: topRatedMovies.results,
       actionMovies: actionMovies.results,
-      comedyMovies: comedyMovies.results,
+      trendingNow: trendingMovies.results,
+      topRatedMovies: topRatedMovies.results,
+      familyMovies: familyMovies.results,
       horrorMovies: horrorMovies.results,
-      trendingSeries: trendingSeries.results,
-      popularMovies: popularMovies.results,
+      topRatedSeries: topRatedSeries.results,
+      brazilianMovies: brazilianMovies.results,
     },
   };
 };

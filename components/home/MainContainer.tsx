@@ -82,10 +82,13 @@ export default function MainContainer({
                   title={selectedMedia.title ?? selectedMedia.name}
                   description={selectedMedia.overview}
                   rating={selectedMedia.vote_average.toFixed(1)}
-                  release_date={selectedMedia?.release_date}
-                  firstAired={selectedMedia.first_air_date!}
-                  typeOfShow={selectedMedia.media_type}
+                  release_date={
+                    selectedMedia?.release_date ?? selectedMedia?.first_air_date
+                  }
+                  genres={selectedMedia.genre_ids}
+                  mediaType={selectedMedia.title ? "movie" : "tv"}
                 />
+
                 <div className="banner-center-left-buttons">
                   <PlayButton
                     showModal={() => {
@@ -115,6 +118,7 @@ export default function MainContainer({
               </section>
 
               <VerticalScroller
+                title={title}
                 bars={bars}
                 index={index}
                 setIndex={(i) => setIndex(i)}

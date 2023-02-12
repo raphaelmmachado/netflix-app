@@ -23,7 +23,7 @@ interface IMovieSlider {
 }
 
 export default function MovieSlider({ medias, title }: IMovieSlider) {
-  const [itemsPerScreen, setItemsPerScreen] = useState(4);
+  const [itemsPerScreen, setItemsPerScreen] = useState(5);
   const [sliderIndex, setSliderIndex] = useState(0);
   const [progressBarItems, setProgressBarItems] = useState(0);
 
@@ -106,21 +106,24 @@ export default function MovieSlider({ medias, title }: IMovieSlider) {
             {/* CARDS */}
             {medias.map((media: Media, i) => {
               return (
-                <div className="card" key={i}>
+                <div
+                  className="card hover:cursor-pointer group"
+                  key={i}
+                  onClickCapture={() => selectAMedia(media)}
+                  onKeyDownCapture={(e) =>
+                    enterKeyPressed(e.code) && selectAMedia(media)
+                  }
+                >
                   <Image
                     tabIndex={i}
-                    onClick={() => selectAMedia(media)}
-                    onKeyDown={(e) =>
-                      enterKeyPressed(e.code) && selectAMedia(media)
-                    }
                     src={`${imgUrl}${backdropSize[1]}/${media.backdrop_path}`}
                     alt="movie-pic"
                     width={315}
                     height={177}
-                    className="hover:cursor-pointer rounded-md ring-black hover:ring-white ring-2"
+                    className="hover:cursor-pointer rounded-md ring-black group-hover:ring-white ring-2"
                   />
                   <span className="absolute w-[98%]">
-                    <h1 className="text-start text-lg px-2 py-1 text-smokewt bg-black/50 rounded-sm">
+                    <h1 className="text-start text-sm sm:text-base md:text-lg px-2 py-1 text-smokewt bg-black/50 rounded-sm">
                       {media.name ?? media.title}
                     </h1>
                   </span>

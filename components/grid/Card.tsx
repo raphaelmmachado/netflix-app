@@ -7,7 +7,8 @@ import { Media } from "../../typing";
 import apiConfiguration from "../../constants/apiConfiguration";
 import FormateDateToBR from "../../utils/formatDate";
 import DetailsButton from "../home/banner/DetailsButton";
-
+import { movieGenres, tvGenres } from "../../constants/genres";
+import PosterImage from "./PosterImage";
 interface Props {
   media: Media;
   mediaType: "tv" | "movie";
@@ -36,13 +37,16 @@ export default function Card({ media, mediaType }: Props) {
         onMouseLeave={() => setShowButtons(false)}
         onFocus={() => setShowButtons(true)}
       >
-        <Image
-          className="rounded-sm  border-2 border-gray/20"
+        {media.adult && (
+          <span className="bg-def_black rounded-md text-smokewt absolute px-2 m-1">
+            18
+          </span>
+        )}
+        <PosterImage
           src={`${url}${posterSize}/${media.poster_path}`}
-          width={185}
-          height={185}
-          alt={media.name ?? media.original_title}
+          alt={media.title ?? media.name}
         />
+
         {showButtons && (
           <>
             <PlayButton
@@ -63,20 +67,37 @@ export default function Card({ media, mediaType }: Props) {
             />
           </>
         )}
-        <p className="absolute w-full text-center text-sm p-1 text-white/80 line-clamp-3">
-          {media.title ?? media.name}
-          {" · "}
-          <span className="text-midgray text-sm">
-            {media.release_date
-              ? FormateDateToBR(media.release_date).toString().substring(6)
-              : media.first_air_date &&
-                FormateDateToBR(media.first_air_date).toString().substring(6)}
-          </span>
-          {" · "}
-          <span className="text-def_green-400 text-sm">
-            {media.vote_average}
-          </span>
-        </p>
+        <div className="absolute w-full text-center text-sm p-1 text-white/80 line-clamp-3">
+          <>
+            {media.title ?? media.name}
+            {" · "}
+            <span className="text-midgray text-sm">
+              {media.release_date
+                ? FormateDateToBR(media.release_date, {
+                    year: "numeric",
+                  }).toString()
+                : media.first_air_date &&
+                  FormateDateToBR(media.first_air_date, {
+                    year: "numeric",
+                  }).toString()}
+            </span>
+            {" · "}
+            <span className="text-def_green-400 text-sm">
+              {media.vote_average.toFixed(1).toString()}
+            </span>
+            {media.genre_ids.length > 0 &&
+              typeof media.genre_ids[0] === "number" &&
+              (mediaType === "movie" ? (
+                <p className="text-sm text-midgray">
+                  {movieGenres[media.genre_ids[0]]?.name}
+                </p>
+              ) : (
+                <p className="text-sm text-midgray">
+                  {tvGenres[media.genre_ids[0]]?.name}
+                </p>
+              ))}
+          </>
+        </div>
       </div>
     </>
   );

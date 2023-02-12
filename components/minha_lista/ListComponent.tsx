@@ -13,6 +13,7 @@ import DetailsButton from "../home/banner/DetailsButton";
 import { Media } from "../../typing";
 //constants
 import tmdbApiConfig from "../../constants/apiConfiguration";
+import VideoModal from "../modal/VideoModal";
 
 interface Props {
   children?: JSX.Element | JSX.Element[];
@@ -57,8 +58,8 @@ export default function ListComponent({ title }: Props) {
                   description={selectedMedia.overview}
                   rating={selectedMedia.vote_average.toFixed(1)}
                   release_date={selectedMedia?.release_date}
-                  typeOfShow={selectedMedia.media_type}
-                  firstAired={selectedMedia.first_air_date!}
+                  genres={selectedMedia.genre_ids}
+                  mediaType={selectedMedia.title ? "movie" : "tv"}
                 />
                 <div className="banner-center-left-buttons">
                   <PlayButton
@@ -93,6 +94,7 @@ export default function ListComponent({ title }: Props) {
             </div>
             <MovieSlider medias={myList} title={title} />
           </div>
+          <VideoModal mediaType={selectedMedia.title ? "movie" : "tv"} />
         </main>
       )}
     </>

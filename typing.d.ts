@@ -6,24 +6,24 @@ interface IComponents {
 [];
 
 export interface Media {
-  poster_path: string | null;
   adult: boolean;
-  id: number;
-  name?: string;
-  title: string;
-  overview: string;
   backdrop_path: string | null;
   genre_ids: number[];
-  video?: boolean;
-  trailer: IVideo[];
-  media_type?: boolean | string;
-  vote_average: number;
-  vote_count: number;
-  popularity: number;
-  release_date: string;
-  first_air_date?: Date | string;
+  id: number;
   original_language: string;
   original_title: string;
+  overview: string;
+  popularity: number;
+  poster_path: string | null;
+  release_date: string;
+  title: string;
+  video?: boolean;
+  vote_average: number;
+  vote_count: number;
+  media_type?: string;
+  name?: string;
+  trailer: IVideo[];
+  first_air_date?: Date | string;
   origin_country?: string[];
   original_name?: string;
 }
@@ -103,24 +103,19 @@ interface IRequests {
   apiConfiguration?: string;
   trendingNow: Media[];
   netflixOriginals: Media[];
-  topRated: Media[];
-  actionMovies: Media[];
-  comedyMovies: Media[];
+  topRatedMovies: Media[];
+  familyMovies: Media[];
   horrorMovies: Media[];
-  romanceMovies?: Media[];
-  documentaries?: Media[];
-  discoverMovie?: Media[];
-  trendingSeries: Media[];
-  popularMovies: Media[];
-  trendingNowTrailers: IResultsTrailers[];
-  netflixOriginalsTrailers: IResultsTrailers[];
-  topRatedTrailers: IResultsTrailers[];
-  actionMoviesTrailers: IResultsTrailers[];
-  comedyMovieTrailers: IResultsTrailers[];
-  horrorMovieTrailers: IResultsTrailers[];
-  romanceMoviesTrailers: IResultsTrailers[];
-  trendingSeriesTrailers: IResultsTrailers[];
-  popularMoviesTrailers: IResultsTrailers[];
+  topRatedSeries: Media[];
+  brazilianMovies: Media[];
+  actionMovies: Media[];
+  // trendingNowTrailers: IResultsTrailers[];
+  // netflixOriginalsTrailers: IResultsTrailers[];
+  // topRatedTrailers: IResultsTrailers[];
+  // comedyMovieTrailers: IResultsTrailers[];
+  // horrorMovieTrailers: IResultsTrailers[];
+  // trendingSeriesTrailers: IResultsTrailers[];
+  // popularMoviesTrailers: IResultsTrailers[];
 }
 interface MediaType {
   mediaType?: "tv" | "movie";

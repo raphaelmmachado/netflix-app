@@ -66,6 +66,8 @@ Para resolver o problema de que alguns filmes não possuir trailer em português
 
 Na página de filmes e séries, usei o recurso do Nextjs onde posso criar páginas dinamicas de acordo com o id passado na URL. Então eu fiz uma função que faz o fetch da página de filmes da TMDB de acordo com esse id da URL.
 
-## Problemas para consetar
+Achei o site useHooks e criei um custom hook para fazer fetch apenas quando terminar de digitar ao buscar um filme
+
+## Problemas para consertar
 
 Ao atualizar a página "minha lista" a lista de filme fica vazia, mesmo que tenha items. Deve ser algum problema de "effect", tentei de todas formas usar useEffect mas sempre termina em loop infinito. Então enquanto não conserto eu fiz que a página seja redirecionada para tela inicial se a lista estiver vazia

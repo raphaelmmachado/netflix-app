@@ -12,12 +12,12 @@ export async function searchYoutubeVideos(
   try {
     const { secret } = await getYTAPIsecret().then((res) => res);
     const { data, status, statusText } = await axios(
-      `${BASE_URL}key=${secret}&q=${query}&type=video&maxResults=5&regionCode=BR&videoEmbeddable=true&part=${part}`
+      `${BASE_URL}key=${secret}&q=${query}&type=video&maxResults=3&regionCode=BR&videoEmbeddable=true&part=${part}`
     ).then((res) => res);
     if (status !== 200) console.warn(statusText);
     return data.items;
   } catch (error) {
-    console.error(error);
+    console.error("Failed to get youtube videos");
   }
 }
 export function searchServerSideYTVideo(query: string, part: "id" | "snippet") {

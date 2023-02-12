@@ -10,7 +10,7 @@ const requestToken = async () => {
     const { secret } = await getSecret().then((res) => res);
     const { data }: TokenRequest = await axios.get(`${url}${secret}`);
   } catch (err) {
-    console.error(err);
+    console.error("failed to request token");
   }
 };
 
@@ -23,7 +23,7 @@ const getGuestSesssionID = async () => {
     const { data }: GuestSessionIDRequest = await axios.get(`${url}${secret}`);
     return data;
   } catch (err) {
-    console.error(err);
+    console.error("failed to request token");
   }
 };
 

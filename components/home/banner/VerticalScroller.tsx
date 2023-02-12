@@ -6,6 +6,7 @@ interface Props {
   setIndex: (i: number) => void;
   bars: number;
   index: number;
+  title: string;
 }
 export default function VerticalScroller({
   goUp,
@@ -13,6 +14,7 @@ export default function VerticalScroller({
   setIndex,
   bars,
   index,
+  title,
 }: Props) {
   return (
     <>
@@ -21,7 +23,9 @@ export default function VerticalScroller({
         <div
           tabIndex={0}
           id="prev-component-button"
-          className="vertical-scroller-arrows"
+          className={`vertical-scroller-arrows ${
+            index - 1 < 0 ? "text-transparent cursor-default" : "block"
+          }`}
           onClick={() => goUp()}
         >
           <ChevronUpIcon className="w-8 h-8" />
@@ -33,15 +37,21 @@ export default function VerticalScroller({
             id="vertical-bars"
             key={i}
             className={`vertical-scroller-bars ${
-              index === i ? "bg-red" : "bg-white/50"
+              index === i
+                ? "bg-transparent sm:bg-red h-5 w-fit sm:w-2"
+                : "bg-white/50 hidden sm:inline-flex h-0 w-2 sm:h-5"
             } `}
-          ></div>
+          >
+            <h1 className="block sm:hidden">{index === i && title}</h1>
+          </div>
         ))}
         {/* GO DOWN */}
         <div
           tabIndex={0}
           id="next-component-button"
-          className="vertical-scroller-arrows"
+          className={`vertical-scroller-arrows ${
+            index + 1 > bars - 1 ? "text-transparent cursor-default" : "block"
+          }`}
           onClick={() => goDown()}
         >
           <ChevronDownIcon className="w-8 h-8" />
