@@ -1,15 +1,14 @@
-import { GetServerSideProps } from "next";
-import { Media } from "../../typing";
-import { movieRequests } from "../../constants/moviesRequests";
-//TODO  CRIAR BUSCA PARA SERIES []
-import Header from "../../components/header/Header";
-
-import MediaGrid from "../../components/grid/MediaGrid";
 import Head from "next/head";
-import { useState } from "react";
 import { useRouter } from "next/router";
+import { GetServerSideProps } from "next";
+import { useState, lazy, Suspense } from "react";
 import SearchInput from "../../components/grid/SearchInput";
-import Footer from "../../components/grid/Footer";
+import Header from "../../components/header/Header";
+const Footer = lazy(() => import("../../components/grid/Footer"));
+const MediaGrid = lazy(() => import("../../components/grid/MediaGrid"));
+import { movieRequests } from "../../constants/moviesRequests";
+import { Media } from "../../typing";
+
 interface Props {
   series: Media[];
   page: number | undefined;
@@ -52,11 +51,15 @@ export default function App({ series, page }: Props) {
       />
 
       {searchResults.length > 0 ? (
-        <MediaGrid medias={searchResults!} mediaType="tv" />
+        <Suspense>
+          <MediaGrid medias={searchResults!} mediaType="tv" />
+        </Suspense>
       ) : (
         <MediaGrid medias={series} mediaType="tv" />
       )}
-      <Footer page={page} nextPage={nextPage} previousPage={previousPage} />
+      <Suspense>
+        <Footer page={page} nextPage={nextPage} previousPage={previousPage} />
+      </Suspense>
     </main>
   );
 }

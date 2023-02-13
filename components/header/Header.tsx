@@ -14,7 +14,6 @@ import NetflixLogo from "../NetflixLogo";
 import NavLinks from "./NavLinks";
 import LogoutIcon from "@heroicons/react/20/solid/ArrowRightOnRectangleIcon";
 //utils
-import enterKeyPressed from "../../utils/checkKeyboardKeys";
 
 interface Props {
   className: string;
@@ -49,7 +48,11 @@ export default function Header({ className }: Props) {
               className="w-0 px-4 hover:cursor-pointer"
               tabIndex={0}
               onClick={() => router.push("/")}
-              onKeyDown={(e) => enterKeyPressed(e.code) && router.push("/")}
+              onKeyDown={(e) => {
+                import("../../utils/checkKeyboardKeys").then(
+                  (module) => module.default(e.code) && router.push("/")
+                );
+              }}
             >
               <NetflixLogo
                 svg={{ width: "120", height: "50", fill: "none" }}
@@ -61,7 +64,11 @@ export default function Header({ className }: Props) {
             <div
               className="hover:cursor-pointer"
               tabIndex={0}
-              onKeyDown={(e) => enterKeyPressed(e.code) && router.push("/")}
+              onKeyDown={(e) =>
+                import("../../utils/checkKeyboardKeys").then(
+                  (module) => module.default(e.code) && router.push("/")
+                )
+              }
               onClick={() => router.push("/")}
             >
               <NetflixLogo
@@ -85,7 +92,10 @@ export default function Header({ className }: Props) {
               <div
                 onClick={() => setModal((prev) => !prev)}
                 onKeyDown={(e) =>
-                  enterKeyPressed(e.code) && setModal((prev) => !prev)
+                  import("../../utils/checkKeyboardKeys").then(
+                    (module) =>
+                      module.default(e.code) && setModal((prev) => !prev)
+                  )
                 }
                 className="flex items-center gap-2"
               >
@@ -109,8 +119,11 @@ export default function Header({ className }: Props) {
                     auth.signOut().then(() => router.push("/login"));
                   }}
                   onKeyDown={(e) =>
-                    enterKeyPressed(e.code) &&
-                    auth.signOut().then(() => router.push("/login"))
+                    import("../../utils/checkKeyboardKeys").then(
+                      (module) =>
+                        module.default(e.code) &&
+                        auth.signOut().then(() => router.push("/login"))
+                    )
                   }
                   tabIndex={0}
                   className="w-fit bg-red text-white flex absolute top-12 -right-0

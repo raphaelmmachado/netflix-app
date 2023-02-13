@@ -1,9 +1,8 @@
-import { useContext } from "react";
+import { useContext, lazy, Suspense } from "react";
 import { Context } from "../../context/ContextProvider";
-import VideoModal from "../modal/VideoModal";
-import { MediaType, Media } from "../../typing";
+import { Media } from "../../typing";
 import Card from "./Card";
-
+const VideoModal = lazy(() => import("../modal/VideoModal"));
 interface Props {
   medias: Media[];
   mediaType: "tv" | "movie";
@@ -22,7 +21,11 @@ export default function MediaGrid({ medias, mediaType }: Props) {
           return <Card key={media.id} media={media} mediaType={mediaType!} />;
         })}
       </section>
-      {showVideoModal && selectedMedia && <VideoModal mediaType={mediaType} />}
+      <Suspense>
+        {showVideoModal && selectedMedia && (
+          <VideoModal mediaType={mediaType} />
+        )}
+      </Suspense>
     </>
   );
 }

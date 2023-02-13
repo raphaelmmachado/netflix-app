@@ -33,7 +33,7 @@ export default function MediaComponent({
           id="modal-video"
           className="aspect-video w-full"
           src={`https://www.youtube.com/embed/${youtubeVideos[videoIndex].id.videoId}`}
-          title={youtubeVideos[videoIndex].snippet.title}
+          title="Video gerado pelo youtube"
           allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
           allowFullScreen
         ></iframe>

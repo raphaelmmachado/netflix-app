@@ -27,14 +27,14 @@
   }
   .banner-center-left-title {
     @apply text-white text-start font-bold line-clamp-2
-    text-3xl sm:text-4xl lg:text-5xl pb-2;
+    text-3xl sm:text-4xl pb-2;
   }
   .banner-center-left-smallinfo {
     @apply flex items-center gap-8 text-sm lg:text-base;
   }
   .banner-center-left-description {
     @apply text-white/80 max-w-fit  
-    md:max-w-[50vw] line-clamp-2 sm:line-clamp-3 tracking-wide;
+    md:max-w-md lg:max-w-lg line-clamp-2 sm:line-clamp-3 tracking-wide;
   }
   .banner-center-left-buttons {
     @apply grid grid-flow-col place-content-start 

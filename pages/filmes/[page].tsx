@@ -1,14 +1,14 @@
 import { GetServerSideProps } from "next";
-import { useState } from "react";
+import { useState, lazy, Suspense } from "react";
 import { useRouter } from "next/router";
 import { Media } from "../../typing";
 import { movieRequests } from "../../constants/moviesRequests";
 import Header from "../../components/header/Header";
-import MediaGrid from "../../components/grid/MediaGrid";
+// import MediaGrid from "../../components/grid/MediaGrid";
 import Head from "next/head";
 import SearchInput from "../../components/grid/SearchInput";
-import Footer from "../../components/grid/Footer";
-
+const Footer = lazy(() => import("../../components/grid/Footer"));
+const MediaGrid = lazy(() => import("../../components/grid/MediaGrid"));
 interface Props {
   movies: Media[];
   page: number | undefined;
@@ -52,11 +52,15 @@ export default function App({ movies, page }: Props) {
       />
 
       {searchResults.length > 0 ? (
-        <MediaGrid medias={searchResults!} mediaType="movie" />
+        <Suspense>
+          <MediaGrid medias={searchResults!} mediaType="movie" />
+        </Suspense>
       ) : (
         <MediaGrid medias={movies} mediaType="movie" />
       )}
-      <Footer page={page} nextPage={nextPage} previousPage={previousPage} />
+      <Suspense>
+        <Footer page={page} nextPage={nextPage} previousPage={previousPage} />
+      </Suspense>
     </main>
   );
 }

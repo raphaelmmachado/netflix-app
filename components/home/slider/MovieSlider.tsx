@@ -116,7 +116,7 @@ export default function MovieSlider({ medias, title }: IMovieSlider) {
                 >
                   <Image
                     tabIndex={i}
-                    src={`${imgUrl}${backdropSize[1]}/${media.backdrop_path}`}
+                    src={`${imgUrl}${backdropSize[0]}/${media.backdrop_path}`}
                     alt="movie-pic"
                     width={315}
                     height={177}

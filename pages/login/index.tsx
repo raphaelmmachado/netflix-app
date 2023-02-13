@@ -2,68 +2,17 @@
 import Head from "next/head";
 import Image from "next/image";
 import { useRouter } from "next/router";
-//firebase
-import {
-  GoogleAuthProvider,
-  FacebookAuthProvider,
-  signInWithPopup,
-} from "firebase/auth";
-import { auth } from "../../utils/firebaseConfig";
+
 // cookies
 // icons
 import FacebookIcon from "../../components/auth/FacebookIcon";
 import GoogleIcon from "../../components/auth/GoogleIcon";
 //utils
-import { getGuestSesssionID, storeSessionId } from "../../utils/requestToken";
-import tmdbConfig from "../../constants/apiConfiguration";
-const BASE_URL = tmdbConfig.images.secure_base_url;
-const LOGO_SIZE = tmdbConfig.images.logo_sizes[3];
-const NETFLIX_LOGO = "/wwemzKWzjKYJFfCeiB57q3r4Bcm.png";
-export default function Login() {
-  const googleProvider = new GoogleAuthProvider();
-  const facebookProvider = new FacebookAuthProvider();
+import NetflixLogo from "../../components/NetflixLogo";
 
+export default function Login() {
   const route = useRouter();
 
-  const loginWithGoogle = async () => {
-    try {
-      await getGuestSesssionID()
-        .then(
-          (res) =>
-            res?.guest_session_id && storeSessionId(null, res?.guest_session_id)
-        )
-        .catch((err) => console.error(err));
-
-      const result = await signInWithPopup(auth, googleProvider);
-      return result;
-    } catch (error: any) {
-      // Handle Errors here.
-      const errorCode = error.code;
-      const errorMessage = error.message;
-      // The email of the user's account used.
-      const email = error?.customData.email;
-      // The AuthCredential type that was used.
-      const credential = GoogleAuthProvider.credentialFromError(error);
-      // ...
-      console.error({ errorCode, errorMessage, email, credential });
-    }
-  };
-  const loginWithFacebook = async () => {
-    try {
-      const result = await signInWithPopup(auth, facebookProvider);
-      return result;
-    } catch (error: any) {
-      // Handle Errors here.
-      const errorCode = error.code;
-      const errorMessage = error.message;
-      // The email of the user's account used.
-      const email = error?.customData.email;
-      // The AuthCredential type that was used.
-      const credential = FacebookAuthProvider.credentialFromError(error);
-      // ...
-      console.error(errorCode, errorMessage, email, credential);
-    }
-  };
   const bg =
     "https://genotipia.com/wp-content/uploads/2020/04/Netflix-Background-prueba-1-1536x864.jpg";
 
@@ -87,16 +36,13 @@ export default function Login() {
           className="absolute opacity-30"
         />
         <section
-          className="flex flex-col justify-around gap-4
+          className="flex flex-col justify-around items-center gap-4
        p-12 rounded-md  min-h-[600px] absolute"
         >
-          <Image
-            src={`${BASE_URL}${LOGO_SIZE}${NETFLIX_LOGO}`}
-            width={280}
-            height={150}
-            alt="netflix-logo"
-            priority
-            className="self-center object-cover "
+          <NetflixLogo
+            svg={{ height: "150", width: "280", fill: "none" }}
+            path={{ fill: "#B9090B" }}
+            rect={{ width: "500", height: "135", fill: "none" }}
           />
           <h1 className="text-2xl break-words">
             Filmes, séries e muito mais.{" "}
@@ -106,9 +52,13 @@ export default function Login() {
           <div className="flex flex-col gap-6">
             <button
               onClick={() =>
-                loginWithGoogle().then((res) =>
-                  route.push("/").catch((err) => console.error(err))
-                )
+                import("../../utils/login").then((module) => {
+                  module
+                    .loginWithGoogle()
+                    .then((res) =>
+                      route.push("/").catch((err) => console.error(err))
+                    );
+                })
               }
               className="socials-buttons mx-8"
             >
@@ -116,9 +66,13 @@ export default function Login() {
             </button>
             <button
               onClick={() =>
-                loginWithFacebook().then((res) =>
-                  route.push("/").catch((err) => console.error(err))
-                )
+                import("../../utils/login").then((module) => {
+                  module
+                    .loginWithFacebook()
+                    .then((res) =>
+                      route.push("/").catch((err) => console.error(err))
+                    );
+                })
               }
               className="socials-buttons mx-8"
             >

@@ -24,6 +24,7 @@
 - Server Side Rendering
 - Hydration
 - Props Interface
+- Code Splitting
 
 ## Maiores dificuldades?
 
@@ -67,6 +68,10 @@ Para resolver o problema de que alguns filmes não possuir trailer em português
 Na página de filmes e séries, usei o recurso do Nextjs onde posso criar páginas dinamicas de acordo com o id passado na URL. Então eu fiz uma função que faz o fetch da página de filmes da TMDB de acordo com esse id da URL.
 
 Achei o site useHooks e criei um custom hook para fazer fetch apenas quando terminar de digitar ao buscar um filme
+
+Depois que comecei a entender como a api funciona para filmes e series ficou mais facil.
+
+Percebi que o Next estava me alertando que o carregamento do javascript estava muito pesado, então, pesquisei como deixar o javascript mais leve, descobri sobre "code splitting", então assisti a esse vídeo e consegui implementar.
 
 ## Problemas para consertar
 

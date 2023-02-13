@@ -58,7 +58,7 @@ export default function BannerText({
       >
         {description}
       </p>
-      <div className="flex gap-1">
+      <div className="flex gap-1 text-sm lg:text-base">
         {genres.map((item, i, arr) => (
           <span key={i} className="text-gray">
             {`${

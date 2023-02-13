@@ -32,9 +32,9 @@ export default function VideoSection({
 
     serieDetails ||
       (movieDetails &&
-        searchYoutubeVideos(query, "snippet")
-          .then((res: YTIds[]) => {
-            setYoutubeVideos(res);
+        searchYoutubeVideos(query)
+          .then((res) => {
+            res && setYoutubeVideos(res);
           })
           .catch((err) => console.log(err)));
   }

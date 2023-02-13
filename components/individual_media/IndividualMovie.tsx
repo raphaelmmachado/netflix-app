@@ -1,23 +1,21 @@
 //react / next
-import { useState, useEffect } from "react";
+import { lazy, Suspense } from "react";
 import Image from "next/image";
 //components
 import MediaHeader from "./subcomponents/MediaHeader";
 import TitleDesc from "./subcomponents/TitleDesc";
 import RatingBox from "./subcomponents/RatingBox";
+const VideoSection = lazy(() => import("./subcomponents/VideoSection"));
 //constants / utils
 import tmdbApiConfig from "../../constants/apiConfiguration";
 import mostSpokenLanguages from "../../constants/mostSpokenLanguages";
-import { IVideo, MovieDetails, YTIds } from "../../typing";
+import { IVideo, MovieDetails } from "../../typing";
 import FormateDateToBR from "../../utils/formatDate";
 import formatToCurrency from "../../utils/formatToCurrency";
 import calculateRuntime from "../../utils/calculateRuntime";
-import VideoSection from "./subcomponents/VideoSection";
-
 const BASE_URL = tmdbApiConfig.images.secure_base_url;
-const BACKDROP_SIZE = tmdbApiConfig.images.backdrop_sizes[3];
-const POSTER_SIZE = tmdbApiConfig.images.poster_sizes[3];
-const LOGO_SIZE = tmdbApiConfig.images.logo_sizes[3];
+const BACKDROP_SIZE = tmdbApiConfig.images.backdrop_sizes;
+const POSTER_SIZE = tmdbApiConfig.images.poster_sizes;
 interface Props {
   details: MovieDetails;
   trailer: IVideo[];
@@ -32,14 +30,27 @@ export default function IndividualMovie({ details, trailer }: Props) {
         className="bg-black min-h-[40vh] md:min-h-[55vh] 
       relative z-0"
       >
-        <Image
-          src={`${BASE_URL}${BACKDROP_SIZE}/${details.backdrop_path}`}
-          alt="backdrop"
-          fill
-          priority
-          sizes="100vw"
-          className="object-cover aspect-video  shadow-2xl"
-        />{" "}
+        <Suspense
+          fallback={
+            <Image
+              src={`${BASE_URL}${BACKDROP_SIZE[0]}/${details.backdrop_path}`}
+              alt="backdrop"
+              fill
+              priority
+              sizes="100vw"
+              className="object-cover aspect-video  shadow-2xl"
+            />
+          }
+        >
+          <Image
+            src={`${BASE_URL}${BACKDROP_SIZE[3]}/${details.backdrop_path}`}
+            alt="backdrop"
+            fill
+            priority
+            sizes="100vw"
+            className="object-cover aspect-video  shadow-2xl"
+          />
+        </Suspense>{" "}
       </header>
       <main
         className="absolute pt-2 w-full min-h-screen
@@ -67,15 +78,29 @@ export default function IndividualMovie({ details, trailer }: Props) {
         </section>
         <br />
         <section className="flex md:justify-center ">
-          <Image
-            src={`${BASE_URL}${POSTER_SIZE}/${details.poster_path}`}
-            alt="poster"
-            width={235}
-            height={180}
-            className=" md:absolute shadow-2xl
+          <Suspense
+            fallback={
+              <Image
+                src={`${BASE_URL}${POSTER_SIZE[0]}/${details.poster_path}`}
+                alt="poster"
+                width={235}
+                height={180}
+                className=" md:absolute shadow-2xl
            mr-4 rounded-md
            md:-top-24 md:left-4"
-          />
+              />
+            }
+          >
+            <Image
+              src={`${BASE_URL}${POSTER_SIZE[3]}/${details.poster_path}`}
+              alt="poster"
+              width={235}
+              height={180}
+              className=" md:absolute shadow-2xl
+           mr-4 rounded-md
+           md:-top-24 md:left-4"
+            />
+          </Suspense>
           <div className="grid md:grid-cols-4 place-content-start gap-4">
             <TitleDesc
               title={"Duração"}
@@ -96,8 +121,9 @@ export default function IndividualMovie({ details, trailer }: Props) {
           </div>
         </section>
         <br />
-
-        <VideoSection movieDetails={details} trailer={trailer} />
+        <Suspense>
+          <VideoSection movieDetails={details} trailer={trailer} />
+        </Suspense>
         <br />
       </main>
     </>

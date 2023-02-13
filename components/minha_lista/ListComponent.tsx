@@ -1,5 +1,5 @@
 //hooks
-import { useContext } from "react";
+import { useContext, lazy, Suspense } from "react";
 import useList from "../../hooks/useList";
 //context
 import { Context } from "../../context/ContextProvider";
@@ -9,11 +9,9 @@ import BannerText from "../home/banner/BannerText";
 import PlayButton from "../home/banner/PlayButton";
 import ListButton from "../home/banner/ListButton";
 import DetailsButton from "../home/banner/DetailsButton";
-//types
-import { Media } from "../../typing";
+const VideoModal = lazy(() => import("../modal/VideoModal"));
 //constants
 import tmdbApiConfig from "../../constants/apiConfiguration";
-import VideoModal from "../modal/VideoModal";
 
 interface Props {
   children?: JSX.Element | JSX.Element[];
@@ -25,17 +23,6 @@ export default function ListComponent({ title }: Props) {
     useContext(Context);
   const { writeUserList } = useList();
 
-  // add movie to user list
-  const handleAddToList = (movie: Media) => {
-    if (myList.some((item) => item.id === movie.id)) {
-      setMyList((prevList: Media[]) =>
-        [...prevList].filter((item) => item.id !== movie.id)
-      );
-    } else {
-      setMyList((prevList: Media[]) => [...prevList, movie]);
-    }
-    writeUserList();
-  };
   //image url
   const BASE_URL = tmdbApiConfig.images.secure_base_url;
   const SIZE = tmdbApiConfig.images.backdrop_sizes[2];
@@ -73,7 +60,10 @@ export default function ListComponent({ title }: Props) {
                       myList.some((item) => item.id === selectedMedia.id)
                     }
                     addToList={() => {
-                      handleAddToList(selectedMedia);
+                      import("../../utils/addMediaToList").then((module) =>
+                        module.default(selectedMedia, myList, setMyList)
+                      );
+                      writeUserList();
                     }}
                   />
 
@@ -94,7 +84,9 @@ export default function ListComponent({ title }: Props) {
             </div>
             <MovieSlider medias={myList} title={title} />
           </div>
-          <VideoModal mediaType={selectedMedia.title ? "movie" : "tv"} />
+          <Suspense>
+            <VideoModal mediaType={selectedMedia.title ? "movie" : "tv"} />
+          </Suspense>
         </main>
       )}
     </>

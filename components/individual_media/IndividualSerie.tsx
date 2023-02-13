@@ -1,15 +1,19 @@
 import Image from "next/image";
-import mostSpokenLanguages from "../../constants/mostSpokenLanguages";
+import { lazy, Suspense } from "react";
+//type
 import { IVideo, SerieDetails } from "../../typing";
-import calculateRuntime from "../../utils/calculateRuntime";
-import tmdbApiConfig from "../../constants/apiConfiguration";
+//comps
+const VideoSection = lazy(() => import("./subcomponents/VideoSection"));
+const Seasons = lazy(() => import("./subcomponents/Seasons"));
+const Creators = lazy(() => import("./subcomponents/Creators"));
 import TitleDesc from "./subcomponents/TitleDesc";
 import MediaHeader from "./subcomponents/MediaHeader";
-import FormateDateToBR from "../../utils/formatDate";
 import RatingBox from "./subcomponents/RatingBox";
-import Creators from "./subcomponents/Creators";
-import Seasons from "./subcomponents/Seasons";
-import VideoSection from "./subcomponents/VideoSection";
+//utils
+import mostSpokenLanguages from "../../constants/mostSpokenLanguages";
+import tmdbApiConfig from "../../constants/apiConfiguration";
+import FormateDateToBR from "../../utils/formatDate";
+import calculateRuntime from "../../utils/calculateRuntime";
 
 interface Props {
   details: SerieDetails;
@@ -20,26 +24,37 @@ export default function IndividualSerie({ details, trailer }: Props) {
     details.episode_run_time[0]!
   );
   const langs = mostSpokenLanguages;
-  const hasTrailers = trailer.length > 0;
 
   const BASE_URL = tmdbApiConfig.images.secure_base_url;
-  const BACKDROP_SIZE = tmdbApiConfig.images.backdrop_sizes[3];
-  const POSTER_SIZE = tmdbApiConfig.images.poster_sizes[3];
-  const SMALL_POSTER_SIZE = tmdbApiConfig.images.poster_sizes[2];
-  const LOGO_SIZE = tmdbApiConfig.images.logo_sizes[3];
+  const BACKDROP_SIZE = tmdbApiConfig.images.backdrop_sizes;
+  const POSTER_SIZE = tmdbApiConfig.images.poster_sizes;
+
   const PROFILE_SIZE = tmdbApiConfig.images.profile_sizes[1];
   return (
     <>
       {" "}
       <header className="bg-black min-h-[40vh] md:min-h-[55vh] relative z-0">
-        <Image
-          src={`${BASE_URL}${BACKDROP_SIZE}/${details.backdrop_path}`}
-          alt="backdrop"
-          fill
-          sizes="100vw"
-          priority
-          className="object-cover aspect-video shadow-2xl"
-        />
+        <Suspense
+          fallback={
+            <Image
+              src={`${BASE_URL}${BACKDROP_SIZE[0]}/${details.backdrop_path}`}
+              alt="backdrop"
+              fill
+              sizes="100vw"
+              priority
+              className="object-cover aspect-video shadow-2xl"
+            />
+          }
+        >
+          <Image
+            src={`${BASE_URL}${BACKDROP_SIZE[3]}/${details.backdrop_path}`}
+            alt="backdrop"
+            fill
+            sizes="100vw"
+            priority
+            className="object-cover aspect-video shadow-2xl"
+          />
+        </Suspense>
         <br />
       </header>
       <main
@@ -109,19 +124,19 @@ export default function IndividualSerie({ details, trailer }: Props) {
           </div>
           <br />
         </section>
-        <Seasons
-          img_URL={`${BASE_URL}${POSTER_SIZE}/`}
-          seasons={details.seasons}
-        />
-        <br />
-        <VideoSection serieDetails={details} trailer={trailer} />
-
-        {/* <PosterSlider posters={details.seasons} /> */}
-        <Creators
-          creators={details.created_by}
-          img_URL={`${BASE_URL}${PROFILE_SIZE}/`}
-        />
-        <br />
+        <Suspense>
+          <Seasons
+            img_URL={`${BASE_URL}${POSTER_SIZE}/`}
+            seasons={details.seasons}
+          />
+          <br />
+          <VideoSection serieDetails={details} trailer={trailer} />
+          <Creators
+            creators={details.created_by}
+            img_URL={`${BASE_URL}${PROFILE_SIZE}/`}
+          />
+          <br />
+        </Suspense>
       </main>
     </>
   );

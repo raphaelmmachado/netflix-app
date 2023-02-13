@@ -9,11 +9,9 @@ import VideoLinks from "./video/VideoLinks";
 // typing
 import { IVideo, MediaType, YTIds } from "../../typing";
 //utils
-import { movieGenres, tvGenres } from "../../constants/genres";
 import { getTrailers } from "../../utils/getTrailers";
 import { searchYoutubeVideos } from "../../utils/searchYoutubeVideos";
 import apiConfiguration from "../../constants/apiConfiguration";
-import mostSpokenLanguages from "../../constants/mostSpokenLanguages";
 import VideoTags from "./video/VideoTags";
 const base_url = apiConfiguration.images.secure_base_url;
 const size = apiConfiguration.images.poster_sizes[2];
@@ -67,9 +65,9 @@ export default function VideoModal({ mediaType }: MediaType) {
       } cena trailer oficial`;
     }
     selectedMedia &&
-      searchYoutubeVideos(query, "snippet")
-        .then((res: YTIds[]) => {
-          setYTAPIVideos(res);
+      searchYoutubeVideos(query)
+        .then((res) => {
+          res && setYTAPIVideos(res);
         })
         .catch((err) => console.log(err));
   }

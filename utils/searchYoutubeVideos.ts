@@ -1,25 +1,26 @@
-import axios from "axios";
-import { readFile } from "fs";
-import { getYTAPIsecret } from "./getSecret";
-const API_KEY = process.env.NEXT_PUBLIC_API_KEY;
+import { YTIds } from "../typing";
 
-const BASE_URL = "https://www.googleapis.com/youtube/v3/search?";
-
-export async function searchYoutubeVideos(
-  query: string,
-  part: "id" | "snippet"
-) {
+export async function searchYoutubeVideos(query: string) {
   try {
-    const { secret } = await getYTAPIsecret().then((res) => res);
-    const { data, status, statusText } = await axios(
-      `${BASE_URL}key=${secret}&q=${query}&type=video&maxResults=3&regionCode=BR&videoEmbeddable=true&part=${part}`
-    ).then((res) => res);
-    if (status !== 200) console.warn(statusText);
-    return data.items;
+    const headers = new Headers({
+      "Content-Type": "application/json",
+    });
+    const init = {
+      method: "POST",
+      headers: headers,
+      body: JSON.stringify({ query: query }),
+    };
+
+    const data: YTIds[] = await fetch(
+      "http://localhost:3000/api/getYoutube",
+      init
+    )
+      .then((res) => res.json())
+      .catch((e) => {
+        return { msg: "erro ao buscar video", err: e };
+      });
+    return data;
   } catch (error) {
     console.error("Failed to get youtube videos");
   }
-}
-export function searchServerSideYTVideo(query: string, part: "id" | "snippet") {
-  return `${BASE_URL}key=${API_KEY}&q=${query}&type=video&maxResults=5&regionCode=BR&videoEmbeddable=true&part=${part}`;
 }

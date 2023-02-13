@@ -37,9 +37,17 @@ export default function VideoTags({ mediaType }: Props) {
               key={i}
               className="bg-midgray w-fit font-thin text-sm  p-1 rounded-md"
             >
-              {mediaType === "movie"
-                ? movieGenres[genre].name
-                : tvGenres[genre].name}
+              <>
+                {!mediaType
+                  ? selectedMedia.media_type === "movie"
+                    ? movieGenres[genre].name
+                    : tvGenres[genre].name
+                  : mediaType === "movie"
+                  ? movieGenres[genre].name
+                  : tvGenres[genre].name}
+                {/* {mediaType === "movie" && movieGenres[genre].name}
+                {mediaType === "tv" && tvGenres[genre].name} */}
+              </>
             </span>
           ))}
       </div>

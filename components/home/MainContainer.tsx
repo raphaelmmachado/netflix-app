@@ -1,5 +1,12 @@
 //hooks //context
-import { Dispatch, SetStateAction, useContext, useEffect } from "react";
+import {
+  Dispatch,
+  SetStateAction,
+  useContext,
+  useEffect,
+  lazy,
+  Suspense,
+} from "react";
 import { Context } from "../../context/ContextProvider";
 import { useSwipeable } from "react-swipeable";
 import useList from "../../hooks/useList";
@@ -9,15 +16,15 @@ import BannerText from "./banner/BannerText";
 import PlayButton from "./banner/PlayButton";
 import ListButton from "./banner/ListButton";
 import DetailsButton from "./banner/DetailsButton";
-import VerticalScroller from "./banner/VerticalScroller";
-import VideoModal from "../modal/VideoModal";
-import Loading from "../auth/Loading";
+//lazy components
+const VerticalScroller = lazy(() => import("./banner/VerticalScroller"));
+const VideoModal = lazy(() => import("../modal/VideoModal"));
+const Loading = lazy(() => import("../auth/Loading"));
+
 //types
 import { Media } from "../../typing";
 //constants
 import tmdbApiConfig from "../../constants/apiConfiguration";
-//utils
-import addMovieToList from "../../utils/addMediaToList";
 
 interface Props {
   medias: Media[];
@@ -103,7 +110,9 @@ export default function MainContainer({
                       myList.some((item) => item.id === selectedMedia.id)
                     }
                     addToList={() => {
-                      addMovieToList(selectedMedia, myList, setMyList);
+                      import("../../utils/addMediaToList").then((module) =>
+                        module.default(selectedMedia, myList, setMyList)
+                      );
                       writeUserList();
                     }}
                   />
@@ -116,26 +125,29 @@ export default function MainContainer({
                   />
                 </div>
               </section>
-
-              <VerticalScroller
-                title={title}
-                bars={bars}
-                index={index}
-                setIndex={(i) => setIndex(i)}
-                goUp={() =>
-                  setIndex((prev: number) => (prev - 1 < 0 ? prev : --prev))
-                }
-                goDown={() =>
-                  setIndex((prev: number) =>
-                    prev + 1 > bars - 1 ? prev : ++prev
-                  )
-                }
-              />
+              <Suspense>
+                <VerticalScroller
+                  title={title}
+                  bars={bars}
+                  index={index}
+                  setIndex={(i) => setIndex(i)}
+                  goUp={() =>
+                    setIndex((prev: number) => (prev - 1 < 0 ? prev : --prev))
+                  }
+                  goDown={() =>
+                    setIndex((prev: number) =>
+                      prev + 1 > bars - 1 ? prev : ++prev
+                    )
+                  }
+                />
+              </Suspense>
             </div>
 
             <MovieSlider medias={medias} title={title} />
           </div>
-          <VideoModal mediaType={mediaType} />
+          <Suspense>
+            <VideoModal mediaType={mediaType} />
+          </Suspense>
         </main>
       ) : (
         <Loading />

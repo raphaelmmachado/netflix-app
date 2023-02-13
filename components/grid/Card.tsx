@@ -1,14 +1,14 @@
-import Image from "next/image";
-import { useState, useContext, useCallback } from "react";
+import { useState, useContext, useCallback, lazy, Suspense } from "react";
 import { Context } from "../../context/ContextProvider";
-import PlayButton from "./PlayButton";
-import AddToListButton from "./AddToListButton";
 import { Media } from "../../typing";
 import apiConfiguration from "../../constants/apiConfiguration";
 import FormateDateToBR from "../../utils/formatDate";
-import DetailsButton from "../home/banner/DetailsButton";
 import { movieGenres, tvGenres } from "../../constants/genres";
-import PosterImage from "./PosterImage";
+const PlayButton = lazy(() => import("./PlayButton"));
+const AddToListButton = lazy(() => import("./AddToListButton"));
+const DetailsButton = lazy(() => import("../home/banner/DetailsButton"));
+const PosterImage = lazy(() => import("./PosterImage"));
+
 interface Props {
   media: Media;
   mediaType: "tv" | "movie";
@@ -26,7 +26,7 @@ export default function Card({ media, mediaType }: Props) {
   );
 
   const url = apiConfiguration.images.base_url;
-  const posterSize = apiConfiguration.images.poster_sizes[3];
+  const posterSize = apiConfiguration.images.poster_sizes;
 
   return (
     <>
@@ -42,20 +42,28 @@ export default function Card({ media, mediaType }: Props) {
             18
           </span>
         )}
-        <PosterImage
-          src={`${url}${posterSize}/${media.poster_path}`}
-          alt={media.title ?? media.name}
-        />
+        <Suspense
+          fallback={
+            <PosterImage
+              src={`${url}${posterSize[0]}/${media.poster_path}`}
+              alt={media.title ?? media.name}
+            />
+          }
+        >
+          <PosterImage
+            src={`${url}${posterSize[3]}/${media.poster_path}`}
+            alt={media.title ?? media.name}
+          />
+        </Suspense>
 
         {showButtons && (
-          <>
+          <Suspense>
             <PlayButton
               showVideo={() => {
                 selectAMovie(media);
                 setShowVideoModal(true);
               }}
             />
-
             <AddToListButton media={media} />
             <DetailsButton
               className="rounded-full absolute flex items-center justify-center
@@ -65,7 +73,7 @@ export default function Card({ media, mediaType }: Props) {
               selectedMediaType={media.media_type}
               iconType={"solid"}
             />
-          </>
+          </Suspense>
         )}
         <div className="absolute w-full text-center text-sm p-1 text-white/80 line-clamp-3">
           <>

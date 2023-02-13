@@ -1,4 +1,4 @@
-//next
+//next / react
 import { GetServerSideProps } from "next";
 import Head from "next/head";
 //components
@@ -12,7 +12,9 @@ import { requests } from "../constants/serverSideRequests";
 import { useAuthState } from "react-firebase-hooks/auth";
 import { auth } from "../utils/firebaseConfig";
 import useScroll from "../hooks/useScroll";
+
 import Header from "../components/header/Header";
+
 export default function App({
   trendingNow,
   topRatedMovies,
@@ -51,7 +53,9 @@ export default function App({
         <meta name="viewport" content="width=device-width, initial-scale=1" />
         <link rel="icon" href="/favicon.ico" />
       </Head>
+
       <Header className="bg-transparent" />
+
       {COMPONENTS.map((component: IComponents, i) => {
         if (i === index) {
           return (
@@ -99,8 +103,8 @@ export const getServerSideProps: GetServerSideProps = async (content) => {
 
   return {
     props: {
-      actionMovies: actionMovies.results,
       trendingNow: trendingMovies.results,
+      actionMovies: actionMovies.results,
       topRatedMovies: topRatedMovies.results,
       familyMovies: familyMovies.results,
       horrorMovies: horrorMovies.results,
