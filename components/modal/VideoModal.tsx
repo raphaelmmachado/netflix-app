@@ -15,8 +15,10 @@ import apiConfiguration from "../../constants/apiConfiguration";
 import VideoTags from "./video/VideoTags";
 const base_url = apiConfiguration.images.secure_base_url;
 const size = apiConfiguration.images.poster_sizes[2];
-
-export default function VideoModal({ mediaType }: MediaType) {
+interface Props {
+  mediaType?: MediaType;
+}
+export default function VideoModal({ mediaType }: Props) {
   const { selectedMedia, showVideoModal, setShowVideoModal, setModalOpen } =
     useContext(Context);
   const [showVideo, setShowVideo] = useState(false);
@@ -29,11 +31,15 @@ export default function VideoModal({ mediaType }: MediaType) {
 
   //check if DB has video
   useEffect(() => {
-    const type = selectedMedia?.media_type;
+    const type = !selectedMedia?.media_type
+      ? selectedMedia?.title
+        ? "movie"
+        : "tv"
+      : selectedMedia?.media_type;
     const id = selectedMedia?.id;
     selectedMedia &&
       id &&
-      getTrailers({ mediaType, type, id })
+      getTrailers(id, type as MediaType, mediaType)
         .then(({ results }: Results) => {
           if (results.length < 1) {
             setDBVideos(undefined);
@@ -69,15 +75,29 @@ export default function VideoModal({ mediaType }: MediaType) {
         .then((res) => {
           res && setYTAPIVideos(res);
         })
-        .catch((err) => console.log(err));
+        .catch((err) => {
+          console.log(err);
+          setYTAPIVideos([]);
+        });
   }
 
   return (
     <>
       {showVideoModal && selectedMedia && (
-        <section id="modal" className="video-modal">
-          <div className="video-modal-container" id="video-modal-container">
-            <header className="video-modal-header" id="modal_header">
+        <section
+          id="modal"
+          className="bg-black/70 fixed w-full h-full
+        flex justify-center items-center z-50 inset-0"
+        >
+          <div
+            className="min-w-[420px] sm:min-w-[615px] md:min-w-[740px] lg:min-w-[990px]
+    rounded-sm flex flex-col border border-gray"
+            id="video-modal-container"
+          >
+            <header
+              className="flex justify-between items-center w-full bg-black px-1"
+              id="modal_header"
+            >
               <h1 className="text-lg">
                 {selectedMedia.title ??
                   selectedMedia.name ??
@@ -161,7 +181,7 @@ export default function VideoModal({ mediaType }: MediaType) {
                       />
                     );
                   })}
-                {!YTAPIVideos && !DBVideos && (
+                {YTAPIVideos.length < 1 && !DBVideos && (
                   <h1 className="text-red pl-1">
                     Não encontramos trailers em português
                   </h1>

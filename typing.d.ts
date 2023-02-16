@@ -74,17 +74,10 @@ interface IRequests {
   topRatedSeries: Media[];
   brazilianMovies: Media[];
   actionMovies: Media[];
-  // trendingNowTrailers: IResultsTrailers[];
-  // netflixOriginalsTrailers: IResultsTrailers[];
-  // topRatedTrailers: IResultsTrailers[];
-  // comedyMovieTrailers: IResultsTrailers[];
-  // horrorMovieTrailers: IResultsTrailers[];
-  // trendingSeriesTrailers: IResultsTrailers[];
-  // popularMoviesTrailers: IResultsTrailers[];
 }
-interface MediaType {
-  mediaType?: "tv" | "movie";
-}
+// interface MediaType {
+//   mediaType?: "tv" | "movie";
+// }
 interface IProvider {
   children: JSX.Element | JSX.Element[] | ReactNode;
 }
@@ -98,7 +91,8 @@ interface IContext {
   modalOpen: boolean;
   setModalOpen: Dispatch<SetStateAction<boolean>>;
 }
-
+type MediaType = "movie" | "tv";
+type MediaDetails = MovieDetails & SerieDetails;
 export interface MovieDetails extends SerieDetails {
   adult: boolean;
   backdrop_path: string | null;
@@ -131,7 +125,20 @@ export interface Genre {
   id: number;
   name: string;
 }
-
+interface IDs {
+  [key: string | number]: {
+    name: string;
+    id: number;
+    slug: string;
+  };
+}
+interface Slug {
+  [key: string]: {
+    id: number;
+    name: string;
+    slug?: string;
+  };
+}
 export interface ProductionCompany {
   id: number;
   logo_path: null | string;
@@ -258,4 +265,25 @@ export interface SpokenLanguage {
   english_name: string;
   iso_639_1: string;
   name: string;
+}
+export interface WatchProvider {
+  link: string;
+  rent?: {
+    display_priority: number;
+    logo_path: string;
+    provider_id: number;
+    provider_name: string;
+  }[];
+  buy?: {
+    display_priority: number;
+    logo_path: string;
+    provider_id: number;
+    provider_name: string;
+  }[];
+  flatrate?: {
+    display_priority: number;
+    logo_path: string;
+    provider_id: number;
+    provider_name: string;
+  }[];
 }

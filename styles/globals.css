@@ -10,115 +10,11 @@
 }
 
 @layer components {
-  .banner {
-    @apply min-h-[100.1vh] relative bg-cover object-cover
-     bg-center bg-no-repeat transition-all ease-linear duration-500;
-  }
-  .banner-wrapper {
-    @apply flex flex-col justify-evenly sm:justify-between bg-gradient-to-r
-    from-black via-black/70 to-black/25 absolute h-full w-full pt-20;
-  }
-  .banner-center {
-    @apply flex flex-col sm:flex-row justify-center sm:justify-between items-center flex-grow;
-  }
-  .banner-center-left {
-    @apply flex flex-col justify-center gap-4 md:py-4
-    px-4 md:px-14;
-  }
-  .banner-center-left-title {
-    @apply text-white text-start font-bold line-clamp-2
-    text-3xl sm:text-4xl pb-2;
-  }
-  .banner-center-left-smallinfo {
-    @apply flex items-center gap-8 text-sm lg:text-base;
-  }
-  .banner-center-left-description {
-    @apply text-white/80 max-w-fit  
-    md:max-w-md lg:max-w-lg line-clamp-2 sm:line-clamp-3 tracking-wide;
-  }
-  .banner-center-left-buttons {
-    @apply grid grid-flow-col place-content-start 
-     text-sm sm:text-base gap-2 sm:gap-6;
-  }
-  .banner-button {
-    @apply flex flex-row items-center justify-evenly
-     gap-2 text-black font-bold px-4 py-2 md:py-2 md:px-6
-    rounded-md;
-  }
-  .header-nav {
-    @apply fixed z-10 top-0 left-0 right-0 flex justify-between items-center
-     p-4 md:py-6 md:px-16;
-  }
-  .header-nav-left {
-    @apply flex gap-8 items-center text-sm sm:text-base;
-  }
-  .header-nav-ul {
-    @apply flex text-smokewt gap-3 items-center;
-  }
-  .header-nav-right {
-    @apply flex items-center gap-2;
-  }
-  .header-nav-mobile {
-    @apply flex justify-between px-6;
-  }
-  .slider-section {
-    @apply sm:py-2;
-  }
-  .slider-section-header {
-    @apply px-4 lg:px-14;
-  }
-  .slider-title {
-    @apply text-xl tracking-wide font-bold
-    border-l-4 border-red pl-2 mb-2 md:mb-0 hidden sm:block;
-  }
-  .card {
-    @apply max-h-fit 
-    relative flex justify-center items-end;
-  }
-  .poster {
-    @apply relative flex flex-col justify-end items-center;
-  }
-  .vertical-scroller {
-    @apply flex flex-col self-center sm:self-auto
-     items-center gap-2  px-4 sm:py-0;
-  }
-  .vertical-scroller-bars {
-    @apply hover:cursor-pointer transition-transform;
-  }
-  .vertical-scroller-arrows {
-    @apply cursor-pointer;
-  }
-  .video-modal {
-    @apply bg-black/70 fixed w-full h-full
-    flex justify-center items-center z-50 inset-0;
-  }
-  .video-modal-container {
-    @apply min-w-[420px] sm:min-w-[615px] md:min-w-[740px] lg:min-w-[990px]
-    rounded-sm flex flex-col border border-gray;
-  }
-  .video-modal-header {
-    @apply flex justify-between items-center w-full bg-black px-1;
-  }
-  .video-modal-header-like-dislike {
-    @apply flex justify-between items-center;
-  }
-  .video-modal-buttons {
-    @apply flex items-center justify-around gap-2
-    text-smokewt font-bold py-2 px-3 rounded-sm hover:bg-gray/30;
-  }
-  .video-modal-movie-links {
-    @apply flex items-center gap-2 cursor-pointer bg-smokewt text-black
-    font-semibold rounded-md text-sm px-2 m-1 shadow-lg w-fit;
-  }
   .icon {
     @apply text-white h-5 w-5;
   }
-  .socials-buttons {
-    @apply bg-white text-black/90 font-bold hover:bg-opacity-80 px-6 py-4
-    text-start rounded-md flex justify-between items-center transition-opacity ease-in delay-150;
-  }
 }
-/* TAILWINDCSS */
+/* CSS RESET */
 
 * {
   margin: 0;
@@ -198,13 +94,6 @@ select {
     transition-duration: 0.01ms !important;
     scroll-behavior: auto !important;
   }
-}
-
-.title-clamp {
-  font-size: clamp(18px, 10vw, 2.5rem);
-}
-.description-clamp {
-  font-size: clamp(14px, 1.3vw, 1.2rem);
 }
 
 /* Hide scrollbar for Chrome, Safari and Opera */

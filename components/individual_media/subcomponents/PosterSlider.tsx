@@ -1,21 +1,13 @@
 //hooks
-import {
-  useState,
-  useEffect,
-  useMemo,
-  CSSProperties,
-  useCallback,
-  useContext,
-} from "react";
+import { useState, useEffect, useMemo, CSSProperties } from "react";
 import { Context } from "../../../context/ContextProvider";
 import Image from "next/image";
 import useWindowSize from "../../../hooks/useWindowSize";
 //utils
 import apiConfiguration from "../../../constants/apiConfiguration";
 //typing
-import { Media, Season } from "../../../typing";
+import { Season } from "../../../typing";
 //components
-import enterKeyPressed from "../../../utils/checkKeyboardKeys";
 
 interface Props {
   posters: Season[];
@@ -55,11 +47,11 @@ export default function MovieSlider({ posters }: Props) {
 
   // This component has css classes mixed with tailwind classes
   return (
-    <section className="slider-section" id="slider-section">
+    <section className="sm:py-2" id="slider-section">
       <main className="flex flex-col gap-3" id="slider-row">
         {/* HEADER */}
 
-        <div className="header slider-section-header">
+        <div className="header px-4 lg:px-14">
           <h2 className="text-midgray text-lg">Temporadas</h2>
           {/* PROGRESS BARS */}
           <div className="progress-bar hidden md:inline-flex">
@@ -97,7 +89,10 @@ export default function MovieSlider({ posters }: Props) {
             {/* CARDS */}
             {posters.map((media: Season, i) => {
               return (
-                <div className="poster" key={i}>
+                <div
+                  className="poster relative flex flex-col justify-end items-center"
+                  key={i}
+                >
                   <Image
                     tabIndex={i}
                     onMouseEnter={() => setShowDescription(true)}

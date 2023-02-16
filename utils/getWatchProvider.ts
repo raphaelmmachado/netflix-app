@@ -4,11 +4,13 @@ const API_KEY = process.env.NEXT_PUBLIC_API_KEY;
 
 export default async function getMovieDetails(
   id?: number | string | string[],
-  mediaType?: number | string | string[]
+  mediaType?: "tv" | "movie"
 ) {
   try {
     const { data, status, statusText } = await axios
-      .get(`${BASE_URL}/${mediaType}/${id}?api_key=${API_KEY}&language=pt-BR`)
+      .get(
+        `${BASE_URL}/${mediaType}/${id}/watch/providers?api_key=${API_KEY}&language=pt-BR`
+      )
       .then((res) => res);
 
     if (status !== 200) console.warn(statusText);

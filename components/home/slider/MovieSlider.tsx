@@ -66,10 +66,15 @@ export default function MovieSlider({ medias, title }: IMovieSlider) {
 
   // This component has css classes mixed with tailwind classes
   return (
-    <section className="slider-section" id="slider-section">
+    <section className="sm:py-2" id="slider-section">
       <main className="flex flex-col gap-3" id="slider-row">
-        <div className="header slider-section-header">
-          <h2 className="slider-title">{title}</h2>
+        <div className="header px-4 lg:px-14">
+          <h2
+            className="text-xl tracking-wide font-bold
+    border-l-4 border-red pl-2 mb-2 md:mb-0 hidden sm:block"
+          >
+            {title}
+          </h2>
           {/* PROGRESS BARS */}
           <div className="progress-bar hidden md:inline-flex">
             {Array(progressBarItems)
@@ -107,7 +112,9 @@ export default function MovieSlider({ medias, title }: IMovieSlider) {
             {medias.map((media: Media, i) => {
               return (
                 <div
-                  className="card hover:cursor-pointer group"
+                  className="card max-h-fit relative flex
+                   justify-center items-end
+                   hover:cursor-pointer group"
                   key={i}
                   onClickCapture={() => selectAMedia(media)}
                   onKeyDownCapture={(e) =>

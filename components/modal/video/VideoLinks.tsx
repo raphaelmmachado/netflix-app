@@ -8,7 +8,11 @@ export default function VideoLinks({ type, site, onClick }: Props) {
   return (
     <>
       {" "}
-      <div className="video-modal-movie-links" onClick={() => onClick()}>
+      <div
+        className="flex items-center gap-2 cursor-pointer bg-smokewt text-black
+    font-semibold rounded-md text-sm px-2 m-1 shadow-lg w-fit"
+        onClick={() => onClick()}
+      >
         <h1>{type}</h1>
         {site === "YouTube" && <YoutubeIcon pathFill="#b9090b" />}
       </div>

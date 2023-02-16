@@ -1,25 +1,21 @@
 import { getSecret } from "./getSecret";
-const API_KEY = process.env.NEXT_PUBLIC_API_KEY;
-
-const BASE_URL = "https://api.themoviedb.org/3";
 import axios from "axios";
+import { MediaType } from "../typing";
+const API_KEY = process.env.NEXT_PUBLIC_API_KEY;
+const BASE_URL = "https://api.themoviedb.org/3";
 
-// https://api.themoviedb.org/3/tv/{tv_id}/videos?api_key=<<api_key>>&language=pt-BR
-// https://api.themoviedb.org/3/movie/{movie_id}/videos?api_key=<<api_key>>&language=pt-BR
-
-interface Props {
-  mediaType?: "tv" | "movie";
-  type: string | boolean | undefined;
-  id: number | string;
-}
-
-export async function getTrailers({ mediaType, type, id }: Props) {
+//TODO SE DER MERDA RESTAURA ISSO AQUI
+export async function getTrailers(
+  id: string | number,
+  type: MediaType,
+  mediaType?: MediaType
+) {
   try {
     const { secret } = await getSecret().then((res) => res);
     const { data, status, statusText } = await axios
       .get(
         `${BASE_URL}/${
-          !mediaType ? type : mediaType
+          mediaType ?? type
         }/${id}/videos?api_key=${secret}&language=pt-BR`
       )
       .then((res) => res);
@@ -31,13 +27,14 @@ export async function getTrailers({ mediaType, type, id }: Props) {
     return console.warn("Failed to get trailers");
   }
 }
-export async function getServerSideTrailers({ mediaType, type, id }: Props) {
+export async function getServerSideTrailers(
+  id: string | number,
+  mediaType: MediaType
+) {
   try {
     const { data, status, statusText } = await axios
       .get(
-        `${BASE_URL}/${
-          !mediaType ? type : mediaType
-        }/${id}/videos?api_key=${API_KEY}&language=pt-BR`
+        `${BASE_URL}/${mediaType}/${id}/videos?api_key=${API_KEY}&language=pt-BR`
       )
       .then((res) => res);
 

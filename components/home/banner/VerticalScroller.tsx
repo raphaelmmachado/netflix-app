@@ -18,12 +18,15 @@ export default function VerticalScroller({
 }: Props) {
   return (
     <>
-      <aside className="vertical-scroller">
+      <aside
+        className="flex flex-col self-center sm:self-auto
+     items-center gap-2  px-4 sm:py-0"
+      >
         {/* GO UP */}
         <div
           tabIndex={0}
           id="prev-component-button"
-          className={`vertical-scroller-arrows ${
+          className={`cursor-pointer ${
             index - 1 < 0 ? "text-transparent cursor-default" : "block"
           }`}
           onClick={() => goUp()}
@@ -36,7 +39,7 @@ export default function VerticalScroller({
             onClick={() => setIndex(i)}
             id="vertical-bars"
             key={i}
-            className={`vertical-scroller-bars ${
+            className={`hover:cursor-pointer transition-transform ${
               index === i
                 ? "bg-transparent sm:bg-red h-5 w-fit sm:w-2"
                 : "bg-white/50 hidden sm:inline-flex h-0 w-2 sm:h-5"
@@ -49,7 +52,7 @@ export default function VerticalScroller({
         <div
           tabIndex={0}
           id="next-component-button"
-          className={`vertical-scroller-arrows ${
+          className={`cursor-pointer ${
             index + 1 > bars - 1 ? "text-transparent cursor-default" : "block"
           }`}
           onClick={() => goDown()}

@@ -62,7 +62,7 @@ export default function VideoSection({
       <section>
         <div
           className="px-4 my-8 rounded-md bg-black/80
-   grid grid-flow-col place-content-center"
+   flex flex-wrap justify-center"
         >
           {trailer.length > 0
             ? trailer.map((item, i) => {

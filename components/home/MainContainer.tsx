@@ -9,7 +9,6 @@ import {
 } from "react";
 import { Context } from "../../context/ContextProvider";
 import { useSwipeable } from "react-swipeable";
-import useList from "../../hooks/useList";
 //components
 import MovieSlider from "./slider/MovieSlider";
 import BannerText from "./banner/BannerText";
@@ -19,7 +18,6 @@ import DetailsButton from "./banner/DetailsButton";
 //lazy components
 const VerticalScroller = lazy(() => import("./banner/VerticalScroller"));
 const VideoModal = lazy(() => import("../modal/VideoModal"));
-const Loading = lazy(() => import("../auth/Loading"));
 
 //types
 import { Media } from "../../typing";
@@ -32,7 +30,7 @@ interface Props {
   title: string;
   bars: number;
   index: number;
-  setIndex: Dispatch<SetStateAction<number>>;
+  setIndex?: Dispatch<SetStateAction<number>>;
   mediaType?: "tv" | "movie";
 }
 
@@ -54,13 +52,15 @@ export default function MainContainer({
   } = useContext(Context);
 
   // function to add item to firebase database
-  const { writeUserList } = useList();
 
   // change index when user swipes
   const swipeHandler = useSwipeable({
-    onSwipedUp: () =>
-      setIndex((prev) => (prev + 1 > bars - 1 ? prev : prev + 1)),
-    onSwipedDown: () => setIndex((prev) => (prev - 1 < 0 ? prev : prev - 1)),
+    onSwipedUp: () => {
+      setIndex && setIndex((prev) => (prev + 1 > bars - 1 ? prev : prev + 1));
+    },
+    onSwipedDown: () => {
+      setIndex && setIndex((prev) => (prev - 1 < 0 ? prev : prev - 1));
+    },
   });
   // select first movie of the slider as the default
   useEffect(() => {
@@ -73,18 +73,30 @@ export default function MainContainer({
 
   return (
     <>
-      {selectedMedia ? (
+      {selectedMedia && (
         <main
           {...swipeHandler}
           id="banner"
-          className="banner"
+          className="min-h-[100.1vh] relative bg-cover object-cover
+          bg-center bg-no-repeat transition-all ease-linear duration-500"
           style={{
             backgroundImage: `url(${BASE_URL}${SIZE}/${selectedMedia?.backdrop_path})`,
           }}
         >
-          <div className="banner-wrapper" id="banner-wrapper">
-            <div className="banner-center" id="banner-center">
-              <section className="banner-center-left" id="banner-center-left">
+          <div
+            className="flex flex-col justify-evenly sm:justify-between bg-gradient-to-r
+    from-black via-black/70 to-black/25 absolute h-full w-full pt-20"
+            id="banner-wrapper"
+          >
+            <div
+              className="flex flex-col sm:flex-row justify-center sm:justify-between items-center flex-grow"
+              id="banner-center"
+            >
+              <section
+                className="flex flex-col justify-center gap-4 md:py-4
+    px-4 md:px-14"
+                id="banner-center-left"
+              >
                 <BannerText
                   title={selectedMedia.title ?? selectedMedia.name}
                   description={selectedMedia.overview}
@@ -96,7 +108,10 @@ export default function MainContainer({
                   mediaType={selectedMedia.title ? "movie" : "tv"}
                 />
 
-                <div className="banner-center-left-buttons">
+                <div
+                  className="grid grid-flow-col place-content-start 
+     text-sm sm:text-base gap-2 sm:gap-6"
+                >
                   <PlayButton
                     showModal={() => {
                       setShowVideoModal(true);
@@ -113,33 +128,41 @@ export default function MainContainer({
                       import("../../utils/addMediaToList").then((module) =>
                         module.default(selectedMedia, myList, setMyList)
                       );
-                      writeUserList();
                     }}
                   />
                   <DetailsButton
                     mediaType={mediaType!}
-                    selectedMediaType={selectedMedia.media_type}
+                    selectedMediaType={
+                      selectedMedia.title && !selectedMedia.name
+                        ? "movie"
+                        : "tv"
+                    }
                     id={selectedMedia.id}
-                    className={"banner-button bg-black text-smokewt"}
+                    slug={selectedMedia?.title ?? selectedMedia.name}
+                    className="flex flex-row items-center justify-evenly
+                    gap-2 font-bold px-4 py-2 md:py-2 md:px-6
+                   rounded-md bg-black text-smokewt"
                     iconType={"outline"}
                   />
                 </div>
               </section>
               <Suspense>
-                <VerticalScroller
-                  title={title}
-                  bars={bars}
-                  index={index}
-                  setIndex={(i) => setIndex(i)}
-                  goUp={() =>
-                    setIndex((prev: number) => (prev - 1 < 0 ? prev : --prev))
-                  }
-                  goDown={() =>
-                    setIndex((prev: number) =>
-                      prev + 1 > bars - 1 ? prev : ++prev
-                    )
-                  }
-                />
+                {setIndex && (
+                  <VerticalScroller
+                    title={title}
+                    bars={bars}
+                    index={index}
+                    setIndex={(i) => setIndex(i)}
+                    goUp={() =>
+                      setIndex((prev: number) => (prev - 1 < 0 ? prev : --prev))
+                    }
+                    goDown={() =>
+                      setIndex((prev: number) =>
+                        prev + 1 > bars - 1 ? prev : ++prev
+                      )
+                    }
+                  />
+                )}
               </Suspense>
             </div>
 
@@ -149,8 +172,6 @@ export default function MainContainer({
             <VideoModal mediaType={mediaType} />
           </Suspense>
         </main>
-      ) : (
-        <Loading />
       )}
     </>
   );

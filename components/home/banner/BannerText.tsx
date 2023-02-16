@@ -21,11 +21,15 @@ export default function BannerText({
   return (
     <>
       {" "}
-      <h1 className="banner-center-left-title " id="banner-text-h1">
+      <h1
+        className="text-white text-start font-bold line-clamp-2
+    text-3xl sm:text-4xl pb-2"
+        id="banner-text-h1"
+      >
         {title}
       </h1>
       <div
-        className="banner-center-left-smallinfo"
+        className="flex items-center gap-8 text-sm lg:text-base"
         id="banner-text-small-text-info"
       >
         <p className={`${rating > 5 ? "text-def_green-300" : "text-smokewt"}`}>
@@ -53,7 +57,8 @@ export default function BannerText({
         }
       </div>
       <p
-        className="banner-center-left-description"
+        className="text-white/80 max-w-fit  
+        md:max-w-md lg:max-w-lg line-clamp-2 sm:line-clamp-3 tracking-wide"
         id="banner-center-left-description"
       >
         {description}

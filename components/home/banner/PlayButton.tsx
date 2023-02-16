@@ -9,7 +9,9 @@ export default function PlayButton({ showModal }: Props) {
       <button
         id="banner-play-button"
         onClick={() => showModal()}
-        className="banner-button
+        className="flex flex-row items-center justify-evenly
+        gap-2 px-4 py-2 md:py-2 md:px-6
+       rounded-md
            bg-red text-smokewt font-normal"
       >
         <PlayIcon className="text-smokewt h-6 w-6" />

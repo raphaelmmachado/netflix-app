@@ -1,13 +1,14 @@
-import Link from "next/link";
 import InfoIconOut from "@heroicons/react/24/outline/InformationCircleIcon";
 import InfoIconSol from "@heroicons/react/24/solid/InformationCircleIcon";
-
+import Link from "next/link";
+import { useRouter } from "next/router";
 interface Props {
   id: string | number;
   selectedMediaType: string | boolean | undefined;
   mediaType?: "tv" | "movie";
   className: string;
   iconType: "solid" | "outline";
+  slug?: string;
 }
 export default function DefaultButton({
   id,
@@ -15,7 +16,10 @@ export default function DefaultButton({
   selectedMediaType,
   className,
   iconType,
+  slug,
 }: Props) {
+  const router = useRouter();
+
   return (
     <>
       {/* CHECKING MEDIA TYPE */}
@@ -23,11 +27,11 @@ export default function DefaultButton({
         href={
           mediaType
             ? mediaType === "movie"
-              ? `/filmes/filme/${id}`
-              : `/series/serie/${id}`
+              ? `/filmes/detalhes/${id}`
+              : `/series/detalhes/${id}`
             : selectedMediaType === "movie"
-            ? `/filmes/filme/${id}`
-            : `/series/serie/${id}`
+            ? `/filmes/detalhes/${id}`
+            : `/series/detalhes/${id}`
         }
         className={className}
       >
@@ -41,3 +45,12 @@ export default function DefaultButton({
     </>
   );
 }
+// {
+//   mediaType
+//     ? mediaType === "movie"
+//       ? `/filmes/filme/${id}`
+//       : `/series/serie/${id}`
+//     : selectedMediaType === "movie"
+//     ? `/filmes/filme/${id}`
+//     : `/series/serie/${id}`
+// }

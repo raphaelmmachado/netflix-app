@@ -1,5 +1,6 @@
 //next / react
 import { GetServerSideProps } from "next";
+import dynamic from "next/dynamic";
 import Head from "next/head";
 //components
 import MainContainer from "../components/home/MainContainer";
@@ -12,8 +13,7 @@ import { requests } from "../constants/serverSideRequests";
 import { useAuthState } from "react-firebase-hooks/auth";
 import { auth } from "../utils/firebaseConfig";
 import useScroll from "../hooks/useScroll";
-
-import Header from "../components/header/Header";
+const Header = dynamic(() => import("../components/header/Header"));
 
 export default function App({
   trendingNow,

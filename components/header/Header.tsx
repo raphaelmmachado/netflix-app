@@ -8,6 +8,7 @@ import { auth } from "../../utils/firebaseConfig";
 //context
 import { Context } from "../../context/ContextProvider";
 //custom hook
+import useList from "../../hooks/useList";
 import useWindowSize from "../../hooks/useWindowSize";
 //components
 import NetflixLogo from "../NetflixLogo";
@@ -26,6 +27,7 @@ export default function Header({ className }: Props) {
   const [user, loading] = useAuthState(auth);
   const router = useRouter();
 
+  const { writeUserList } = useList();
   useEffect(() => {
     if (!loading && !user) {
       router.push("/login");
@@ -41,8 +43,14 @@ export default function Header({ className }: Props) {
 
   return (
     <header>
-      <nav className={`header-nav ${className}`}>
-        <div className="header-nav-left flex" id="nav--left-div">
+      <nav
+        className={`fixed z-10 top-0 left-0 right-0 flex justify-between items-center
+     p-4 md:py-6 md:px-16 ${className}`}
+      >
+        <div
+          className="flex gap-8 items-center text-sm sm:text-base"
+          id="nav--left-div"
+        >
           {mobile ? (
             <div
               className="w-0 px-4 hover:cursor-pointer"
@@ -78,15 +86,15 @@ export default function Header({ className }: Props) {
               />
             </div>
           )}
-          <ul className="header-nav-ul">
-            <NavLinks title="Séries" path="/series/1" />
-            <NavLinks title="Filmes" path="/filmes/1" />
+          <ul className="flex text-smokewt gap-3 items-center">
+            <NavLinks title="Séries" path="/series/geral/1" />
+            <NavLinks title="Filmes" path="/filmes/geral/1" />
             {myList.length > 0 && (
               <NavLinks title="Minha Lista" path="/minha_lista" />
             )}
           </ul>
         </div>
-        <div className="header-nav-right relative" id="nav--right-div">
+        <div className="flex items-center gap-2 relative" id="nav--right-div">
           {!loading && user && (
             <>
               <div

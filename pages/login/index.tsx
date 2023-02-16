@@ -60,7 +60,8 @@ export default function Login() {
                     );
                 })
               }
-              className="socials-buttons mx-8"
+              className="bg-white text-black/90 font-bold hover:bg-opacity-80 px-6 py-4
+              text-start rounded-md flex justify-between items-center transition-opacity ease-in delay-150 mx-8"
             >
               Entrar com google <GoogleIcon width="30" height="30" />
             </button>
@@ -74,7 +75,8 @@ export default function Login() {
                     );
                 })
               }
-              className="socials-buttons mx-8"
+              className="bg-white text-black/90 font-bold hover:bg-opacity-80 px-6 py-4
+              text-start rounded-md flex justify-between items-center transition-opacity ease-in delay-150 mx-8"
             >
               Entrar com Facebook <FacebookIcon width="30" height="30" />
             </button>

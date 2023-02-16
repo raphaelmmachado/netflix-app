@@ -1,6 +1,6 @@
 import { useEffect, useState } from "react";
 
-export default function useScroll() {
+export default function useHeader() {
   const [transparentNav, setTransparentNav] = useState(true);
 
   const handleScroll = () => {
