@@ -1,5 +1,5 @@
 import axios from "axios";
-import { Media, MediaType } from "../typing";
+import { Media, MediaType } from "../../typing";
 import { getSecret } from "./getSecret";
 
 interface Props {

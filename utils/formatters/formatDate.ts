@@ -4,9 +4,7 @@ export default function FormateDateToBR(
 ) {
   let date = new Date(arg);
   if (isNaN(date.getTime())) {
-    console.info(
-      "Falha ao converter data. Talvez esse filme não tem data de lançamento na DB"
-    );
+    console.info("Falha ao converter data.");
     return arg;
   }
   const f = new Intl.DateTimeFormat("pt-br", options);

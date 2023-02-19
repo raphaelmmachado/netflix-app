@@ -4,13 +4,13 @@ import { GetServerSideProps } from "next";
 import { useState } from "react";
 import { useRouter } from "next/router";
 import SearchInput from "../../../components/grid/SearchInput";
-const Header = dynamic(() => import("../../../components/header/Header"));
+import GenreSelect from "../../../components/grid/GenreSelect";
+import MediaGrid from "../../../components/grid/MediaGrid";
+
 const Footer = dynamic(() => import("../../../components/grid/Footer"));
-const MediaGrid = dynamic(() => import("../../../components/grid/MediaGrid"));
 import { Media, MediaType } from "../../../typing";
 import { movieRequests } from "../../../constants/moviesRequests";
 import { movieGenres, slugs, tvGenres } from "../../../constants/genres";
-import GenreSelect from "../../../components/grid/GenreSelect";
 
 interface Props {
   movies: Media[];
@@ -39,10 +39,15 @@ export default function App({ movies, page, genre, mediaType, path }: Props) {
       router.push(`/${path}/${genre}/${++page}`);
     }
   };
+  const pathTab = `${path[0].toUpperCase()}${path.substring(1, path.length)}`;
+  const genreTab = `${genre[0].toUpperCase()}${genre.substring(
+    1,
+    genre.length
+  )}`;
   return (
     <main className="px-12 py-8 pt-20 min-h-screen">
       <Head>
-        <title>{`Netflix Filmes - Página ${page}`}</title>
+        <title>{`${pathTab} - ${genreTab} - ${page}`}</title>
         <meta
           name="description"
           content="Netflix - Assista ao melhores filmes"
@@ -50,10 +55,14 @@ export default function App({ movies, page, genre, mediaType, path }: Props) {
         <meta name="viewport" content="width=device-width, initial-scale=1" />
         <link rel="icon" href="/favicon.ico" />
       </Head>
-      <Header className={"bg-black  border-b-2 border-gray/10"} />
-      <section className="flex justify-between items-center">
+      <section
+        className="flex flex-col sm:flex-row items-center
+       justify-center sm:justify-between my-10"
+      >
         <SearchInput
-          placeholder="Buscar filme"
+          placeholder={`${
+            path === "filmes" ? "Buscar filmes" : "Buscar series"
+          }`}
           handleFoundMedia={handleFoundMedia}
           mediaType={mediaType}
         />
@@ -81,15 +90,15 @@ export const getServerSideProps: GetServerSideProps = async (content) => {
 
   // query can be an array so i had to check, thankyou typescript
   const genre = `${
-    !Array.isArray(content.query.genre) && content.query.genre
-      ? `${content.query.genre}`
-      : ""
+    Array.isArray(content.query.genre)
+      ? (content.query.genre as string[]) && content.query.genre.join(",")
+      : content.query.genre
   }`;
   const checkMediaType = () => {
     if (type === "filmes") return "movie";
     if (type === "series") return "tv";
     else {
-      throw new Error("Nao aceitamos esse parametro");
+      throw new Error("Parametros [type] deve ser 'filmes' ou 'series' ");
     }
   };
   //parse query to number

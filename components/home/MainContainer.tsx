@@ -1,12 +1,6 @@
 //hooks //context
-import {
-  Dispatch,
-  SetStateAction,
-  useContext,
-  useEffect,
-  lazy,
-  Suspense,
-} from "react";
+import { Dispatch, SetStateAction, useContext, useEffect } from "react";
+import dynamic from "next/dynamic";
 import { Context } from "../../context/ContextProvider";
 import { useSwipeable } from "react-swipeable";
 //components
@@ -16,8 +10,8 @@ import PlayButton from "./banner/PlayButton";
 import ListButton from "./banner/ListButton";
 import DetailsButton from "./banner/DetailsButton";
 //lazy components
-const VerticalScroller = lazy(() => import("./banner/VerticalScroller"));
-const VideoModal = lazy(() => import("../modal/VideoModal"));
+const VerticalScroller = dynamic(() => import("./banner/VerticalScroller"));
+const VideoModal = dynamic(() => import("../modal/VideoModal"));
 
 //types
 import { Media } from "../../typing";
@@ -85,16 +79,16 @@ export default function MainContainer({
         >
           <div
             className="flex flex-col justify-evenly sm:justify-between bg-gradient-to-r
-    from-black via-black/70 to-black/25 absolute h-full w-full pt-20"
+          from-black via-black/70 to-black/25 absolute h-full w-full pt-20"
             id="banner-wrapper"
           >
             <div
-              className="flex flex-col sm:flex-row justify-center sm:justify-between items-center flex-grow"
+              className="flex flex-col sm:flex-row justify-center sm:justify-between items-center flex-grow-0 sm:flex-grow"
               id="banner-center"
             >
               <section
                 className="flex flex-col justify-center gap-4 md:py-4
-    px-4 md:px-14"
+                px-4 md:px-14"
                 id="banner-center-left"
               >
                 <BannerText
@@ -110,7 +104,7 @@ export default function MainContainer({
 
                 <div
                   className="grid grid-flow-col place-content-start 
-     text-sm sm:text-base gap-2 sm:gap-6"
+                  text-sm sm:text-base gap-2 sm:gap-6"
                 >
                   <PlayButton
                     showModal={() => {
@@ -146,31 +140,29 @@ export default function MainContainer({
                   />
                 </div>
               </section>
-              <Suspense>
-                {setIndex && (
-                  <VerticalScroller
-                    title={title}
-                    bars={bars}
-                    index={index}
-                    setIndex={(i) => setIndex(i)}
-                    goUp={() =>
-                      setIndex((prev: number) => (prev - 1 < 0 ? prev : --prev))
-                    }
-                    goDown={() =>
-                      setIndex((prev: number) =>
-                        prev + 1 > bars - 1 ? prev : ++prev
-                      )
-                    }
-                  />
-                )}
-              </Suspense>
+
+              {setIndex && (
+                <VerticalScroller
+                  title={title}
+                  bars={bars}
+                  index={index}
+                  setIndex={(i) => setIndex(i)}
+                  goUp={() =>
+                    setIndex((prev: number) => (prev - 1 < 0 ? prev : --prev))
+                  }
+                  goDown={() =>
+                    setIndex((prev: number) =>
+                      prev + 1 > bars - 1 ? prev : ++prev
+                    )
+                  }
+                />
+              )}
             </div>
 
             <MovieSlider medias={medias} title={title} />
           </div>
-          <Suspense>
-            <VideoModal mediaType={mediaType} />
-          </Suspense>
+
+          <VideoModal mediaType={mediaType} />
         </main>
       )}
     </>

@@ -9,8 +9,8 @@ import VideoLinks from "./video/VideoLinks";
 // typing
 import { IVideo, MediaType, YTIds } from "../../typing";
 //utils
-import { getTrailers } from "../../utils/getTrailers";
-import { searchYoutubeVideos } from "../../utils/searchYoutubeVideos";
+import { getTrailers } from "../../utils/requests/getTrailers";
+import { searchYoutubeVideos } from "../../utils/requests/searchYoutubeVideos";
 import apiConfiguration from "../../constants/apiConfiguration";
 import VideoTags from "./video/VideoTags";
 const base_url = apiConfiguration.images.secure_base_url;
@@ -51,24 +51,22 @@ export default function VideoModal({ mediaType }: Props) {
         .catch((error) =>
           console.log({
             error: error,
-            mensagem:
-              "Não encontramos video em português. Usaremos API do youtube para buscar videos",
+            mensagem: `Não encontramos video em português.
+               Usaremos API do youtube para buscar videos`,
           })
         );
-
     return () => setDBVideos(undefined);
   }, [showVideoModal]);
 
   //if not search on youtube
   function searchOnYT() {
     let query = "";
-    if (selectedMedia?.title) {
-      query = `filme ${selectedMedia.title} trailer teaser oficial`;
+    if (selectedMedia?.title || selectedMedia?.original_title) {
+      query = `filme ${selectedMedia.title} trailer oficial ${selectedMedia.original_title}`;
     }
     if (selectedMedia?.name || selectedMedia?.original_name) {
-      query = `serie ${
-        selectedMedia.name ?? selectedMedia.original_name
-      } cena trailer oficial`;
+      query = `serie ${selectedMedia.name}  
+      } cena trailer oficial ${selectedMedia.original_name}`;
     }
     selectedMedia &&
       searchYoutubeVideos(query)
@@ -90,24 +88,27 @@ export default function VideoModal({ mediaType }: Props) {
         flex justify-center items-center z-50 inset-0"
         >
           <div
-            className="min-w-[420px] sm:min-w-[615px] md:min-w-[740px] lg:min-w-[990px]
-    rounded-sm flex flex-col border border-gray"
+            className="min-w-[420px] sm:min-w-[615px]
+            md:min-w-[740px] lg:min-w-[990px] rounded-md
+            flex flex-col border border-gray"
             id="video-modal-container"
           >
             <header
-              className="flex justify-between items-center w-full bg-black px-1"
+              className="flex justify-between items-center
+              w-full bg-black px-1"
               id="modal_header"
             >
               <h1 className="text-lg">
-                {selectedMedia.title ??
-                  selectedMedia.name ??
-                  selectedMedia.original_name}
+                {selectedMedia.title ?? selectedMedia.name}
               </h1>
 
               <span className="flex items-center gap-3">
                 {showVideo && (
                   <button onClick={() => setShowVideo(false)}>
-                    <FilmIcon className="w-7 h-7 text-white  hover:bg-gray/30 rounded-sm" />
+                    <FilmIcon
+                      className="w-7 h-7 text-white 
+                    hover:bg-gray/30 rounded-md"
+                    />
                   </button>
                 )}
 
@@ -118,7 +119,7 @@ export default function VideoModal({ mediaType }: Props) {
                     setModalOpen(false);
                   }}
                 >
-                  <XMarkIcon className="w-8 h-8 text-white hover:bg-gray/30 rounded-sm" />
+                  <XMarkIcon className="w-8 h-8 text-white hover:bg-gray/30 rounded-md" />
                 </button>
               </span>
             </header>
@@ -134,7 +135,10 @@ export default function VideoModal({ mediaType }: Props) {
                   }}
                 />
               ) : (
-                <article className="grid grid-rows-1 grid-cols-2 place-content-center place-items-start p-4 bg-black">
+                <article
+                  className="grid grid-rows-1 grid-cols-2
+                place-content-center place-items-start p-4 bg-black"
+                >
                   <div className="font-thin place-self-center">
                     {" "}
                     <p>{selectedMedia.overview}</p>

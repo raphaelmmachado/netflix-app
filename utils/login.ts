@@ -6,7 +6,7 @@ import {
 } from "firebase/auth";
 
 import { auth } from "./firebaseConfig";
-import { getGuestSesssionID, storeSessionId } from "./requestToken";
+import { getGuestSesssionID, storeSessionId } from "./requests/requestToken";
 const googleProvider = new GoogleAuthProvider();
 const facebookProvider = new FacebookAuthProvider();
 

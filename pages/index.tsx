@@ -1,8 +1,8 @@
 //next / react
 import { GetServerSideProps } from "next";
-import dynamic from "next/dynamic";
 import Head from "next/head";
 //components
+
 import MainContainer from "../components/home/MainContainer";
 import Loading from "../components/auth/Loading";
 //types
@@ -13,13 +13,12 @@ import { requests } from "../constants/serverSideRequests";
 import { useAuthState } from "react-firebase-hooks/auth";
 import { auth } from "../utils/firebaseConfig";
 import useScroll from "../hooks/useScroll";
-const Header = dynamic(() => import("../components/header/Header"));
 
 export default function App({
   trendingNow,
   topRatedMovies,
   actionMovies,
-  familyMovies,
+  comedyMovies,
   horrorMovies,
   topRatedSeries,
   brazilianMovies,
@@ -30,9 +29,9 @@ export default function App({
     [topRatedSeries, "Series de Sucesso", "tv"],
     [topRatedMovies, "Filmes de Sucesso", "movie"],
     [actionMovies, "Filmes de Ação", "movie"],
-    [horrorMovies, "Filmes de terror", "movie"],
+    [comedyMovies, "Filmes de Comédia", "movie"],
     [brazilianMovies, "Filmes Nacionais", "movie"],
-    [familyMovies, "Filmes para família", "movie"],
+    [horrorMovies, "Filmes de terror", "movie"],
   ];
   // this custom hook increments index if user scrolls down
   // or decrements if scrolls up
@@ -54,7 +53,7 @@ export default function App({
         <link rel="icon" href="/favicon.ico" />
       </Head>
 
-      <Header className="bg-transparent" />
+      {/* <Header className="bg-transparent" /> */}
 
       {COMPONENTS.map((component: IComponents, i) => {
         if (i === index) {
@@ -86,7 +85,7 @@ export const getServerSideProps: GetServerSideProps = async (content) => {
   const [
     trendingMovies,
     topRatedMovies,
-    familyMovies,
+    comedyMovies,
     horrorMovies,
     topRatedSeries,
     brazilianMovies,
@@ -94,7 +93,7 @@ export const getServerSideProps: GetServerSideProps = async (content) => {
   ] = await Promise.all([
     fetch(requests.fetchTrending).then((res) => res.json()),
     fetch(requests.fecthTopRatedMovies).then((res) => res.json()),
-    fetch(requests.fetchFamilyMovies).then((res) => res.json()),
+    fetch(requests.fetchComedyMovies).then((res) => res.json()),
     fetch(requests.fetchHorrorMovies).then((res) => res.json()),
     fetch(requests.fetchTopRatedSeries).then((res) => res.json()),
     fetch(requests.fetchBrazilianMovies).then((res) => res.json()),
@@ -106,7 +105,7 @@ export const getServerSideProps: GetServerSideProps = async (content) => {
       trendingNow: trendingMovies.results,
       actionMovies: actionMovies.results,
       topRatedMovies: topRatedMovies.results,
-      familyMovies: familyMovies.results,
+      comedyMovies: comedyMovies.results,
       horrorMovies: horrorMovies.results,
       topRatedSeries: topRatedSeries.results,
       brazilianMovies: brazilianMovies.results,

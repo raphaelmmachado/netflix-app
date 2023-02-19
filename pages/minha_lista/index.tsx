@@ -1,7 +1,6 @@
 import Head from "next/head";
 import { useRouter } from "next/router";
-import dynamic from "next/dynamic";
-const Header = dynamic(() => import("../../components/header/Header"));
+
 import { useContext, useEffect } from "react";
 import { Context } from "../../context/ContextProvider";
 import MainContainer from "../../components/home/MainContainer";
@@ -25,7 +24,6 @@ export default function App() {
         <meta name="viewport" content="width=device-width, initial-scale=1" />
         <link rel="icon" href="/favicon.ico" />
       </Head>
-      <Header className="bg-transparent" />
       <MainContainer
         bars={0}
         index={0}

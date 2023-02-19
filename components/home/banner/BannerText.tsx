@@ -1,6 +1,6 @@
 import Image from "next/image";
 import { tvGenres, movieGenres } from "../../../constants/genres";
-import FormateDateToBR from "../../../utils/formatDate";
+import FormateDateToBR from "../../../utils/formatters/formatDate";
 interface Props {
   title: string;
   description: string;
@@ -52,13 +52,15 @@ export default function BannerText({
               width={20}
               src={"/favicon.ico"}
             />
-            <span>{mediaType === "tv" ? "Série" : "Filme"}</span>
+            <span className="text-gray">
+              {mediaType === "tv" ? "Série" : "Filme"}
+            </span>
           </div>
         }
       </div>
       <p
-        className="text-white/80 max-w-fit  
-        md:max-w-md lg:max-w-lg line-clamp-2 sm:line-clamp-3 tracking-wide"
+        className="text-gray hidden max-w-fit sm:block
+         sm:line-clamp-2 md:line-clamp-3 sm:max-w-sm md:max-w-md lg:max-w-lg"
         id="banner-center-left-description"
       >
         {description}

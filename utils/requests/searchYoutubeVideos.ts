@@ -1,4 +1,4 @@
-import { YTIds } from "../typing";
+import { YTIds } from "../../typing";
 
 export async function searchYoutubeVideos(query: string) {
   try {

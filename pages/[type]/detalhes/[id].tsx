@@ -1,31 +1,31 @@
 import { GetServerSideProps } from "next";
-import Header from "../../../components/header/Header";
 import {
   IVideo,
   IVideoRequest,
+  MediaCast,
+  MediaCredits,
   MovieDetails,
   SerieDetails,
   WatchProvider,
-  MediaType,
 } from "../../../typing";
-import getMovieDetails from "../../../utils/getMovieDetails";
+import getMovieDetails from "../../../utils/requests/getMovieDetails";
 import Details from "../../../components/individual_media/Details";
 import Head from "next/head";
-import useHeader from "../../../hooks/useHeader";
-import { getServerSideTrailers } from "../../../utils/getTrailers";
-import getWatchProvider from "../../../utils/getWatchProvider";
+import { getServerSideTrailers } from "../../../utils/requests/getTrailers";
+import getWatchProvider from "../../../utils/requests/getWatchProvider";
+import getCredits from "../../../utils/requests/getCredits";
 
 interface Props {
   details: MovieDetails & SerieDetails;
   trailer: IVideo[];
   providers: WatchProvider;
+  cast: MediaCast[];
 }
-export default function App({ details, trailer, providers }: Props) {
-  const transparentNav = useHeader();
+export default function App({ details, trailer, providers, cast }: Props) {
   return (
     <>
       <Head>
-        <title>{`Netflix Filmes - ${details.title}`}</title>
+        <title>{`${details.title ?? details.name}`}</title>
         <meta
           name="description"
           content="Netflix - Assista ao melhores filmes"
@@ -33,14 +33,13 @@ export default function App({ details, trailer, providers }: Props) {
         <meta name="viewport" content="width=device-width, initial-scale=1" />
         <link rel="icon" href="/favicon.ico" />
       </Head>
-      <Header
-        className={`transition-all ease-linear duration-50 bg-black ${
-          transparentNav
-            ? "bg-opacity-0 hover:bg-opacity-100"
-            : "bg-opacity-100"
-        }`}
+
+      <Details
+        details={details}
+        trailer={trailer}
+        providers={providers}
+        cast={cast}
       />
-      <Details details={details} trailer={trailer} providers={providers} />
     </>
   );
 }
@@ -58,22 +57,20 @@ export const getServerSideProps: GetServerSideProps = async (content) => {
     }
   };
   const mediaType = checkMediaType();
-  const results: MovieDetails | SerieDetails = await getMovieDetails(
-    id,
-    mediaType
-  ).then((res) => res);
+
+  const [results, trailer, watchProviders, getCast] = await Promise.all([
+    getMovieDetails(id, mediaType).then(
+      (res: MovieDetails | SerieDetails) => res
+    ),
+    getServerSideTrailers(id, mediaType).then((res: IVideoRequest) => res),
+    getWatchProvider(id, mediaType).then((res) => {
+      const providers: WatchProvider = res.results.BR;
+      return providers;
+    }),
+    getCredits(id, mediaType).then((res: MediaCredits) => res),
+  ]);
+
   const details = isMovie(results);
-
-  const trailer: IVideoRequest = await getServerSideTrailers(
-    id,
-    mediaType
-  ).then((res) => res);
-
-  const watchProviders: WatchProvider = await getWatchProvider(
-    id,
-    mediaType
-  ).then((res) => res.results.BR);
-
   function isMovie(arg: MovieDetails | SerieDetails) {
     if (mediaType === "movie" || "filmes") return arg as MovieDetails;
     else {
@@ -85,12 +82,13 @@ export const getServerSideProps: GetServerSideProps = async (content) => {
     details: MovieDetails | SerieDetails;
     trailer: IVideo[];
     providers?: WatchProvider;
+    cast: MediaCast[];
   }
   const props: SSRProps = {
     trailer: trailer.results,
     details: details,
+    cast: getCast.cast,
   };
-
   if (watchProviders) props.providers = watchProviders;
   return { props };
 };

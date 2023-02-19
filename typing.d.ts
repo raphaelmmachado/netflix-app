@@ -67,9 +67,8 @@ interface YTIds {
 interface IRequests {
   apiConfiguration?: string;
   trendingNow: Media[];
-  netflixOriginals: Media[];
   topRatedMovies: Media[];
-  familyMovies: Media[];
+  comedyMovies: Media[];
   horrorMovies: Media[];
   topRatedSeries: Media[];
   brazilianMovies: Media[];
@@ -225,7 +224,38 @@ export interface Genre {
   id: number;
   name: string;
 }
+export interface MediaCredits {
+  cast: MediaCast[];
+  crew: MediaCrew[];
+}
+export interface MediaCast {
+  adult: boolean;
+  gender: number;
+  id: number;
+  known_for_department: string;
+  name: string;
+  original_name: string;
+  popularity: number;
+  profile_path: string | null;
+  cast_id?: number;
+  character: string;
+  credit_id: string;
+  order: number;
+}
 
+export interface MovieCrew {
+  adult?: boolean;
+  gender?: number | null;
+  id?: number;
+  known_for_department?: string;
+  name?: string;
+  original_name?: string;
+  popularity?: number;
+  profile_path?: string | null;
+  credit_id?: string;
+  department?: string;
+  job?: string;
+}
 export interface LastEpisodeToAir {
   air_date: string;
   episode_number: number;

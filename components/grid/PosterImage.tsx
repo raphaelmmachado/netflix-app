@@ -15,7 +15,7 @@ export default function PosterImage({ src, alt }: Props) {
     <>
       {" "}
       <Image
-        className="rounded-sm  border-2 border-gray/20"
+        className="rounded-md  border-2 border-gray/20"
         src={cardImage}
         onError={ImageNotFound}
         width={170}

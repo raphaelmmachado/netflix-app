@@ -1,5 +1,5 @@
 import axios from "axios";
-import { GuestSessionIDRequest, TokenRequest } from "../typing";
+import { GuestSessionIDRequest, TokenRequest } from "../../typing";
 import { getSecret } from "./getSecret";
 import { setCookie } from "nookies";
 

@@ -1,7 +1,6 @@
 import InfoIconOut from "@heroicons/react/24/outline/InformationCircleIcon";
 import InfoIconSol from "@heroicons/react/24/solid/InformationCircleIcon";
 import Link from "next/link";
-import { useRouter } from "next/router";
 interface Props {
   id: string | number;
   selectedMediaType: string | boolean | undefined;
@@ -18,8 +17,6 @@ export default function DefaultButton({
   iconType,
   slug,
 }: Props) {
-  const router = useRouter();
-
   return (
     <>
       {/* CHECKING MEDIA TYPE */}

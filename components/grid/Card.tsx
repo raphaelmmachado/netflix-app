@@ -2,7 +2,7 @@ import { useState, useContext, useCallback, lazy, Suspense } from "react";
 import { Context } from "../../context/ContextProvider";
 import { Media } from "../../typing";
 import apiConfiguration from "../../constants/apiConfiguration";
-import FormateDateToBR from "../../utils/formatDate";
+import FormateDateToBR from "../../utils/formatters/formatDate";
 import { movieGenres, tvGenres } from "../../constants/genres";
 const PlayButton = lazy(() => import("./PlayButton"));
 const AddToListButton = lazy(() => import("./AddToListButton"));

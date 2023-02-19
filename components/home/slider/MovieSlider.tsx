@@ -12,6 +12,7 @@ import Image from "next/image";
 import useWindowSize from "../../../hooks/useWindowSize";
 //utils
 import apiConfiguration from "../../../constants/apiConfiguration";
+
 //typing
 import { Media } from "../../../typing";
 //components
@@ -48,21 +49,8 @@ export default function MovieSlider({ medias, title }: IMovieSlider) {
     }
   }, [medias.length, memoWidth, itemsPerScreen]);
 
-  const incrementSliderIndex = () => {
-    setSliderIndex((prev) => {
-      if (prev + 1 >= progressBarItems) return 0;
-      else return prev + 1;
-    });
-  };
-  const decrementSliderIndex = () => {
-    setSliderIndex((prev) => {
-      if (prev - 1 < 0) return progressBarItems - 1;
-      else return prev - 1;
-    });
-  };
-
-  const imgUrl = apiConfiguration.images.secure_base_url;
-  const backdropSize = apiConfiguration.images.backdrop_sizes;
+  const BASE_URL = apiConfiguration.images.secure_base_url;
+  const BACKDROP_SIZE = apiConfiguration.images.backdrop_sizes;
 
   // This component has css classes mixed with tailwind classes
   return (
@@ -70,7 +58,7 @@ export default function MovieSlider({ medias, title }: IMovieSlider) {
       <main className="flex flex-col gap-3" id="slider-row">
         <div className="header px-4 lg:px-14">
           <h2
-            className="text-xl tracking-wide font-bold
+            className="text-xl tracking-wide 
     border-l-4 border-red pl-2 mb-2 md:mb-0 hidden sm:block"
           >
             {title}
@@ -84,7 +72,7 @@ export default function MovieSlider({ medias, title }: IMovieSlider) {
                   <div
                     onClick={() => setSliderIndex(i)}
                     key={i}
-                    className={`progress-item cursor-pointer
+                    className={`progress-item cursor-pointer rounded-sm
                  ${i === sliderIndex ? "active" : ""}`}
                   ></div>
                 );
@@ -94,7 +82,11 @@ export default function MovieSlider({ medias, title }: IMovieSlider) {
         <div id="container" className="carousel select-none">
           {/* ARROW LEFT */}
           <div
-            onClick={decrementSliderIndex}
+            onClick={() =>
+              import("../../../utils/scrollSlider").then((module) => {
+                module.decrementSliderIndex(setSliderIndex, progressBarItems);
+              })
+            }
             className={`handle left-handle`}
           ></div>
           {/* SLIDER */}
@@ -123,14 +115,15 @@ export default function MovieSlider({ medias, title }: IMovieSlider) {
                 >
                   <Image
                     tabIndex={i}
-                    src={`${imgUrl}${backdropSize[0]}/${media.backdrop_path}`}
+                    src={`${BASE_URL}${BACKDROP_SIZE[0]}/${media.backdrop_path}`}
                     alt="movie-pic"
                     width={315}
                     height={177}
+                    style={{ height: "auto" }}
                     className="hover:cursor-pointer rounded-md ring-black group-hover:ring-white ring-2"
                   />
                   <span className="absolute w-[98%]">
-                    <h1 className="text-start text-sm sm:text-base md:text-lg px-2 py-1 text-smokewt bg-black/50 rounded-sm">
+                    <h1 className="text-start text-sm sm:text-base md:text-lg px-2 py-1 text-smokewt bg-black/50 rounded-md">
                       {media.name ?? media.title}
                     </h1>
                   </span>
@@ -141,7 +134,11 @@ export default function MovieSlider({ medias, title }: IMovieSlider) {
 
           {/* ARROW RIGHT */}
           <div
-            onClick={incrementSliderIndex}
+            onClick={() =>
+              import("../../../utils/scrollSlider").then((module) =>
+                module.incrementSliderIndex(setSliderIndex, progressBarItems)
+              )
+            }
             className={`handle right-handle`}
           ></div>
         </div>

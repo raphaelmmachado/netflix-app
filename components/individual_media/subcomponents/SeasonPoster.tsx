@@ -15,7 +15,7 @@ export default function SeasonPoster({ media, img_URL, i }: Props) {
     <>
       {" "}
       <Image
-        onClick={(e) => {
+        onClickCapture={(e) => {
           setShowSeasonDesc(true);
         }}
         onMouseLeave={(e) => {
@@ -24,20 +24,19 @@ export default function SeasonPoster({ media, img_URL, i }: Props) {
         tabIndex={i}
         src={`${img_URL}/${media.poster_path}`}
         alt={media.name}
-        width={120}
+        width={125}
         height={100}
+        style={{ height: "auto" }}
         className="hover:cursor-pointer rounded-md
-        ring-black hover:ring-white ring-2"
+        ring-black hover:ring-white ring-2 object-cover"
       />{" "}
       {showSeasonDesc && (
         <div
-          onMouseOver={(e) => {
+          onMouseEnter={(e) => {
             setShowSeasonDesc(true);
           }}
-          onMouseLeave={(e) => {
-            setShowSeasonDesc(false);
-          }}
-          className="bg-black rounded-md px-2 z-10 absolute left-50 right-50 bottom-44 border-smokewt border p-1"
+          className="bg-black rounded-md px-2 z-20
+        absolute bottom-52 mx-auto border-smokewt border p-1 min-h-[200px]"
         >
           <SeasonDescription
             title="Título"
@@ -49,7 +48,7 @@ export default function SeasonPoster({ media, img_URL, i }: Props) {
           <SeasonDescription title="Episódios" value={media.episode_count} />
           <SeasonDescription title="Ao ar em" value={media.air_date} />
         </div>
-      )}{" "}
+      )}
     </>
   );
 }

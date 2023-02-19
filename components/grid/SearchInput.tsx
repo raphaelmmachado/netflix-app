@@ -1,5 +1,5 @@
 import { ChangeEvent, useState, useEffect } from "react";
-import searchMedia from "../../utils/seachMedia";
+import searchMedia from "../../utils/requests/seachMedia";
 import MagnifyingGlassIcon from "@heroicons/react/24/solid/MagnifyingGlassIcon";
 import useDebounce from "../../hooks/useDebounce";
 import { Media } from "../../typing";
@@ -34,11 +34,14 @@ export default function SearchInput({
   return (
     <>
       <form
-        className="my-8 flex gap-2 items-center"
+        className="flex gap-2 items-center"
         onSubmit={(e) => e.preventDefault()}
       >
         <label htmlFor="search">
-          <MagnifyingGlassIcon className="h-8 w-8 p-1 text-smokewt bg-midgray/20 rounded-full" />
+          <MagnifyingGlassIcon
+            className="h-8 w-8 p-1 text-smokewt bg-midgray/20
+           rounded-full"
+          />
         </label>
         <input
           onChange={handleChange}
@@ -46,8 +49,8 @@ export default function SearchInput({
           id="search"
           name="search"
           placeholder={placeholder}
-          className="bg-transparent h-8 font-thin min-w-[400px]
-          px-2 border-2 border-midgray rounded-sm"
+          className="bg-transparent h-8 font-thin 
+          px-2 border-2 border-midgray rounded-md"
         />
       </form>
     </>

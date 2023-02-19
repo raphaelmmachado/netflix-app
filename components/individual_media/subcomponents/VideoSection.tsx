@@ -1,19 +1,14 @@
 import XMarkIcon from "@heroicons/react/24/solid/XMarkIcon";
 import { useEffect, useState } from "react";
 import { IVideo, YTIds, SerieDetails, MovieDetails } from "../../../typing";
-import { searchYoutubeVideos } from "../../../utils/searchYoutubeVideos";
+import { searchYoutubeVideos } from "../../../utils/requests/searchYoutubeVideos";
 import MediaComponent from "../../modal/video/MediaComponent";
 import VideoLinks from "../../modal/video/VideoLinks";
 interface Props {
   trailer: IVideo[];
-  movieDetails?: MovieDetails;
-  serieDetails?: SerieDetails;
+  details: MovieDetails & SerieDetails;
 }
-export default function VideoSection({
-  trailer,
-  movieDetails,
-  serieDetails,
-}: Props) {
+export default function VideoSection({ trailer, details }: Props) {
   const [videoIndex, setVideoIndex] = useState(0);
   const [showVideo, setShowVideo] = useState(false);
   const [youtubeVideos, setYoutubeVideos] = useState<YTIds[]>([]);
@@ -24,19 +19,19 @@ export default function VideoSection({
   //if not search on youtube
   function searchOnYT() {
     let query = "";
-    if (serieDetails?.name || serieDetails?.original_name) {
-      query = `serie ${serieDetails.name} cena trailer`;
+    if (details?.name) {
+      query = `serie ${details.name}  
+    } cena trailer oficial ${details.original_name}`;
     } else {
-      query = `filme ${movieDetails?.title} trailer oficial`;
+      query = `filme ${details?.title} trailer oficial ${details?.original_title}`;
     }
 
-    serieDetails ||
-      (movieDetails &&
-        searchYoutubeVideos(query)
-          .then((res) => {
-            res && setYoutubeVideos(res);
-          })
-          .catch((err) => console.log(err)));
+    details &&
+      searchYoutubeVideos(query)
+        .then((res) => {
+          res && setYoutubeVideos(res);
+        })
+        .catch((err) => console.log(err));
   }
   return (
     <>
@@ -46,7 +41,7 @@ export default function VideoSection({
           <>
             <XMarkIcon
               onClick={() => setShowVideo(false)}
-              className="w-8 h-8 text-white hover:cursor-pointer bg-gray/30 rounded-sm"
+              className="w-8 h-8 text-white hover:cursor-pointer bg-gray/30 rounded-md"
             />
             <MediaComponent
               videoIndex={videoIndex}
@@ -67,32 +62,28 @@ export default function VideoSection({
           {trailer.length > 0
             ? trailer.map((item, i) => {
                 return (
-                  <>
-                    <VideoLinks
-                      key={i}
-                      type={item.type}
-                      site={item.site}
-                      onClick={() => {
-                        setVideoIndex(i);
-                        setShowVideo(true);
-                      }}
-                    />
-                  </>
+                  <VideoLinks
+                    key={item.key}
+                    type={item.type}
+                    site={item.site}
+                    onClick={() => {
+                      setVideoIndex(i);
+                      setShowVideo(true);
+                    }}
+                  />
                 );
               })
             : youtubeVideos.map((item, i) => {
                 return (
-                  <>
-                    <VideoLinks
-                      key={i + 100}
-                      site="YouTube"
-                      type="Youtube"
-                      onClick={() => {
-                        setVideoIndex(i);
-                        setShowVideo(true);
-                      }}
-                    />
-                  </>
+                  <VideoLinks
+                    key={item.id.videoId}
+                    site="YouTube"
+                    type="Youtube"
+                    onClick={() => {
+                      setVideoIndex(i);
+                      setShowVideo(true);
+                    }}
+                  />
                 );
               })}
         </div>

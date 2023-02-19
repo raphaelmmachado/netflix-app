@@ -1,6 +1,6 @@
 import { getSecret } from "./getSecret";
 import axios from "axios";
-import { MediaType } from "../typing";
+import { MediaType } from "../../typing";
 const API_KEY = process.env.NEXT_PUBLIC_API_KEY;
 const BASE_URL = "https://api.themoviedb.org/3";
 

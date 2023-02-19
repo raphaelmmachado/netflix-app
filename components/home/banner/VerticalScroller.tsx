@@ -42,7 +42,7 @@ export default function VerticalScroller({
             className={`hover:cursor-pointer transition-transform ${
               index === i
                 ? "bg-transparent sm:bg-red h-5 w-fit sm:w-2"
-                : "bg-white/50 hidden sm:inline-flex h-0 w-2 sm:h-5"
+                : "bg-white/50 hidden sm:inline-flex h-0 w-2 sm:h-5 rounded-sm"
             } `}
           >
             <h1 className="block sm:hidden">{index === i && title}</h1>

@@ -15,7 +15,8 @@ import NetflixLogo from "../NetflixLogo";
 import NavLinks from "./NavLinks";
 import LogoutIcon from "@heroicons/react/20/solid/ArrowRightOnRectangleIcon";
 //utils
-
+// TODO SIDEBAR NAV
+//FIXME CONTEXT DB
 interface Props {
   className: string;
 }
@@ -27,7 +28,8 @@ export default function Header({ className }: Props) {
   const [user, loading] = useAuthState(auth);
   const router = useRouter();
 
-  const { writeUserList } = useList();
+  useList();
+
   useEffect(() => {
     if (!loading && !user) {
       router.push("/login");
@@ -42,109 +44,118 @@ export default function Header({ className }: Props) {
   }, [width]);
 
   return (
-    <header>
-      <nav
-        className={`fixed z-10 top-0 left-0 right-0 flex justify-between items-center
-     p-4 md:py-6 md:px-16 ${className}`}
-      >
-        <div
-          className="flex gap-8 items-center text-sm sm:text-base"
-          id="nav--left-div"
-        >
-          {mobile ? (
+    <>
+      {!loading && user && (
+        <header>
+          <nav
+            className={`fixed z-10 top-0 left-0 right-0
+              flex justify-between items-center p-4 md:py-6
+              md:px-16 ${className}`}
+          >
             <div
-              className="w-0 px-4 hover:cursor-pointer"
-              tabIndex={0}
-              onClick={() => router.push("/")}
-              onKeyDown={(e) => {
-                import("../../utils/checkKeyboardKeys").then(
-                  (module) => module.default(e.code) && router.push("/")
-                );
-              }}
+              className="flex gap-8 items-center text-sm sm:text-base"
+              id="nav--left-div"
             >
-              <NetflixLogo
-                svg={{ width: "120", height: "50", fill: "none" }}
-                path={{ fill: "#b9090b" }}
-                rect={{ width: "80", height: "140", fill: "white" }}
-              />
-            </div>
-          ) : (
-            <div
-              className="hover:cursor-pointer"
-              tabIndex={0}
-              onKeyDown={(e) =>
-                import("../../utils/checkKeyboardKeys").then(
-                  (module) => module.default(e.code) && router.push("/")
-                )
-              }
-              onClick={() => router.push("/")}
-            >
-              <NetflixLogo
-                svg={{ width: "111", height: "50", fill: "none" }}
-                path={{ fill: "#b9090b" }}
-                rect={{ width: "500", height: "140", fill: "white" }}
-              />
-            </div>
-          )}
-          <ul className="flex text-smokewt gap-3 items-center">
-            <NavLinks title="Séries" path="/series/geral/1" />
-            <NavLinks title="Filmes" path="/filmes/geral/1" />
-            {myList.length > 0 && (
-              <NavLinks title="Minha Lista" path="/minha_lista" />
-            )}
-          </ul>
-        </div>
-        <div className="flex items-center gap-2 relative" id="nav--right-div">
-          {!loading && user && (
-            <>
-              <div
-                onClick={() => setModal((prev) => !prev)}
-                onKeyDown={(e) =>
-                  import("../../utils/checkKeyboardKeys").then(
-                    (module) =>
-                      module.default(e.code) && setModal((prev) => !prev)
-                  )
-                }
-                className="flex items-center gap-2"
-              >
-                {!mobile && (
-                  <a className="text-sm" tabIndex={0}>
-                    {user?.displayName}
-                  </a>
-                )}
-                <Image
-                  src={`${user?.photoURL}`}
+              {mobile ? (
+                <div
+                  className="w-0 px-4 hover:cursor-pointer"
                   tabIndex={0}
-                  alt="user"
-                  width={40}
-                  height={40}
-                  className="rounded-sm shadow-md hover:cursor-pointer"
-                />
-              </div>
-              {modal && (
-                <a
-                  onClick={() => {
-                    auth.signOut().then(() => router.push("/login"));
+                  onClick={() => router.push("/")}
+                  onKeyDown={(e) => {
+                    import("../../utils/checkKeyboardKeys").then(
+                      (module) => module.default(e.code) && router.push("/")
+                    );
                   }}
+                >
+                  <NetflixLogo
+                    svg={{ width: "120", height: "50", fill: "none" }}
+                    path={{ fill: "#b9090b" }}
+                    rect={{ width: "80", height: "140", fill: "white" }}
+                  />
+                </div>
+              ) : (
+                <div
+                  className="hover:cursor-pointer"
+                  tabIndex={0}
                   onKeyDown={(e) =>
                     import("../../utils/checkKeyboardKeys").then(
-                      (module) =>
-                        module.default(e.code) &&
-                        auth.signOut().then(() => router.push("/login"))
+                      (module) => module.default(e.code) && router.push("/")
                     )
                   }
-                  tabIndex={0}
-                  className="w-fit bg-red text-white flex absolute top-12 -right-0
-                   items-center gap-3 px-4 py-2 rounded-md shadow-md hover:cursor-pointer"
+                  onClick={() => router.push("/")}
                 >
-                  <LogoutIcon className="w-5 h-5" />
-                  Sair
-                </a>
+                  <NetflixLogo
+                    svg={{ width: "111", height: "50", fill: "none" }}
+                    path={{ fill: "#b9090b" }}
+                    rect={{ width: "500", height: "140", fill: "white" }}
+                  />
+                </div>
               )}
-            </>
-          )}
-        </div>
-      </nav>
-    </header>
+
+              <ul className="flex text-smokewt gap-3 items-center">
+                <NavLinks title="Séries" path="/series/geral/1" />
+                <NavLinks title="Filmes" path="/filmes/geral/1" />
+                {myList.length > 0 && (
+                  <NavLinks title="Minha Lista" path="/minha_lista" />
+                )}
+              </ul>
+            </div>
+            <div
+              className="flex items-center gap-2 relative"
+              id="nav--right-div"
+            >
+              {!loading && user && (
+                <>
+                  <div
+                    onClick={() => setModal((prev) => !prev)}
+                    onKeyDown={(e) =>
+                      import("../../utils/checkKeyboardKeys").then(
+                        (module) =>
+                          module.default(e.code) && setModal((prev) => !prev)
+                      )
+                    }
+                    className="flex items-center gap-2"
+                  >
+                    {!mobile && (
+                      <a className="text-sm" tabIndex={0}>
+                        {user?.displayName}
+                      </a>
+                    )}
+                    <Image
+                      src={`${user?.photoURL}`}
+                      tabIndex={0}
+                      alt="user"
+                      width={40}
+                      height={40}
+                      className="rounded-sm shadow-md hover:cursor-pointer"
+                    />
+                  </div>
+                  {modal && (
+                    <a
+                      onClick={() => {
+                        auth.signOut().then(() => router.push("/login"));
+                      }}
+                      onKeyDown={(e) =>
+                        import("../../utils/checkKeyboardKeys").then(
+                          (module) =>
+                            module.default(e.code) &&
+                            auth.signOut().then(() => router.push("/login"))
+                        )
+                      }
+                      tabIndex={0}
+                      className="w-fit bg-red text-white flex absolute top-12 -right-0
+                   items-center gap-3 px-4 py-2 rounded-md shadow-md hover:cursor-pointer"
+                    >
+                      <LogoutIcon className="w-5 h-5" />
+                      Sair
+                    </a>
+                  )}
+                </>
+              )}
+            </div>
+          </nav>
+        </header>
+      )}
+    </>
   );
 }

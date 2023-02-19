@@ -7,19 +7,17 @@ import { auth, database, fetchDB } from "../utils/firebaseConfig";
 
 export default function useList() {
   const { myList, setMyList } = useContext(Context);
-  const [user] = useAuthState(auth);
+  const [user, loading] = useAuthState(auth);
+
   // when component loads, get items from firebase and put it in context list
-  const getList = useCallback(
-    () =>
-      fetchDB(`${user?.uid}/list`)
-        .then((res: Media[]) => res.length > 0 && setMyList(res))
-        .catch((e) => console.log(e)),
-    [myList]
-  );
+  const getList = () =>
+    fetchDB(`${user?.uid}/list`)
+      .then((res: Media[]) => res.length > 0 && setMyList(res))
+      .catch((e) => console.log(e));
 
   useEffect(() => {
     getList();
-  }, [user]);
+  }, [user, loading]);
 
   // put list on firebase DB
   const writeUserList = useCallback(async () => {
@@ -30,5 +28,6 @@ export default function useList() {
   useEffect(() => {
     writeUserList();
   }, [writeUserList]);
+
   return { writeUserList, getList, myList };
 }

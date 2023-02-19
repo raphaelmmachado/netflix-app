@@ -1,26 +1,36 @@
 //react / next
-import { lazy, Suspense } from "react";
+import dynamic from "next/dynamic";
 import Image from "next/image";
 //components
 import MediaHeader from "./subcomponents/MediaHeader";
 import TitleDesc from "./subcomponents/TitleDesc";
 import RatingBox from "./subcomponents/RatingBox";
-const VideoSection = lazy(() => import("./subcomponents/VideoSection"));
-const Creators = lazy(() => import("./subcomponents/Creators"));
-const Providers = lazy(() => import("./subcomponents/Providers"));
+const VideoSection = dynamic(() => import("./subcomponents/VideoSection"), {
+  ssr: false,
+});
+const Creators = dynamic(() => import("./subcomponents/Creators"), {
+  ssr: false,
+});
+const Providers = dynamic(() => import("./subcomponents/Providers"), {
+  ssr: false,
+});
+const Seasons = dynamic(() => import("./subcomponents/Seasons"), {
+  ssr: false,
+});
+const Cast = dynamic(() => import("./subcomponents/Cast"));
 //constants / utils
 import tmdbApiConfig from "../../constants/apiConfiguration";
 import mostSpokenLanguages from "../../constants/mostSpokenLanguages";
 import {
   IVideo,
+  MediaCast,
   MovieDetails,
   SerieDetails,
   WatchProvider,
 } from "../../typing";
-import FormateDateToBR from "../../utils/formatDate";
-import formatToCurrency from "../../utils/formatToCurrency";
-import calculateRuntime from "../../utils/calculateRuntime";
-import Seasons from "./subcomponents/Seasons";
+import FormateDateToBR from "../../utils/formatters/formatDate";
+import formatToCurrency from "../../utils/formatters/formatToCurrency";
+import calculateRuntime from "../../utils/formatters/calculateRuntime";
 
 const BASE_URL = tmdbApiConfig.images.secure_base_url;
 const BACKDROP_SIZE = tmdbApiConfig.images.backdrop_sizes;
@@ -31,9 +41,10 @@ interface Props {
   details: MovieDetails & SerieDetails;
   trailer: IVideo[];
   providers: WatchProvider;
+  cast: MediaCast[];
 }
 
-export default function Details({ details, trailer, providers }: Props) {
+export default function Details({ details, trailer, providers, cast }: Props) {
   const [hours, remainingMinutes] = calculateRuntime(
     details.runtime ?? details.episode_run_time[0]
   );
@@ -42,36 +53,23 @@ export default function Details({ details, trailer, providers }: Props) {
   return (
     <>
       <header
-        className="bg-black
-      relative  min-h-screen z-0"
+        className="bg-gradient-to-t from-black via-black/20 to-black/5
+      relative  min-h-screen  z-0"
       >
-        <Suspense
-          fallback={
-            <Image
-              src={`${BASE_URL}${BACKDROP_SIZE[0]}/${details.backdrop_path}`}
-              alt="backdrop"
-              fill
-              priority
-              sizes="100vw"
-              className="object-cover aspect-video  shadow-2xl"
-            />
-          }
-        >
-          <Image
-            src={`${BASE_URL}${BACKDROP_SIZE[3]}/${details.backdrop_path}`}
-            alt="backdrop"
-            fill
-            priority
-            sizes="100vw"
-            className="object-cover aspect-video  shadow-2xl"
-          />
-        </Suspense>{" "}
+        <Image
+          src={`${BASE_URL}${BACKDROP_SIZE[3]}/${details.backdrop_path}`}
+          alt="backdrop"
+          fill
+          priority
+          sizes="100vw"
+          className=" aspect-video object-cover"
+        />
       </header>
       <main
-        className="absolute top-72 pt-2 w-full
-        bg-black px-4"
+        className="absolute top-80 pt-2 w-full
+         px-4 bg-black"
       >
-        <section className="md:pl-72">
+        <section className=" md:pl-72">
           <div className="flex items-center justify-between">
             <MediaHeader
               title={details.title ?? details.name}
@@ -87,6 +85,7 @@ export default function Details({ details, trailer, providers }: Props) {
               })}
               genres={details.genres}
             />
+
             <RatingBox votes={details.vote_average.toFixed(1)} />
           </div>
 
@@ -98,30 +97,35 @@ export default function Details({ details, trailer, providers }: Props) {
           />
         </section>
         <br />
-        <section className="flex md:justify-center ">
-          <Suspense
-            fallback={
-              <Image
-                src={`${BASE_URL}${POSTER_SIZE[0]}/${details.poster_path}`}
-                alt="poster"
-                width={235}
-                height={180}
-                className=" md:absolute shadow-2xl
-           mr-4 rounded-md
-           md:-top-24 md:left-4"
-              />
-            }
-          >
-            <Image
-              src={`${BASE_URL}${POSTER_SIZE[3]}/${details.poster_path}`}
-              alt="poster"
-              width={235}
-              height={180}
-              className=" md:absolute shadow-2xl
-           mr-4 rounded-md
-           md:-top-24 md:left-4"
+        <section className="relative" id="cast-seasons-row">
+          {details.created_by && details.created_by.length > 0 && (
+            <Creators
+              creators={details.created_by}
+              img_URL={`${BASE_URL}${PROFILE_SIZE}/`}
             />
-          </Suspense>
+          )}
+          {cast.length > 0 && <Cast cast={cast} />}
+
+          {details.seasons && (
+            <Seasons
+              img_URL={`${BASE_URL}${POSTER_SIZE[1]}/`}
+              seasons={details.seasons}
+            />
+          )}
+        </section>
+
+        <section className="flex md:justify-center " id="media-data-section">
+          <Image
+            src={`${BASE_URL}${POSTER_SIZE[3]}/${details.poster_path}`}
+            alt="poster"
+            width={235}
+            height={180}
+            sizes="[190px,220px,235px]"
+            style={{ height: "auto" }}
+            className=" md:absolute shadow-lg
+           mr-4 rounded-md object-cover
+           md:-top-24 md:left-4"
+          />
           <div className="grid md:grid-cols-4 place-content-start gap-4">
             {/* MOVIE */}
             {details.runtime && (
@@ -130,13 +134,14 @@ export default function Details({ details, trailer, providers }: Props) {
                 value={`${hours}h ${remainingMinutes}m`}
               />
             )}
-            {details.budget && (
+            {details.budget > 0 && (
               <TitleDesc
                 title="Orçamento"
                 value={formatToCurrency(details.budget)}
               />
             )}
-            {details.revenue && (
+
+            {details.revenue > 0 && (
               <TitleDesc
                 title="Receita"
                 value={formatToCurrency(details.revenue)}
@@ -162,27 +167,14 @@ export default function Details({ details, trailer, providers }: Props) {
                 title={"Idioma Original"}
                 value={langs[details.original_language]}
               />
-            )}{" "}
+            )}
           </div>
         </section>
         <br />
-        <Suspense>
-          {details.seasons && (
-            <Seasons
-              img_URL={`${BASE_URL}${POSTER_SIZE[1]}/`}
-              seasons={details.seasons}
-            />
-          )}
-          <VideoSection movieDetails={details} trailer={trailer} />
-          {details.created_by && (
-            <Creators
-              creators={details.created_by}
-              img_URL={`${BASE_URL}${PROFILE_SIZE}/`}
-            />
-          )}
-          <br />
-          {providers && <Providers providers={providers} />}
-        </Suspense>
+        <VideoSection details={details} trailer={trailer} />
+
+        <br />
+        {providers && <Providers providers={providers} />}
       </main>
     </>
   );

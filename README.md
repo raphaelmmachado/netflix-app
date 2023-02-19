@@ -25,6 +25,7 @@
 - Hydration
 - Props Interface
 - Code Splitting
+- Dynamic import
 
 ## Maiores dificuldades?
 
