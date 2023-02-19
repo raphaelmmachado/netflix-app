@@ -67,7 +67,7 @@ export default function Details({ details, trailer, providers, cast }: Props) {
       </header>
       <main
         className="absolute top-80 pt-2 w-full
-         px-4 bg-black"
+         px-4 bg-black pl-14"
       >
         <section className=" md:pl-72">
           <div className="flex items-center justify-between">
@@ -124,7 +124,7 @@ export default function Details({ details, trailer, providers, cast }: Props) {
             style={{ height: "auto" }}
             className=" md:absolute shadow-lg
            mr-4 rounded-md object-cover
-           md:-top-24 md:left-4"
+           md:-top-24 md:left-20"
           />
           <div className="grid md:grid-cols-4 place-content-start gap-4">
             {/* MOVIE */}

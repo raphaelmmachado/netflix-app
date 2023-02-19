@@ -78,8 +78,8 @@ export default function MainContainer({
           }}
         >
           <div
-            className="flex flex-col justify-evenly sm:justify-between bg-gradient-to-r
-          from-black via-black/70 to-black/25 absolute h-full w-full pt-20"
+            className="py-8 pl-14 flex flex-col justify-evenly sm:justify-between bg-gradient-to-r
+          from-black via-black/70 to-black/25 absolute h-full w-full"
             id="banner-wrapper"
           >
             <div

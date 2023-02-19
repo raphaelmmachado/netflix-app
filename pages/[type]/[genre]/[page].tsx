@@ -45,7 +45,7 @@ export default function App({ movies, page, genre, mediaType, path }: Props) {
     genre.length
   )}`;
   return (
-    <main className="px-12 py-8 pt-20 min-h-screen">
+    <main className="px-12 py-8 pl-20 min-h-screen">
       <Head>
         <title>{`${pathTab} - ${genreTab} - ${page}`}</title>
         <meta
