@@ -1,30 +1,36 @@
 import { useState } from "react";
 import Image from "next/image";
+import apiConfiguration from "../../../constants/apiConfiguration";
 import SeasonDescription from "./SeasonDescription";
 import { Season } from "../../../typing";
+import Picture from "../../Picture";
 
 interface Props {
   media: Season;
-  img_URL: string;
   i: number;
 }
-export default function SeasonPoster({ media, img_URL, i }: Props) {
-  const [showSeasonDesc, setShowSeasonDesc] = useState(false);
+export default function SeasonPoster({ media, i }: Props) {
+  const BASE_URL = apiConfiguration.images.secure_base_url;
+  const POSTER_SIZE = apiConfiguration.images.poster_sizes;
 
+  const [showSeasonDesc, setShowSeasonDesc] = useState(false);
   return (
-    <>
+    <div
+      onClickCapture={(e) => {
+        setShowSeasonDesc(true);
+      }}
+      onMouseLeave={(e) => {
+        setShowSeasonDesc(false);
+      }}
+    >
       {" "}
-      <Image
-        onClickCapture={(e) => {
-          setShowSeasonDesc(true);
-        }}
-        onMouseLeave={(e) => {
-          setShowSeasonDesc(false);
-        }}
+      <Picture
         tabIndex={i}
-        src={`${img_URL}/${media.poster_path}`}
+        src={`${BASE_URL}${POSTER_SIZE[2]}${media.poster_path}`}
+        fallBackImage={`${BASE_URL}${POSTER_SIZE[0]}${media.poster_path}`}
+        title={media.name}
         alt={media.name}
-        width={125}
+        width={130}
         height={100}
         style={{ height: "auto" }}
         className="hover:cursor-pointer rounded-md
@@ -49,6 +55,6 @@ export default function SeasonPoster({ media, img_URL, i }: Props) {
           <SeasonDescription title="Ao ar em" value={media.air_date} />
         </div>
       )}
-    </>
+    </div>
   );
 }

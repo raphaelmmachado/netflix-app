@@ -8,15 +8,16 @@ import {
   useContext,
 } from "react";
 import { Context } from "../../../context/ContextProvider";
-import Image from "next/image";
+import { useRouter } from "next/router";
+//custom-hooks
 import useWindowSize from "../../../hooks/useWindowSize";
 //utils
 import apiConfiguration from "../../../constants/apiConfiguration";
-
+import enterKeyPressed from "../../../utils/checkKeyboardKeys";
 //typing
 import { Media } from "../../../typing";
+import Picture from "../../Picture";
 //components
-import enterKeyPressed from "../../../utils/checkKeyboardKeys";
 
 interface IMovieSlider {
   medias: Media[];
@@ -29,7 +30,7 @@ export default function MovieSlider({ medias, title }: IMovieSlider) {
   const [progressBarItems, setProgressBarItems] = useState(0);
 
   const { selectedMedia, setSelectedMedia } = useContext(Context);
-
+  const router = useRouter();
   const { width } = useWindowSize();
   const memoWidth = useMemo(() => width, [width]);
 
@@ -108,20 +109,43 @@ export default function MovieSlider({ medias, title }: IMovieSlider) {
                    justify-center items-end
                    hover:cursor-pointer group"
                   key={i}
-                  onClickCapture={() => selectAMedia(media)}
+                  onMouseEnter={() => selectAMedia(media)}
+                  onClickCapture={() => {
+                    if (!navigator.userAgent.toLowerCase().includes("mobi")) {
+                      router.push({
+                        pathname: `/[type]/detalhes/${selectedMedia?.id}`,
+                        query: {
+                          type: `${selectedMedia?.title ? "filmes" : "series"}`,
+                        },
+                      });
+                    } else {
+                      selectAMedia(media);
+                    }
+                  }}
+                  onTouchEndCapture={() => {
+                    router.push({
+                      pathname: `/[type]/detalhes/${selectedMedia?.id}`,
+                      query: {
+                        type: `${selectedMedia?.title ? "filmes" : "series"}`,
+                      },
+                    });
+                  }}
                   onKeyDownCapture={(e) =>
                     enterKeyPressed(e.code) && selectAMedia(media)
                   }
                 >
-                  <Image
-                    tabIndex={i}
+                  <Picture
                     src={`${BASE_URL}${BACKDROP_SIZE[0]}/${media.backdrop_path}`}
+                    fallBackImage={`${BASE_URL}${BACKDROP_SIZE[0]}/${media.backdrop_path}`}
                     alt="movie-pic"
                     width={315}
                     height={177}
                     style={{ height: "auto" }}
+                    tabIndex={i}
+                    title={media.title ?? media.name}
                     className="hover:cursor-pointer rounded-md ring-black group-hover:ring-white ring-2"
                   />
+
                   <span className="absolute w-[98%]">
                     <h1 className="text-start text-sm sm:text-base md:text-lg px-2 py-1 text-smokewt bg-black/50 rounded-md">
                       {media.name ?? media.title}

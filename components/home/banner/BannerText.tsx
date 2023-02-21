@@ -22,14 +22,14 @@ export default function BannerText({
     <>
       {" "}
       <h1
-        className="text-white text-start font-bold line-clamp-2
+        className="text-white text-start font-bold line-clamp-3
     text-3xl sm:text-4xl pb-2"
         id="banner-text-h1"
       >
         {title}
       </h1>
       <div
-        className="flex items-center gap-8 text-sm lg:text-base"
+        className="flex items-center gap-2 text-center sm:gap-8"
         id="banner-text-small-text-info"
       >
         <p className={`${rating > 5 ? "text-def_green-300" : "text-smokewt"}`}>
@@ -45,7 +45,7 @@ export default function BannerText({
           </p>
         )}
         {
-          <div className="flex gap-1 items-center">
+          <div className="flex flex-col sm:flex-row gap-1 items-center">
             <Image
               alt="netflix-logo"
               height={20}
@@ -59,13 +59,13 @@ export default function BannerText({
         }
       </div>
       <p
-        className="text-gray hidden max-w-fit sm:block
+        className="text-gray hidden sm:block max-w-fit 
          sm:line-clamp-2 md:line-clamp-3 sm:max-w-sm md:max-w-md lg:max-w-lg"
         id="banner-center-left-description"
       >
         {description}
       </p>
-      <div className="flex gap-1 text-sm lg:text-base">
+      <div className="flex gap-1">
         {genres.map((item, i, arr) => (
           <span key={i} className="text-gray">
             {`${

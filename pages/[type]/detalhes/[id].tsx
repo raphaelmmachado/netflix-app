@@ -2,26 +2,34 @@ import { GetServerSideProps } from "next";
 import {
   IVideo,
   IVideoRequest,
+  Media,
   MediaCast,
   MediaCredits,
   MovieDetails,
   SerieDetails,
   WatchProvider,
 } from "../../../typing";
-import getMovieDetails from "../../../utils/requests/getMovieDetails";
+
 import Details from "../../../components/individual_media/Details";
 import Head from "next/head";
 import { getServerSideTrailers } from "../../../utils/requests/getTrailers";
-import getWatchProvider from "../../../utils/requests/getWatchProvider";
-import getCredits from "../../../utils/requests/getCredits";
+
+import getMoreDetails from "../../../utils/requests/getMoreDetails";
 
 interface Props {
   details: MovieDetails & SerieDetails;
   trailer: IVideo[];
   providers: WatchProvider;
   cast: MediaCast[];
+  recommendations: Media[];
 }
-export default function App({ details, trailer, providers, cast }: Props) {
+export default function App({
+  details,
+  trailer,
+  providers,
+  cast,
+  recommendations,
+}: Props) {
   return (
     <>
       <Head>
@@ -39,6 +47,7 @@ export default function App({ details, trailer, providers, cast }: Props) {
         trailer={trailer}
         providers={providers}
         cast={cast}
+        recommendations={recommendations}
       />
     </>
   );
@@ -58,19 +67,27 @@ export const getServerSideProps: GetServerSideProps = async (content) => {
   };
   const mediaType = checkMediaType();
 
-  const [results, trailer, watchProviders, getCast] = await Promise.all([
-    getMovieDetails(id, mediaType).then(
-      (res: MovieDetails | SerieDetails) => res
-    ),
-    getServerSideTrailers(id, mediaType).then((res: IVideoRequest) => res),
-    getWatchProvider(id, mediaType).then((res) => {
-      const providers: WatchProvider = res.results.BR;
-      return providers;
-    }),
-    getCredits(id, mediaType).then((res: MediaCredits) => res),
-  ]);
+  const [results, trailer, watchProviders, cast, recommendations] =
+    await Promise.all([
+      getMoreDetails(id, mediaType, "").then(
+        (res: MovieDetails | SerieDetails) => res
+      ),
+      getServerSideTrailers(id, mediaType).then((res: IVideoRequest) => res),
+      getMoreDetails(id, mediaType, "/watch/providers").then((res) => {
+        const providers: WatchProvider = res.results.BR;
+        return providers;
+      }),
+      getMoreDetails(id, mediaType, "/credits").then(
+        (res: MediaCredits) => res
+      ),
+      getMoreDetails(id, mediaType, "/recommendations").then((res) => {
+        const rec: Media[] = res.results;
+        return rec;
+      }),
+    ]);
 
   const details = isMovie(results);
+
   function isMovie(arg: MovieDetails | SerieDetails) {
     if (mediaType === "movie" || "filmes") return arg as MovieDetails;
     else {
@@ -83,11 +100,13 @@ export const getServerSideProps: GetServerSideProps = async (content) => {
     trailer: IVideo[];
     providers?: WatchProvider;
     cast: MediaCast[];
+    recommendations: Media[];
   }
   const props: SSRProps = {
     trailer: trailer.results,
     details: details,
-    cast: getCast.cast,
+    cast: cast.cast,
+    recommendations: recommendations,
   };
   if (watchProviders) props.providers = watchProviders;
   return { props };

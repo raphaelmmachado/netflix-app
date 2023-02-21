@@ -39,11 +39,7 @@ export default function Login() {
           className="flex flex-col justify-around items-center gap-4
        p-12 rounded-md  min-h-[600px] absolute"
         >
-          <NetflixLogo
-            svg={{ height: "150", width: "280", fill: "none" }}
-            path={{ fill: "#B9090B" }}
-            rect={{ width: "500", height: "135", fill: "none" }}
-          />
+          <NetflixLogo width="280" height="150" />
           <h1 className="text-2xl break-words">
             Filmes, séries e muito mais.{" "}
             <span className="text-xl font-normal"> Sem limites.</span>

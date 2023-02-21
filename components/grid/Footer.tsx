@@ -17,7 +17,7 @@ export default function Footer({ page, previousPage, nextPage }: Props) {
             className=" w-6 h-6 cursor-pointer text-gray"
           />
         )}
-        <div className="text-gray">Página {page}</div>
+        <div className="text-gray">Página {page} / 500</div>
         {page && (
           <ArrowRightIcon
             onClick={nextPage}

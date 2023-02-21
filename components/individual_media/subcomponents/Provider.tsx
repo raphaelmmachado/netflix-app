@@ -1,6 +1,6 @@
-import Image from "next/image";
 import { useState } from "react";
 import apiConfiguration from "../../../constants/apiConfiguration";
+import Picture from "../../Picture";
 interface Props {
   name?: string;
   path?: string;
@@ -17,8 +17,10 @@ export default function Provider({ name, path }: Props) {
         onMouseLeave={() => setShowName(false)}
       >
         {" "}
-        <Image
+        <Picture
           src={`${BASE_URL}${LOGO_SIZE[1]}${path}`}
+          fallBackImage={`${BASE_URL}${LOGO_SIZE[0]}${path}`}
+          title={name!}
           width={50}
           height={50}
           alt="service_logo"

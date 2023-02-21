@@ -1,9 +1,13 @@
+import { movieGenres, tvGenres } from "../../../constants/genres";
+import { MediaType } from "../../../typing";
 interface Props {
   title: string;
+  description: string;
   originalTitle: string;
   release: string | Date;
   last?: string | Date;
   genres: Genre[];
+  mediaType: MediaType;
 }
 interface Genre {
   id: number;
@@ -19,10 +23,12 @@ export default function MediaHeader({
   originalTitle,
   release,
   genres,
+  description,
+  mediaType,
   last,
 }: Props) {
   return (
-    <div>
+    <div className="flex-grow">
       {" "}
       <h3 className="text-midgray text-sm">Título</h3>
       <h1 className="text-4xl text-white font-medium">{title}</h1>
@@ -38,7 +44,9 @@ export default function MediaHeader({
         {genres.map((genre, i) => {
           return (
             <div key={i} className="px-3 py-1 bg-midgray/30 rounded-md w-max">
-              {genre.name}
+              {mediaType === "tv"
+                ? tvGenres[genre.id].name
+                : movieGenres[genre.id].name}
             </div>
           );
         })}

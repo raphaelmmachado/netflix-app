@@ -13,6 +13,7 @@ export default function useWindowSize() {
     width: undefined,
   });
 
+  const [mobile, setMobile] = useState(false);
   useEffect(() => {
     // Handler to call on window resize
     function handleResize() {
@@ -44,55 +45,28 @@ export default function useWindowSize() {
       }
     }
 
+    function checkIfMobile() {
+      const userAgent = navigator.userAgent.toLowerCase();
+      if (userAgent.includes("mobi") || userAgent.includes("tablet"))
+        setMobile(true);
+      else {
+        return setMobile(false);
+      }
+    }
+    checkIfMobile();
     // Add event listener
     window.addEventListener("resize", handleResize);
+    // window.addEventListener("resize", checkOrientation);
+
     // Call handler right away so state gets updated with initial window size
     handleResize();
     // Remove event listener on cleanup
-
-    return () => window.removeEventListener("resize", handleResize);
+    return () => {
+      window.removeEventListener("resize", handleResize);
+      // window.removeEventListener("resize", checkOrientation);
+    };
   }, []); // Empty array ensures that effect is only run on mount
+  const { width } = windowSize;
 
-  return windowSize;
+  return { width, mobile };
 }
-// 4
-
-// case window.innerWidth < 450:
-//   setWindowSize({ width: 1 });
-//   break;
-// case window.innerWidth < 768:
-//   setWindowSize({ width: 2 });
-//   break;
-// case window.innerWidth < 1024:
-//   setWindowSize({ width: 3 });
-//   break;
-// case window.innerWidth < 1440:
-//   setWindowSize({ width: 4 });
-//   break;
-// case window.innerWidth > 1440:
-//   setWindowSize({ width: 5 });
-//   break;
-// default:
-//   break;
-
-//5
-// case window.innerWidth < 500:
-//   setWindowSize({ width: 1 });
-//   break;
-// case window.innerWidth < 690:
-//   setWindowSize({ width: 2 });
-//   break;
-// case window.innerWidth < 870:
-//   setWindowSize({ width: 3 });
-//   break;
-// case window.innerWidth < 1100:
-//   setWindowSize({ width: 4 });
-//   break;
-// case window.innerWidth < 1440:
-//   setWindowSize({ width: 5 });
-//   break;
-// case window.innerWidth > 1440:
-//   setWindowSize({ width: 5 });
-//   break;
-// default:
-//   break;

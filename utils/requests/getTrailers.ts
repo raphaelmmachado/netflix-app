@@ -4,7 +4,6 @@ import { MediaType } from "../../typing";
 const API_KEY = process.env.NEXT_PUBLIC_API_KEY;
 const BASE_URL = "https://api.themoviedb.org/3";
 
-//TODO SE DER MERDA RESTAURA ISSO AQUI
 export async function getTrailers(
   id: string | number,
   type: MediaType,

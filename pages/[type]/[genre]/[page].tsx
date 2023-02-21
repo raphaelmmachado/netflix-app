@@ -56,8 +56,8 @@ export default function App({ movies, page, genre, mediaType, path }: Props) {
         <link rel="icon" href="/favicon.ico" />
       </Head>
       <section
-        className="flex flex-col sm:flex-row items-center
-       justify-center sm:justify-between my-10"
+        className="flex flex-col gap-6 sm:flex-row items-center
+       justify-center sm:justify-between my-4 sm:my-10"
       >
         <SearchInput
           placeholder={`${

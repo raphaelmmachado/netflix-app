@@ -21,6 +21,7 @@ module.exports = {
       def_black: colors.black,
       def_gray: colors.gray,
       def_white: colors.white,
+      def_yellow: colors.yellow,
       zinc: colors.zinc,
       stone: colors.stone,
       neutral: colors.neutral,

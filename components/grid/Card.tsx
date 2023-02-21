@@ -1,13 +1,14 @@
-import { useState, useContext, useCallback, lazy, Suspense } from "react";
+import { useState, useContext, useCallback } from "react";
+import dynamic from "next/dynamic";
 import { Context } from "../../context/ContextProvider";
 import { Media } from "../../typing";
 import apiConfiguration from "../../constants/apiConfiguration";
 import FormateDateToBR from "../../utils/formatters/formatDate";
 import { movieGenres, tvGenres } from "../../constants/genres";
-const PlayButton = lazy(() => import("./PlayButton"));
-const AddToListButton = lazy(() => import("./AddToListButton"));
-const DetailsButton = lazy(() => import("../home/banner/DetailsButton"));
-const PosterImage = lazy(() => import("./PosterImage"));
+import Picture from "../Picture";
+const PlayButton = dynamic(() => import("./PlayButton"));
+const AddToListButton = dynamic(() => import("./AddToListButton"));
+const DetailsButton = dynamic(() => import("../home/banner/DetailsButton"));
 
 interface Props {
   media: Media;
@@ -42,22 +43,19 @@ export default function Card({ media, mediaType }: Props) {
             18
           </span>
         )}
-        <Suspense
-          fallback={
-            <PosterImage
-              src={`${url}${posterSize[0]}/${media.poster_path}`}
-              alt={media.title ?? media.name}
-            />
-          }
-        >
-          <PosterImage
-            src={`${url}${posterSize[3]}/${media.poster_path}`}
-            alt={media.title ?? media.name}
-          />
-        </Suspense>
+        <Picture
+          title={media.title ?? media.name}
+          priority={true}
+          width={170}
+          height={250}
+          src={`${url}${posterSize[2]}/${media.poster_path}`}
+          fallBackImage={`${url}${posterSize[0]}/${media.poster_path}`}
+          alt={media.title ?? media.name}
+          className="rounded-md shadow-md border-2 border-gray/20"
+        />
 
         {showButtons && (
-          <Suspense>
+          <>
             <PlayButton
               showVideo={() => {
                 selectAMovie(media);
@@ -73,7 +71,7 @@ export default function Card({ media, mediaType }: Props) {
               selectedMediaType={media.media_type}
               iconType={"solid"}
             />
-          </Suspense>
+          </>
         )}
         <div className="absolute w-full text-center text-sm p-1 text-white/80 line-clamp-3">
           <>

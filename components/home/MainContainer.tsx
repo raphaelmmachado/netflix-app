@@ -45,9 +45,7 @@ export default function MainContainer({
     setModalOpen,
   } = useContext(Context);
 
-  // function to add item to firebase database
-
-  // change index when user swipes
+  // change index when user swipes, for mobile users
   const swipeHandler = useSwipeable({
     onSwipedUp: () => {
       setIndex && setIndex((prev) => (prev + 1 > bars - 1 ? prev : prev + 1));

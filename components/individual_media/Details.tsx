@@ -1,10 +1,13 @@
 //react / next
 import dynamic from "next/dynamic";
 import Image from "next/image";
+import { Context } from "../../context/ContextProvider";
+import { useContext } from "react";
 //components
 import MediaHeader from "./subcomponents/MediaHeader";
 import TitleDesc from "./subcomponents/TitleDesc";
 import RatingBox from "./subcomponents/RatingBox";
+
 const VideoSection = dynamic(() => import("./subcomponents/VideoSection"), {
   ssr: false,
 });
@@ -23,6 +26,7 @@ import tmdbApiConfig from "../../constants/apiConfiguration";
 import mostSpokenLanguages from "../../constants/mostSpokenLanguages";
 import {
   IVideo,
+  Media,
   MediaCast,
   MovieDetails,
   SerieDetails,
@@ -31,25 +35,36 @@ import {
 import FormateDateToBR from "../../utils/formatters/formatDate";
 import formatToCurrency from "../../utils/formatters/formatToCurrency";
 import calculateRuntime from "../../utils/formatters/calculateRuntime";
-
-const BASE_URL = tmdbApiConfig.images.secure_base_url;
-const BACKDROP_SIZE = tmdbApiConfig.images.backdrop_sizes;
-const POSTER_SIZE = tmdbApiConfig.images.poster_sizes;
-const PROFILE_SIZE = tmdbApiConfig.images.profile_sizes[1];
+import MovieSlider from "../home/slider/MovieSlider";
+import Picture from "../Picture";
+import ListButton from "../home/banner/ListButton";
+import Provider from "./subcomponents/Provider";
 
 interface Props {
   details: MovieDetails & SerieDetails;
+  recommendations: Media[];
   trailer: IVideo[];
   providers: WatchProvider;
   cast: MediaCast[];
 }
 
-export default function Details({ details, trailer, providers, cast }: Props) {
+export default function Details({
+  details,
+  trailer,
+  providers,
+  cast,
+  recommendations,
+}: Props) {
+  const { myList, setMyList } = useContext(Context);
   const [hours, remainingMinutes] = calculateRuntime(
     details.runtime ?? details.episode_run_time[0]
   );
+  const BASE_URL = tmdbApiConfig.images.secure_base_url;
+  const BACKDROP_SIZE = tmdbApiConfig.images.backdrop_sizes;
+  const POSTER_SIZE = tmdbApiConfig.images.poster_sizes;
 
   const langs = mostSpokenLanguages;
+
   return (
     <>
       <header
@@ -58,8 +73,9 @@ export default function Details({ details, trailer, providers, cast }: Props) {
       >
         <Image
           src={`${BASE_URL}${BACKDROP_SIZE[3]}/${details.backdrop_path}`}
+          title={details.title ?? details.name}
           alt="backdrop"
-          fill
+          fill={true}
           priority
           sizes="100vw"
           className=" aspect-video object-cover"
@@ -67,12 +83,37 @@ export default function Details({ details, trailer, providers, cast }: Props) {
       </header>
       <main
         className="absolute top-80 pt-2 w-full
-         px-4 bg-black pl-14"
+          bg-black pl-14"
       >
-        <section className=" md:pl-72">
+        <section className="flex px-12 py-2 w-full justify-between items-center my-4">
+          <div className="static md:absolute top-64 left-28">
+            <ListButton
+              added={myList && myList.some((item) => item.id === details.id)}
+              addToList={() =>
+                import("../../utils/addMediaToList").then((module) => {
+                  const genre_ids = details.genres.map((item) => item.id);
+                  details.trailer = trailer;
+                  details.genre_ids = genre_ids;
+                  module.default(details as Media, myList, setMyList);
+                })
+              }
+            />
+          </div>{" "}
+          <div className="static md:absolute -top-14 left-[21.4rem]">
+            {" "}
+            {providers?.flatrate && providers?.flatrate?.length > 0 && (
+              <Provider
+                name={providers.flatrate[0].provider_name}
+                path={providers.flatrate[0].logo_path}
+              />
+            )}
+          </div>
+        </section>
+        <section className="px-12 md:pl-72">
           <div className="flex items-center justify-between">
             <MediaHeader
               title={details.title ?? details.name}
+              description={details.overview!}
               originalTitle={details.original_title ?? details.original_name}
               release={FormateDateToBR(
                 details.release_date ?? details.first_air_date,
@@ -83,40 +124,42 @@ export default function Details({ details, trailer, providers, cast }: Props) {
               last={FormateDateToBR(details.last_air_date!, {
                 dateStyle: "short",
               })}
+              mediaType={details.title ? "movie" : "tv"}
               genres={details.genres}
             />
-
-            <RatingBox votes={details.vote_average.toFixed(1)} />
           </div>
-
           <br />
-          <TitleDesc
-            title="Descrição"
-            value={details.overview!}
-            pClass="font-thin text-lg"
-          />
+
+          <section
+            className="flex justify-between items-center"
+            id="overview-section"
+          >
+            <div>
+              {" "}
+              <TitleDesc
+                title="Descrição"
+                value={details.overview!}
+                pClass="font-thin text-lg"
+              />
+            </div>
+          </section>
         </section>
         <br />
         <section className="relative" id="cast-seasons-row">
           {details.created_by && details.created_by.length > 0 && (
-            <Creators
-              creators={details.created_by}
-              img_URL={`${BASE_URL}${PROFILE_SIZE}/`}
-            />
+            <Creators creators={details.created_by} />
           )}
           {cast.length > 0 && <Cast cast={cast} />}
 
-          {details.seasons && (
-            <Seasons
-              img_URL={`${BASE_URL}${POSTER_SIZE[1]}/`}
-              seasons={details.seasons}
-            />
-          )}
+          {details.seasons && <Seasons seasons={details.seasons} />}
         </section>
 
         <section className="flex md:justify-center " id="media-data-section">
-          <Image
+          {/* ABSOLUTE MAIN POSTER */}
+          <Picture
             src={`${BASE_URL}${POSTER_SIZE[3]}/${details.poster_path}`}
+            fallBackImage={`${BASE_URL}${POSTER_SIZE[0]}/${details.poster_path}`}
+            title={details.title ?? details.name}
             alt="poster"
             width={235}
             height={180}
@@ -124,7 +167,7 @@ export default function Details({ details, trailer, providers, cast }: Props) {
             style={{ height: "auto" }}
             className=" md:absolute shadow-lg
            mr-4 rounded-md object-cover
-           md:-top-24 md:left-20"
+           md:-top-28 md:left-20"
           />
           <div className="grid md:grid-cols-4 place-content-start gap-4">
             {/* MOVIE */}
@@ -172,9 +215,11 @@ export default function Details({ details, trailer, providers, cast }: Props) {
         </section>
         <br />
         <VideoSection details={details} trailer={trailer} />
-
-        <br />
         {providers && <Providers providers={providers} />}
+        <br />
+        {recommendations.length > 0 && (
+          <MovieSlider medias={recommendations} title="Recomendados" />
+        )}
       </main>
     </>
   );

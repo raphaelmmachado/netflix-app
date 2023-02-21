@@ -1,6 +1,6 @@
-import Image from "next/image";
 import { MediaCast } from "../../../typing";
 import apiConfiguration from "../../../constants/apiConfiguration";
+import Picture from "../../Picture";
 interface Props {
   cast: MediaCast[];
 }
@@ -25,9 +25,11 @@ export default function Cast({ cast }: Props) {
         {person.map((person, i) => {
           return (
             <div key={i} className="flex gap-2">
-              <Image
+              <Picture
                 alt={person.name}
                 src={`${BASE_URL}${PROFILE_SIZE[1]}${person.profile_path}`}
+                fallBackImage={`${BASE_URL}${PROFILE_SIZE[0]}${person.profile_path}`}
+                title={person.name}
                 width={75}
                 height={50}
                 sizes="[45px,50px,75px]"

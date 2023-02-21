@@ -17,11 +17,11 @@ export interface Media {
   poster_path: string | null;
   release_date: string;
   title: string;
+  name: string;
   video?: boolean;
   vote_average: number;
   vote_count: number;
   media_type?: string;
-  name?: string;
   trailer: IVideo[];
   first_air_date?: Date | string;
   origin_country?: string[];
@@ -118,6 +118,8 @@ export interface MovieDetails extends SerieDetails {
   video: boolean;
   vote_average: number;
   vote_count: number;
+  genre_ids?: number[];
+  trailer?: IVideo[];
 }
 
 export interface Genre {

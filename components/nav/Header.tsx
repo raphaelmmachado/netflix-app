@@ -13,14 +13,14 @@ import useWindowSize from "../../hooks/useWindowSize";
 //components
 import NetflixLogo from "../NetflixLogo";
 import NavLinks from "./NavLinks";
+//icons
 import LogoutIcon from "@heroicons/react/20/solid/ArrowRightOnRectangleIcon";
 import HomeIcon from "@heroicons/react/24/outline/HomeIcon";
 import TVIcon from "@heroicons/react/24/outline/TvIcon";
 import FilmIcon from "@heroicons/react/24/outline/FilmIcon";
 import FolderIcon from "@heroicons/react/24/outline/FolderIcon";
+import BarsIcon from "@heroicons/react/24/outline/ArrowLongRightIcon";
 //utils
-// TODO SIDEBAR NAV
-//FIXME CONTEXT DB
 
 export default function Header() {
   const { myList } = useContext(Context);
@@ -44,53 +44,75 @@ export default function Header() {
         setMobile(false);
       }
     }
-  }, [width]);
+  }, [width, loading]);
 
   return (
     <>
       {!loading && user && (
         <header className="transition-all duration-200 delay-200 ease-in-out">
           <nav
-            onMouseEnter={() => setNavIsOpen(true)}
-            onMouseLeave={() => setNavIsOpen(false)}
-            className={`fixed z-30 top-0 left-0 min-h-screen min-w-[3.5rem] rounded-tr-md rounded-br-md
-            grid grid-rows-1 justify-center justify-items-center items-start py-12 px-2
-            gap-8 bg-black border border-midgray/20`}
+            className={`fixed z-30 sm:top-0 sm:left-0 min-h-screen min-w-[3.5rem]
+            rounded-tr-md rounded-br-md grid grid-rows-1
+            justify-center justify-items-center items-start py-12
+            gap-8 bg-black border border-l-0 border-midgray/20 transition-all delay-75
+            duration-150 ease-in-out shadow-sm shadow-def_black ${
+              navIsOpen && "px-4"
+            }`}
           >
             <div
               className="flex flex-col items-center gap-6 text-sm sm:text-base"
               id="nav--logo"
             >
-              {navIsOpen ? (
-                <NetflixLogo width="150" height="50" />
-              ) : (
-                <Image
-                  src={"/favicon.ico"}
-                  width={30}
-                  height={30}
-                  alt="netflix_logo"
-                />
-              )}
-              <ul
-                className="grid grid-rows-4 place-content-start
-               text-smokewt gap-3"
+              {" "}
+              {/* LOGO */}
+              <span
+                onClick={() => router.push("/")}
+                className="cursor-pointer hover:scale-105 transition-all duration-200 delay-75 ease-in-out"
               >
-                <NavLinks title="Início" path="/" navIsOpen={navIsOpen}>
-                  <HomeIcon className="w-5 h-5 text-white" />
+                {navIsOpen ? (
+                  <NetflixLogo width="150" height="50" />
+                ) : (
+                  <Image
+                    src={"/favicon.ico"}
+                    width={36}
+                    height={36}
+                    alt="netflix_logo"
+                  />
+                )}
+              </span>{" "}
+              {/* BARS ICON */}
+              <div
+                onClick={() => setNavIsOpen((prev) => !prev)}
+                className="flex items-center rounded-md p-2 my-4
+               hover:bg-midgray/20 text-midgray cursor-pointer"
+              >
+                {" "}
+                <span className="w-[0.125rem] h-6 bg-midgray/80 "> </span>
+                <BarsIcon
+                  className={` transition-all duration-200 delay-75 ease-in-out ${
+                    navIsOpen ? "w-10 h-10 rotate-180" : "w-6 h-6"
+                  }`}
+                />
+              </div>
+              {/* LINKS */}
+              <ul
+                className={`grid grid-rows-4 place-content-start transition-all duration-200 delay-75 ease-in-out
+               ${navIsOpen ? "text-smokewt" : "text-midgray"} gap-3`}
+              >
+                {" "}
+                <NavLinks
+                  title="Filmes"
+                  path="/filmes/geral/1"
+                  navIsOpen={navIsOpen}
+                >
+                  <FilmIcon className="w-6 h-6 " />
                 </NavLinks>
                 <NavLinks
                   title="Séries"
                   path="/series/geral/1"
                   navIsOpen={navIsOpen}
                 >
-                  <TVIcon className="w-5 h-5 text-white" />
-                </NavLinks>
-                <NavLinks
-                  title="Filmes"
-                  path="/filmes/geral/1"
-                  navIsOpen={navIsOpen}
-                >
-                  <FilmIcon className="w-5 h-5 text-white" />
+                  <TVIcon className="w-6 h-6 " />
                 </NavLinks>
                 {myList.length > 0 && (
                   <NavLinks
@@ -98,16 +120,16 @@ export default function Header() {
                     path="/minha_lista"
                     navIsOpen={navIsOpen}
                   >
-                    <FolderIcon className="w-5 h-5 text-white" />
+                    <FolderIcon className="w-6 h-6 " />
                   </NavLinks>
                 )}
               </ul>
             </div>
-
+            {/* USER */}
             <div className="relative" id="nav--right-div">
               {!loading && user && (
                 <>
-                  <div
+                  <button
                     onClick={() => setShowLogoutModal((prev) => !prev)}
                     onKeyDown={(e) =>
                       import("../../utils/checkKeyboardKeys").then(
@@ -116,7 +138,7 @@ export default function Header() {
                           setShowLogoutModal((prev) => !prev)
                       )
                     }
-                    className="flex px-2  items-center gap-2"
+                    className="flex px-0  items-center gap-2"
                   >
                     <Image
                       src={`${user?.photoURL}`}
@@ -131,9 +153,9 @@ export default function Header() {
                         {user?.displayName}
                       </a>
                     )}
-                  </div>
+                  </button>
                   {showLogoutModal && (
-                    <a
+                    <button
                       onClick={() => {
                         auth.signOut().then(() => router.push("/login"));
                       }}
@@ -151,7 +173,7 @@ export default function Header() {
                     >
                       <LogoutIcon className="w-5 h-5" />
                       <h3 className="text-sm">Sair</h3>
-                    </a>
+                    </button>
                   )}
                 </>
               )}

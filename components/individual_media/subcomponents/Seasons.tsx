@@ -3,9 +3,8 @@ import SeasonPoster from "./SeasonPoster";
 
 interface Props {
   seasons: Season[];
-  img_URL: string;
 }
-export default function Seasons({ seasons, img_URL }: Props) {
+export default function Seasons({ seasons }: Props) {
   return (
     <>
       {" "}
@@ -17,9 +16,7 @@ export default function Seasons({ seasons, img_URL }: Props) {
         <h3 className="text-lg text-midgray">Temporadas</h3>
         <div className="flex py-2 gap-2 overflow-y-visible">
           {seasons.map((media: Season, i) => {
-            return (
-              <SeasonPoster key={i} media={media} img_URL={img_URL} i={i} />
-            );
+            return <SeasonPoster key={i} media={media} i={i} />;
           })}
         </div>
       </section>

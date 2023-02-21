@@ -36,10 +36,10 @@ export default function GenreSelect({ items, path }: Props) {
         </span>
 
         <div
-          className={`absolute grid grid-cols-4 place-content-center gap-1 shadow-sm font-thin ${
+          className={`absolute grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 place-content-center gap-1 shadow-sm font-thin ${
             showSelect &&
             "border-2 border-midgray/30 transition-all duration-75"
-          } rounded-md bg-black top-60 sm:top-44 right-0 z-10 mx-2 sm:mx-8 w-fit`}
+          } rounded-md bg-black top-44 sm:top-44 right-0 z-10  sm:mx-8 w-fit text-center`}
         >
           {showSelect &&
             Object.values(items).map((item, i) => {

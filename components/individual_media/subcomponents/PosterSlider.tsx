@@ -12,6 +12,7 @@ import { Season } from "../../../typing";
 interface Props {
   posters: Season[];
 }
+
 export default function MovieSlider({ posters }: Props) {
   const [itemsPerScreen, setItemsPerScreen] = useState(8);
   const [sliderIndex, setSliderIndex] = useState(0);
@@ -99,8 +100,8 @@ export default function MovieSlider({ posters }: Props) {
                     onMouseLeave={() => setShowDescription(false)}
                     src={`${BASE_URL}${POSTER_SIZE}/${media.poster_path}`}
                     alt={media.name}
-                    width={150}
-                    height={100}
+                    width={110}
+                    height={110}
                     className="hover:cursor-pointer rounded-md ring-black hover:ring-white ring-2"
                   />
                 </div>

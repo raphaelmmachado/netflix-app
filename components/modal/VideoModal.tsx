@@ -29,8 +29,11 @@ export default function VideoModal({ mediaType }: Props) {
     results: IVideo[];
   };
 
-  //check if DB has video
+  //check if tmdb has video
   useEffect(() => {
+    // checking if is a mixed component with both tv and movie items
+    // if is a mixed component, the api will give me "media_type"
+    // if not use media type from component
     const type = !selectedMedia?.media_type
       ? selectedMedia?.title
         ? "movie"
@@ -58,7 +61,7 @@ export default function VideoModal({ mediaType }: Props) {
     return () => setDBVideos(undefined);
   }, [showVideoModal]);
 
-  //if not search on youtube
+  //if there is not video, search on youtube
   function searchOnYT() {
     let query = "";
     if (selectedMedia?.title || selectedMedia?.original_title) {
@@ -84,12 +87,12 @@ export default function VideoModal({ mediaType }: Props) {
       {showVideoModal && selectedMedia && (
         <section
           id="modal"
-          className="bg-black/70 fixed w-full h-full
-        flex justify-center items-center z-50 inset-0"
+          className="bg-black/70 fixed w-screen h-screen
+        flex justify-center items-center z-50 inset-0 sm:px-12"
         >
           <div
-            className="min-w-[420px] sm:min-w-[615px]
-            md:min-w-[740px] lg:min-w-[990px] rounded-md
+            className="rounded-sm min-w-[420px] sm:min-w-[615px]
+            md:min-w-[740px] lg:min-w-[990px]
             flex flex-col border border-gray"
             id="video-modal-container"
           >

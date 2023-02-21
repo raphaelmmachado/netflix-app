@@ -39,10 +39,10 @@ export default function VerticalScroller({
             onClick={() => setIndex(i)}
             id="vertical-bars"
             key={i}
-            className={`hover:cursor-pointer transition-transform ${
+            className={`hover:cursor-pointer  rounded-sm transition-transform ${
               index === i
-                ? "bg-transparent sm:bg-red h-5 w-fit sm:w-2"
-                : "bg-white/50 hidden sm:inline-flex h-0 w-2 sm:h-5 rounded-sm"
+                ? "bg-transparent sm:bg-red  h-5 w-fit sm:w-2"
+                : "bg-white/50 hidden sm:inline-flex h-0 w-2 sm:h-5"
             } `}
           >
             <h1 className="block sm:hidden">{index === i && title}</h1>
