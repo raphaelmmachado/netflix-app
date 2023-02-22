@@ -85,7 +85,7 @@ export default function Details({
         className="absolute top-80 pt-2 w-full
           bg-black pl-14"
       >
-        <section className="flex px-12 py-2 w-full justify-between items-center my-4">
+        <section className="flex px-12 py-2 w-full justify-between items-center my-4 sm:m-0 sm:p-0">
           <div className="static md:absolute top-64 left-28">
             <ListButton
               added={myList && myList.some((item) => item.id === details.id)}
@@ -161,6 +161,7 @@ export default function Details({
             fallBackImage={`${BASE_URL}${POSTER_SIZE[0]}/${details.poster_path}`}
             title={details.title ?? details.name}
             alt="poster"
+            priority={true}
             width={235}
             height={180}
             sizes="[190px,220px,235px]"

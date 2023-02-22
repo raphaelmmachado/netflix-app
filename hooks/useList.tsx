@@ -10,14 +10,20 @@ export default function useList() {
   const [user, loading] = useAuthState(auth);
 
   // when component loads, get items from firebase and put it in context list
-  const getList = () =>
+  const getList = () => {
     fetchDB(`${user?.uid}/list`)
-      .then((res: Media[]) => res.length > 0 && setMyList(res))
-      .catch((e) => console.log(e));
+      .then((res: Media[]) => res && res.length > 0 && setMyList(res))
+      .catch((e) =>
+        console.warn({
+          mensagem: "Erro ao acessar lista do firebase",
+          error: e,
+        })
+      );
+  };
 
   useEffect(() => {
-    getList();
-  }, [user, loading]);
+    user && getList();
+  }, [loading, user]);
 
   // put list on firebase DB
   const writeUserList = useCallback(async () => {

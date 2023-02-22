@@ -1,5 +1,5 @@
 //react / next
-import { useEffect, useState, useContext } from "react";
+import { useEffect, useState, useContext, useRef } from "react";
 import { useRouter } from "next/router";
 import Image from "next/image";
 //firebase
@@ -15,27 +15,30 @@ import NetflixLogo from "../NetflixLogo";
 import NavLinks from "./NavLinks";
 //icons
 import LogoutIcon from "@heroicons/react/20/solid/ArrowRightOnRectangleIcon";
-import HomeIcon from "@heroicons/react/24/outline/HomeIcon";
+import CircleSearchIcon from "@heroicons/react/24/outline/MagnifyingGlassCircleIcon";
+import SearchIcon from "@heroicons/react/24/outline/MagnifyingGlassIcon";
+
 import TVIcon from "@heroicons/react/24/outline/TvIcon";
 import FilmIcon from "@heroicons/react/24/outline/FilmIcon";
 import FolderIcon from "@heroicons/react/24/outline/FolderIcon";
 import BarsIcon from "@heroicons/react/24/outline/ArrowLongRightIcon";
 //utils
 
-export default function Header() {
+export default function Nav() {
   const { myList } = useContext(Context);
   const [navIsOpen, setNavIsOpen] = useState(false);
   const [mobile, setMobile] = useState(false);
   const [showLogoutModal, setShowLogoutModal] = useState(false);
+  const [showSearch, setShowSearch] = useState(false);
   const { width } = useWindowSize();
   const [user, loading] = useAuthState(auth);
   const router = useRouter();
-
+  const searchRef = useRef<HTMLInputElement>(null);
   useList();
 
   useEffect(() => {
     if (!loading && !user) {
-      router.push("/login");
+      router.replace("/login");
     }
     if (width !== undefined) {
       if (width < 3) {
@@ -44,15 +47,19 @@ export default function Header() {
         setMobile(false);
       }
     }
-  }, [width, loading]);
+  }, [width, loading, user]);
 
   return (
     <>
       {!loading && user && (
-        <header className="transition-all duration-200 delay-200 ease-in-out">
+        <header
+          className="transition-all duration-200 delay-200 ease-in-out"
+          id="nav-header"
+        >
           <nav
+            id="sidebar"
             className={`fixed z-30 sm:top-0 sm:left-0 min-h-screen min-w-[3.5rem]
-            rounded-tr-md rounded-br-md grid grid-rows-1
+            rounded-br-md grid grid-rows-1
             justify-center justify-items-center items-start py-12
             gap-8 bg-black border border-l-0 border-midgray/20 transition-all delay-75
             duration-150 ease-in-out shadow-sm shadow-def_black ${
@@ -81,22 +88,24 @@ export default function Header() {
                 )}
               </span>{" "}
               {/* BARS ICON */}
-              <div
+              <button
+                id="nav-button"
                 onClick={() => setNavIsOpen((prev) => !prev)}
                 className="flex items-center rounded-md p-2 my-4
                hover:bg-midgray/20 text-midgray cursor-pointer"
               >
                 {" "}
-                <span className="w-[0.125rem] h-6 bg-midgray/80 "> </span>
+                <span className="w-[0.125rem] h-6 bg-midgray/80"> </span>
                 <BarsIcon
                   className={` transition-all duration-200 delay-75 ease-in-out ${
                     navIsOpen ? "w-10 h-10 rotate-180" : "w-6 h-6"
                   }`}
                 />
-              </div>
+              </button>
               {/* LINKS */}
               <ul
-                className={`grid grid-rows-4 place-content-start transition-all duration-200 delay-75 ease-in-out
+                id="nav-links"
+                className={`flex flex-col items-start justify-around transition-all duration-200 delay-75 ease-in-out
                ${navIsOpen ? "text-smokewt" : "text-midgray"} gap-3`}
               >
                 {" "}
@@ -124,6 +133,14 @@ export default function Header() {
                   </NavLinks>
                 )}
               </ul>
+              {/* SEARCH ICON */}
+              <CircleSearchIcon
+                onClick={() => {
+                  setShowSearch((prev) => !prev);
+                  showSearch && searchRef.current?.focus();
+                }}
+                className="w-10 h-10 p-1 rounded-full text-midgray hover:bg-midgray/20 cursor-pointer"
+              />
             </div>
             {/* USER */}
             <div className="relative" id="nav--right-div">
@@ -179,33 +196,26 @@ export default function Header() {
               )}
             </div>
           </nav>
+          {showSearch && (
+            <section className="fixed top-0 left-14 bg-black border-2 border-midgray/20 border-l-0 z-10">
+              <div className="flex items-center p-2 w-fit">
+                <label htmlFor="search">
+                  <SearchIcon className="w-8 h-8 text-smokewt" />
+                </label>
+                <input
+                  ref={searchRef}
+                  className="relative bg-transparent outline-none ml-6 py-2
+                   min-w-max max-w-screen-sm font-thin"
+                  type="text"
+                  id="search"
+                  name="search"
+                  placeholder="Buscar filmes e series"
+                />
+              </div>
+            </section>
+          )}
         </header>
       )}
     </>
   );
 }
-// DESKTOP LOGO
-{
-  /* <div
-                  className="hover:cursor-pointer"
-                  tabIndex={0}
-                  onKeyDown={(e) =>
-                    import("../../utils/checkKeyboardKeys").then(
-                      (module) => module.default(e.code) && router.push("/")
-                    )
-                  }
-                  onClick={() => router.push("/")}
-                >
-                  <NetflixLogo
-                    svg={{ width: "111", height: "50", fill: "none" }}
-                    path={{ fill: "#b9090b" }}
-                    rect={{ width: "500", height: "140", fill: "white" }}
-                  />
-                </div> */
-}
-// MOBILE LOGO
-//  <NetflixLogo
-//                     svg={{ width: "120", height: "50", fill: "none" }}
-//                     path={{ fill: "#b9090b" }}
-//                     rect={{ width: "80", height: "140", fill: "white" }}
-//                   />

@@ -26,10 +26,11 @@
 - Props Interface
 - Code Splitting
 - Dynamic import
+- Firebase Authentication e Realtime Database
 
 ## Maiores dificuldades?
 
-- Como montar o layout.
+- Acho que passei mais tempo pensando em como criar um dessign do que codando, peguei algumas inspirações no figma.
 - Criar um slider de videos.
 - Tipagem do typescript com react, principalmente passar props e hooks.
 
