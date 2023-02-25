@@ -10,8 +10,21 @@ export default function GenreSelect({ items, path }: Props) {
   const [showSelect, setShowSelect] = useState(false);
   const [gender, setGender] = useState("Geral");
   const genderRef = useRef<HTMLHeadingElement>(null);
-
   const router = useRouter();
+
+  interface Gender {
+    gender: {
+      name: string;
+      id: number;
+      slug: string;
+    };
+  }
+  const selectGender = ({ gender }: Gender) => {
+    router.push(`/${path}/${gender.slug}/1`);
+
+    setShowSelect((prev) => !prev);
+    setGender(gender.name);
+  };
   return (
     <>
       {" "}
@@ -39,23 +52,19 @@ export default function GenreSelect({ items, path }: Props) {
           className={`absolute grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 place-content-center gap-1 shadow-sm font-thin ${
             showSelect &&
             "border-2 border-midgray/30 transition-all duration-75"
-          } rounded-md bg-black top-44 sm:top-44 right-0 z-10  sm:mx-8 w-fit text-center`}
+          } rounded-md bg-black top-32 sm:top-20 sm:right-5 z-10  sm:mx-8 w-fit text-center`}
         >
           {showSelect &&
-            Object.values(items).map((item, i) => {
+            Object.values(items).map((gender, i) => {
               return (
                 <h1
                   key={i}
                   ref={genderRef}
                   className="bg-gray  tracking-wider hover:bg-smokewt
                    rounded-md text-white hover:text-black px-1 sm:px-4 py-2 "
-                  onClick={() => {
-                    router.push(`/${path}/${item.slug}/1`);
-                    setShowSelect((prev) => !prev);
-                    setGender(item.name);
-                  }}
+                  onClick={() => selectGender({ gender })}
                 >
-                  {item.name}
+                  {gender.name}
                 </h1>
               );
             })}

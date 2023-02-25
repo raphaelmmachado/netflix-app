@@ -3,11 +3,20 @@ import dynamic from "next/dynamic";
 import Image from "next/image";
 import { Context } from "../../context/ContextProvider";
 import { useContext } from "react";
+import { useRouter } from "next/router";
 //components
 import MediaHeader from "./subcomponents/MediaHeader";
 import TitleDesc from "./subcomponents/TitleDesc";
 import RatingBox from "./subcomponents/RatingBox";
-
+import FormateDateToBR from "../../utils/formatters/formatDate";
+import formatToCurrency from "../../utils/formatters/formatToCurrency";
+import calculateRuntime from "../../utils/formatters/calculateRuntime";
+import MovieSlider from "../home/slider/MovieSlider";
+import Picture from "../Picture";
+import ListButton from "../home/banner/ListButton";
+import Provider from "./subcomponents/Provider";
+import PosterSlider from "./subcomponents/PosterSlider";
+//dynamic components
 const VideoSection = dynamic(() => import("./subcomponents/VideoSection"), {
   ssr: false,
 });
@@ -17,10 +26,8 @@ const Creators = dynamic(() => import("./subcomponents/Creators"), {
 const Providers = dynamic(() => import("./subcomponents/Providers"), {
   ssr: false,
 });
-const Seasons = dynamic(() => import("./subcomponents/Seasons"), {
-  ssr: false,
-});
 const Cast = dynamic(() => import("./subcomponents/Cast"));
+
 //constants / utils
 import tmdbApiConfig from "../../constants/apiConfiguration";
 import mostSpokenLanguages from "../../constants/mostSpokenLanguages";
@@ -32,13 +39,6 @@ import {
   SerieDetails,
   WatchProvider,
 } from "../../typing";
-import FormateDateToBR from "../../utils/formatters/formatDate";
-import formatToCurrency from "../../utils/formatters/formatToCurrency";
-import calculateRuntime from "../../utils/formatters/calculateRuntime";
-import MovieSlider from "../home/slider/MovieSlider";
-import Picture from "../Picture";
-import ListButton from "../home/banner/ListButton";
-import Provider from "./subcomponents/Provider";
 
 interface Props {
   details: MovieDetails & SerieDetails;
@@ -64,7 +64,7 @@ export default function Details({
   const POSTER_SIZE = tmdbApiConfig.images.poster_sizes;
 
   const langs = mostSpokenLanguages;
-
+  const router = useRouter();
   return (
     <>
       <header
@@ -85,8 +85,8 @@ export default function Details({
         className="absolute top-80 pt-2 w-full
           bg-black pl-14"
       >
-        <section className="flex px-12 py-2 w-full justify-between items-center my-4 sm:m-0 sm:p-0">
-          <div className="static md:absolute top-64 left-28">
+        <section className="flex px-6 sm:px-12 py-2 w-full justify-between items-center my-4 sm:m-0 sm:p-0">
+          <div className="static md:absolute md:top-64 md:left-28">
             <ListButton
               added={myList && myList.some((item) => item.id === details.id)}
               addToList={() =>
@@ -99,7 +99,7 @@ export default function Details({
               }
             />
           </div>{" "}
-          <div className="static md:absolute -top-14 left-[21.4rem]">
+          <div className="static md:absolute -top-14 left-[21.4rem] z-20">
             {" "}
             {providers?.flatrate && providers?.flatrate?.length > 0 && (
               <Provider
@@ -109,7 +109,7 @@ export default function Details({
             )}
           </div>
         </section>
-        <section className="px-12 md:pl-72">
+        <section className="px-6 sm:px-12 md:pl-72">
           <div className="flex items-center justify-between">
             <MediaHeader
               title={details.title ?? details.name}
@@ -127,9 +127,9 @@ export default function Details({
               mediaType={details.title ? "movie" : "tv"}
               genres={details.genres}
             />
+            <div></div>
           </div>
           <br />
-
           <section
             className="flex justify-between items-center"
             id="overview-section"
@@ -145,17 +145,22 @@ export default function Details({
           </section>
         </section>
         <br />
-        <section className="relative" id="cast-seasons-row">
+        <br />
+        <section className="relative my-8" id="cast-seasons-row">
           {details.created_by && details.created_by.length > 0 && (
             <Creators creators={details.created_by} />
           )}
           {cast.length > 0 && <Cast cast={cast} />}
 
-          {details.seasons && <Seasons seasons={details.seasons} />}
+          {details.seasons && (
+            <PosterSlider posters={details.seasons} sliderTitle="Temporadas" />
+          )}
         </section>
-
-        <section className="flex md:justify-center " id="media-data-section">
-          {/* ABSOLUTE MAIN POSTER */}
+        <section
+          className="flex px-6 sm:px-12 gap-6 md:justify-center "
+          id="media-data-section"
+        >
+          {/* ABSOLUTE POSITION MAIN POSTER */}
           <Picture
             src={`${BASE_URL}${POSTER_SIZE[3]}/${details.poster_path}`}
             fallBackImage={`${BASE_URL}${POSTER_SIZE[0]}/${details.poster_path}`}
@@ -164,11 +169,11 @@ export default function Details({
             priority={true}
             width={235}
             height={180}
-            sizes="[190px,220px,235px]"
+            sizes="[190px,200px,235px]"
             style={{ height: "auto" }}
             className=" md:absolute shadow-lg
-           mr-4 rounded-md object-cover
-           md:-top-28 md:left-20"
+          mx- sm:mx-4 rounded-md object-cover
+           md:-top-28 md:left-16"
           />
           <div className="grid md:grid-cols-4 place-content-start gap-4">
             {/* MOVIE */}
@@ -214,6 +219,7 @@ export default function Details({
             )}
           </div>
         </section>
+
         <br />
         <VideoSection details={details} trailer={trailer} />
         {providers && <Providers providers={providers} />}

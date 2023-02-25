@@ -1,17 +1,19 @@
+//react/next
 import Head from "next/head";
 import dynamic from "next/dynamic";
 import { GetServerSideProps } from "next";
 import { useState } from "react";
 import { useRouter } from "next/router";
+//components
 import SearchInput from "../../../components/grid/SearchInput";
 import GenreSelect from "../../../components/grid/GenreSelect";
 import MediaGrid from "../../../components/grid/MediaGrid";
-
 const Footer = dynamic(() => import("../../../components/grid/Footer"));
+//type
 import { Media, MediaType } from "../../../typing";
+//constants
 import { movieRequests } from "../../../constants/moviesRequests";
 import { movieGenres, slugs, tvGenres } from "../../../constants/genres";
-
 interface Props {
   movies: Media[];
   mediaType: MediaType;
@@ -55,9 +57,10 @@ export default function App({ movies, page, genre, mediaType, path }: Props) {
         <meta name="viewport" content="width=device-width, initial-scale=1" />
         <link rel="icon" href="/favicon.ico" />
       </Head>
+
       <section
         className="flex flex-col gap-6 sm:flex-row items-center
-       justify-center sm:justify-between my-4 sm:my-10"
+       justify-center sm:justify-between my-4 sm:my-10 relative"
       >
         <SearchInput
           placeholder={`${

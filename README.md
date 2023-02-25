@@ -32,7 +32,7 @@
 
 - Acho que passei mais tempo pensando em como criar um dessign do que codando, peguei algumas inspirações no figma.
 - Criar um slider de videos.
-- Tipagem do typescript com react, principalmente passar props e hooks.
+- No início eu tive muita dificuldade com tipagem do typescript com react, principalmente passar props e hooks. Mas deepois que fui entendo como funciona tive mais tranquilidade.
 
 ### Como está sendo desenvolver esse projeto?
 
@@ -78,3 +78,5 @@ Percebi que o Next estava me alertando que o carregamento do javascript estava m
 ## Problemas para consertar
 
 Ao atualizar a página "minha lista" a lista de filme fica vazia, mesmo que tenha items. Deve ser algum problema de "effect", tentei de todas formas usar useEffect mas sempre termina em loop infinito. Então enquanto não conserto eu fiz que a página seja redirecionada para tela inicial se a lista estiver vazia
+
+Edit: consertado.

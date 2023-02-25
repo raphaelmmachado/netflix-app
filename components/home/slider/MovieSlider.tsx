@@ -9,6 +9,7 @@ import {
 } from "react";
 import { Context } from "../../../context/ContextProvider";
 import { useRouter } from "next/router";
+import Image from "next/image";
 //custom-hooks
 import useWindowSize from "../../../hooks/useWindowSize";
 //utils
@@ -16,7 +17,7 @@ import apiConfiguration from "../../../constants/apiConfiguration";
 import enterKeyPressed from "../../../utils/checkKeyboardKeys";
 //typing
 import { Media } from "../../../typing";
-import Picture from "../../Picture";
+import slugify from "../../../utils/formatters/slugfy";
 //components
 
 interface IMovieSlider {
@@ -28,8 +29,8 @@ export default function MovieSlider({ medias, title }: IMovieSlider) {
   const [itemsPerScreen, setItemsPerScreen] = useState(5);
   const [sliderIndex, setSliderIndex] = useState(0);
   const [progressBarItems, setProgressBarItems] = useState(0);
-
   const { selectedMedia, setSelectedMedia } = useContext(Context);
+  const [image, setImage] = useState(selectedMedia?.backdrop_path);
   const router = useRouter();
   const { width } = useWindowSize();
   const memoWidth = useMemo(() => width, [width]);
@@ -105,6 +106,7 @@ export default function MovieSlider({ medias, title }: IMovieSlider) {
             {medias.map((media: Media, i) => {
               return (
                 <div
+                  id="media_slider-card"
                   className="card max-h-fit relative flex
                    justify-center items-end
                    hover:cursor-pointer group"
@@ -112,10 +114,14 @@ export default function MovieSlider({ medias, title }: IMovieSlider) {
                   onMouseEnter={() => selectAMedia(media)}
                   onClickCapture={() => {
                     if (!navigator.userAgent.toLowerCase().includes("mobi")) {
+                      const slug = slugify(
+                        selectedMedia?.title ?? selectedMedia?.name!
+                      );
                       router.push({
-                        pathname: `/[type]/detalhes/${selectedMedia?.id}`,
+                        pathname: `/[type]/detalhes/${slug}`,
                         query: {
                           type: `${selectedMedia?.title ? "filmes" : "series"}`,
+                          id: selectedMedia?.id,
                         },
                       });
                     } else {
@@ -134,9 +140,13 @@ export default function MovieSlider({ medias, title }: IMovieSlider) {
                     enterKeyPressed(e.code) && selectAMedia(media)
                   }
                 >
-                  <Picture
+                  <Image
                     src={`${BASE_URL}${BACKDROP_SIZE[0]}/${media.backdrop_path}`}
-                    fallBackImage={`${BASE_URL}${BACKDROP_SIZE[0]}/${media.backdrop_path}`}
+                    onError={() =>
+                      setImage(
+                        `${BASE_URL}${BACKDROP_SIZE[0]}/${media.backdrop_path}`
+                      )
+                    }
                     alt="movie-pic"
                     width={315}
                     height={177}
@@ -145,9 +155,11 @@ export default function MovieSlider({ medias, title }: IMovieSlider) {
                     title={media.title ?? media.name}
                     className="hover:cursor-pointer rounded-md ring-black group-hover:ring-white ring-2"
                   />
-
                   <span className="absolute w-[98%]">
-                    <h1 className="text-start text-sm sm:text-base md:text-lg px-2 py-1 text-smokewt bg-black/50 rounded-md">
+                    <h1
+                      className="text-start text-sm sm:text-base md:text-lg px-2 py-1
+                     text-smokewt bg-black/20 rounded-md font-thin"
+                    >
                       {media.name ?? media.title}
                     </h1>
                   </span>

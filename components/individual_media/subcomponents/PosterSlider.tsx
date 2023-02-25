@@ -1,30 +1,32 @@
 //hooks
 import { useState, useEffect, useMemo, CSSProperties } from "react";
-import { Context } from "../../../context/ContextProvider";
-import Image from "next/image";
+import dynamic from "next/dynamic";
 import useWindowSize from "../../../hooks/useWindowSize";
-//utils
-import apiConfiguration from "../../../constants/apiConfiguration";
+
 //typing
 import { Season } from "../../../typing";
 //components
+import PosterSliderCards from "./PosterSliderCards";
+const SeasonDescription = dynamic(() => import("./SeasonDescription"), {
+  ssr: false,
+});
 
 interface Props {
   posters: Season[];
+  sliderTitle: string;
 }
 
-export default function MovieSlider({ posters }: Props) {
+export default function PosterSlider({ posters, sliderTitle }: Props) {
   const [itemsPerScreen, setItemsPerScreen] = useState(8);
   const [sliderIndex, setSliderIndex] = useState(0);
   const [progressBarItems, setProgressBarItems] = useState(0);
-  const [showDescription, setShowDescription] = useState(false);
   const { width } = useWindowSize();
   const memoWidth = useMemo(() => width, [width]);
-
+  const [seasonDetails, setSeasonDetails] = useState<Season | null>();
   //set sliders items per screen based on screen width
   useEffect(() => {
     if (memoWidth !== undefined) {
-      setItemsPerScreen(memoWidth * 3);
+      setItemsPerScreen(memoWidth * 2);
       const math = Math.ceil(posters.length / itemsPerScreen);
       setProgressBarItems(math);
     }
@@ -43,17 +45,23 @@ export default function MovieSlider({ posters }: Props) {
     });
   };
 
-  const BASE_URL = apiConfiguration.images.secure_base_url;
-  const POSTER_SIZE = apiConfiguration.images.poster_sizes[2];
-
   // This component has css classes mixed with tailwind classes
   return (
-    <section className="sm:py-2" id="slider-section">
+    <section
+      className="sm:py-2"
+      id="slider-section"
+      onMouseLeave={() => setSeasonDetails(null)}
+    >
       <main className="flex flex-col gap-3" id="slider-row">
         {/* HEADER */}
 
         <div className="header px-4 lg:px-14">
-          <h2 className="text-midgray text-lg">Temporadas</h2>
+          <h2
+            className="text-xl tracking-wide 
+    border-l-4 border-red pl-2 mb-2 md:mb-0 hidden sm:block"
+          >
+            {sliderTitle}
+          </h2>
           {/* PROGRESS BARS */}
           <div className="progress-bar hidden md:inline-flex">
             {Array(progressBarItems)
@@ -90,24 +98,13 @@ export default function MovieSlider({ posters }: Props) {
             {/* CARDS */}
             {posters.map((media: Season, i) => {
               return (
-                <div
-                  className="poster relative flex flex-col justify-end items-center"
+                <PosterSliderCards
                   key={i}
-                >
-                  <Image
-                    tabIndex={i}
-                    onMouseEnter={() => setShowDescription(true)}
-                    onMouseLeave={() => setShowDescription(false)}
-                    src={`${BASE_URL}${POSTER_SIZE}/${media.poster_path}`}
-                    alt={media.name}
-                    width={110}
-                    height={110}
-                    className="hover:cursor-pointer rounded-md ring-black hover:ring-white ring-2"
-                  />
-                </div>
+                  media={media}
+                  setDetails={() => setSeasonDetails(media)}
+                />
               );
             })}
-            {<div id="modal" className="absolute w-[500px] bg-black"></div>}
           </div>
 
           {/* ARROW RIGHT */}
@@ -117,6 +114,27 @@ export default function MovieSlider({ posters }: Props) {
           ></div>
         </div>
       </main>
+
+      {seasonDetails && (
+        <div
+          className="bg-midgray/20 mx-6 sm:mx-12 sm:my-4 rounded-md z-50
+            border-smokewt border p-1 w-fit
+            min-h-[200px]"
+        >
+          <SeasonDescription title="Título" value={seasonDetails?.name} />
+          {seasonDetails?.overview && (
+            <SeasonDescription
+              title="Descrição"
+              value={seasonDetails?.overview}
+            />
+          )}{" "}
+          <SeasonDescription
+            title="Episódios"
+            value={seasonDetails?.episode_count}
+          />
+          <SeasonDescription title="Ao ar em" value={seasonDetails?.air_date} />
+        </div>
+      )}
     </section>
   );
 }

@@ -11,11 +11,14 @@ export default function ListButton({ added, addToList }: Props) {
       <button
         onClick={() => addToList()}
         className={`flex flex-row items-center justify-evenly
-        gap-2  font-bold px-4 py-2 md:py-2 md:px-6
+        gap-2 font-bold px-4 py-2 md:py-2 md:px-6 trasition delay-75 duration-200 ease-in-out
        rounded-md ${added ? "bg-midgray" : "bg-white"} text-black`}
       >
         {added ? (
-          <CheckIcon className="w-6 h-6 font-bold" />
+          <>
+            <CheckIcon className="w-6 h-6 font-bold" />
+            <>Na lista</>
+          </>
         ) : (
           <>
             <PlusIcon className="w-6 h-6 font-bold" />

@@ -40,7 +40,7 @@ export default function MediaHeader({
           </>
         </span>
       </div>
-      <div className="grid grid-flow-col place-content-start place-items-center gap-4">
+      <div className="flex justify-start items-center flex-wrap gap-2 sm:gap-4">
         {genres.map((genre, i) => {
           return (
             <div key={i} className="px-3 py-1 bg-midgray/30 rounded-md w-max">

@@ -1,13 +1,14 @@
 import InfoIconOut from "@heroicons/react/24/outline/InformationCircleIcon";
 import InfoIconSol from "@heroicons/react/24/solid/InformationCircleIcon";
 import Link from "next/link";
+import slugify from "../../../utils/formatters/slugfy";
 interface Props {
   id: string | number;
   selectedMediaType: string | boolean | undefined;
   mediaType?: "tv" | "movie";
   className: string;
   iconType: "solid" | "outline";
-  slug?: string;
+  slug: string;
 }
 export default function DefaultButton({
   id,
@@ -17,19 +18,18 @@ export default function DefaultButton({
   iconType,
   slug,
 }: Props) {
+  const slugfy = slugify(slug!);
   return (
     <>
       {/* CHECKING MEDIA TYPE */}
       <Link
-        href={
-          mediaType
-            ? mediaType === "movie"
-              ? `/filmes/detalhes/${id}`
-              : `/series/detalhes/${id}`
-            : selectedMediaType === "movie"
-            ? `/filmes/detalhes/${id}`
-            : `/series/detalhes/${id}`
-        }
+        href={{
+          pathname: `/[type]/detalhes/${slugfy}`,
+          query: {
+            id: id,
+            type: `${mediaType === "movie" ? "filmes" : "series"}`,
+          },
+        }}
         className={className}
       >
         {iconType === "solid" && (
@@ -42,12 +42,3 @@ export default function DefaultButton({
     </>
   );
 }
-// {
-//   mediaType
-//     ? mediaType === "movie"
-//       ? `/filmes/filme/${id}`
-//       : `/series/serie/${id}`
-//     : selectedMediaType === "movie"
-//     ? `/filmes/filme/${id}`
-//     : `/series/serie/${id}`
-// }

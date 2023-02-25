@@ -12,7 +12,7 @@ export default function Provider({ name, path }: Props) {
   return (
     <>
       <div
-        className="relative"
+        className="relative w-max"
         onMouseEnter={() => setShowName(true)}
         onMouseLeave={() => setShowName(false)}
       >

@@ -1,5 +1,5 @@
 import { ChangeEvent, useState, useEffect } from "react";
-import searchMedia from "../../utils/requests/seachMedia";
+import { searchMedia } from "../../utils/requests/seachMedia";
 import MagnifyingGlassIcon from "@heroicons/react/24/solid/MagnifyingGlassIcon";
 import useDebounce from "../../hooks/useDebounce";
 import { Media } from "../../typing";

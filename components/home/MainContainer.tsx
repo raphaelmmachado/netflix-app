@@ -69,7 +69,7 @@ export default function MainContainer({
         <main
           {...swipeHandler}
           id="banner"
-          className="min-h-[100.1vh] relative bg-cover object-cover
+          className="min-h-[100.1vh] relative bg-cover object-cover w-screen h-screen
           bg-center bg-no-repeat transition-all ease-linear duration-500"
           style={{
             backgroundImage: `url(${BASE_URL}${SIZE}/${selectedMedia?.backdrop_path})`,
@@ -80,11 +80,11 @@ export default function MainContainer({
           from-black via-black/70 to-black/25 absolute h-full w-full"
             id="banner-wrapper"
           >
-            <div
+            <section
               className="flex flex-col sm:flex-row justify-center sm:justify-between items-center flex-grow-0 sm:flex-grow"
               id="banner-center"
             >
-              <section
+              <div
                 className="flex flex-col justify-center gap-4 md:py-4
                 px-4 md:px-14"
                 id="banner-center-left"
@@ -137,7 +137,7 @@ export default function MainContainer({
                     iconType={"outline"}
                   />
                 </div>
-              </section>
+              </div>
 
               {setIndex && (
                 <VerticalScroller
@@ -155,7 +155,7 @@ export default function MainContainer({
                   }
                 />
               )}
-            </div>
+            </section>
 
             <MovieSlider medias={medias} title={title} />
           </div>

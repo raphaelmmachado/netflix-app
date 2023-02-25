@@ -57,6 +57,7 @@ export const getServerSideProps: GetServerSideProps = async (content) => {
   const queryID = content.query.id;
   const { type } = content.query;
   const id = Number(queryID);
+  console.log(id, type);
 
   const checkMediaType = () => {
     if (type === "filmes") return "movie";

@@ -65,17 +65,19 @@ export default function BannerText({
       >
         {description}
       </p>
-      <div className="flex gap-1">
-        {genres.map((item, i, arr) => (
-          <span key={i} className="text-gray">
-            {`${
-              mediaType === "movie"
-                ? movieGenres[item].name
-                : tvGenres[item].name
-            }${i !== arr.length - 1 && arr.length > 1 ? ` · ` : ""}`}
-          </span>
-        ))}
-      </div>
+      {genres && genres.length > 0 && (
+        <div className="flex gap-1">
+          {genres.map((item, i, arr) => (
+            <span key={i} className="text-gray">
+              {`${
+                mediaType === "movie"
+                  ? movieGenres[item].name
+                  : tvGenres[item].name
+              }${i !== arr.length - 1 && arr.length > 1 ? ` · ` : ""}`}
+            </span>
+          ))}
+        </div>
+      )}
     </>
   );
 }

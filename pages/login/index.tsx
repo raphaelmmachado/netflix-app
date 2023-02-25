@@ -5,8 +5,8 @@ import { useRouter } from "next/router";
 
 // cookies
 // icons
-import FacebookIcon from "../../components/auth/FacebookIcon";
 import GoogleIcon from "../../components/auth/GoogleIcon";
+import GithubIcon from "../../components/auth/GithubIcon";
 //utils
 import NetflixLogo from "../../components/NetflixLogo";
 
@@ -51,37 +51,45 @@ export default function Login() {
                 import("../../utils/login").then((module) => {
                   module
                     .loginWithGoogle()
-                    .then((res) =>
-                      route.push("/").catch((err) => console.error(err))
+                    .then(
+                      (res) =>
+                        res?.user &&
+                        route.push("/").catch((err) => console.error(err))
                     );
                 })
               }
               className="bg-white text-black/90 font-bold hover:bg-opacity-80 px-6 py-4
-              text-start rounded-md flex justify-between items-center transition-opacity ease-in delay-150 mx-8"
+              text-start rounded-md flex justify-between items-center transition-opacity
+               ease-in delay-150 mx-8  gap-6"
             >
-              Entrar com google <GoogleIcon width="30" height="30" />
+              <>Entrar com google</> <GoogleIcon width="30" height="30" />
             </button>
+
             <button
               onClick={() =>
                 import("../../utils/login").then((module) => {
-                  module
-                    .loginWithFacebook()
-                    .then((res) =>
-                      route.push("/").catch((err) => console.error(err))
-                    );
+                  module.loginWithGithub().then(
+                    (res) =>
+                      res?.user &&
+                      route.push("/").catch((err) => {
+                        route.replace("/login");
+                        console.error(err);
+                      })
+                  );
                 })
               }
               className="bg-white text-black/90 font-bold hover:bg-opacity-80 px-6 py-4
-              text-start rounded-md flex justify-between items-center transition-opacity ease-in delay-150 mx-8"
+              text-start rounded-md flex justify-between items-center transition-opacity
+               ease-in delay-150 mx-8 gap-6"
             >
-              Entrar com Facebook <FacebookIcon width="30" height="30" />
+              <>Entrar com Github</>
+              <GithubIcon width="30" height="30" />
             </button>
           </div>
         </section>
       </main>
       <footer className="font-normal text-sm">
-        Este site tem apenas o propósito de demonstrar minhas capacidades de
-        construir uma aplicação web. Para acessar a Netflix{" "}
+        Para acessar a Netflix Original
         <a
           className="text-red"
           href="https://netflix.com"

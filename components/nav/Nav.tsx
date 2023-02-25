@@ -1,7 +1,8 @@
 //react / next
-import { useEffect, useState, useContext, useRef } from "react";
+import { useEffect, useState, useContext } from "react";
+import dynamic from "next/dynamic";
 import { useRouter } from "next/router";
-import Image from "next/image";
+import { SearchProvider } from "../../context/SearchContext";
 //firebase
 import { useAuthState } from "react-firebase-hooks/auth";
 import { auth } from "../../utils/firebaseConfig";
@@ -9,45 +10,33 @@ import { auth } from "../../utils/firebaseConfig";
 import { Context } from "../../context/ContextProvider";
 //custom hook
 import useList from "../../hooks/useList";
-import useWindowSize from "../../hooks/useWindowSize";
 //components
-import NetflixLogo from "../NetflixLogo";
 import NavLinks from "./NavLinks";
 //icons
-import LogoutIcon from "@heroicons/react/20/solid/ArrowRightOnRectangleIcon";
-import CircleSearchIcon from "@heroicons/react/24/outline/MagnifyingGlassCircleIcon";
-import SearchIcon from "@heroicons/react/24/outline/MagnifyingGlassIcon";
 
-import TVIcon from "@heroicons/react/24/outline/TvIcon";
-import FilmIcon from "@heroicons/react/24/outline/FilmIcon";
-import FolderIcon from "@heroicons/react/24/outline/FolderIcon";
-import BarsIcon from "@heroicons/react/24/outline/ArrowLongRightIcon";
+import TVIcon from "@heroicons/react/24/solid/TvIcon";
+import FilmIcon from "@heroicons/react/24/solid/FilmIcon";
+import FolderIcon from "@heroicons/react/24/solid/BookmarkIcon";
+import NavLogo from "./NavLogo";
+import NavExtendButton from "./NavExtendButton";
+import UserBox from "./UserBox";
+import NavSearch from "./NavSearch";
+const Results = dynamic(() => import("./Results"), { ssr: false });
 //utils
 
 export default function Nav() {
   const { myList } = useContext(Context);
   const [navIsOpen, setNavIsOpen] = useState(false);
-  const [mobile, setMobile] = useState(false);
-  const [showLogoutModal, setShowLogoutModal] = useState(false);
-  const [showSearch, setShowSearch] = useState(false);
-  const { width } = useWindowSize();
-  const [user, loading] = useAuthState(auth);
+  const [user, loading, error] = useAuthState(auth);
   const router = useRouter();
-  const searchRef = useRef<HTMLInputElement>(null);
+
   useList();
 
   useEffect(() => {
     if (!loading && !user) {
       router.replace("/login");
     }
-    if (width !== undefined) {
-      if (width < 3) {
-        setMobile(true);
-      } else {
-        setMobile(false);
-      }
-    }
-  }, [width, loading, user]);
+  }, [loading, user]);
 
   return (
     <>
@@ -56,164 +45,89 @@ export default function Nav() {
           className="transition-all duration-200 delay-200 ease-in-out"
           id="nav-header"
         >
-          <nav
-            id="sidebar"
-            className={`fixed z-30 sm:top-0 sm:left-0 min-h-screen min-w-[3.5rem]
-            rounded-br-md grid grid-rows-1
-            justify-center justify-items-center items-start py-12
-            gap-8 bg-black border border-l-0 border-midgray/20 transition-all delay-75
-            duration-150 ease-in-out shadow-sm shadow-def_black ${
-              navIsOpen && "px-4"
-            }`}
-          >
-            <div
-              className="flex flex-col items-center gap-6 text-sm sm:text-base"
-              id="nav--logo"
+          <SearchProvider>
+            {/* NAV */}
+            <nav
+              id="sidebar"
+              className={`fixed z-30 sm:top-0 sm:left-0 py-8
+            min-h-screen min-w-[3.5rem] rounded-br-md rounded-tr-md
+            flex flex-col sm:flex-row
+            gap-8 bg-black  border-midgray/20  shadow-def_black
+            border border-l-0 transition-all delay-75 duration-150
+            ease-in-out shadow-sm ${navIsOpen && "px-4"}`}
             >
-              {" "}
-              {/* LOGO */}
-              <span
-                onClick={() => router.push("/")}
-                className="cursor-pointer hover:scale-105 transition-all duration-200 delay-75 ease-in-out"
+              <div
+                className="flex flex-grow flex-col items-center gap-6
+               text-sm sm:text-base"
+                id="nav--logo"
               >
-                {navIsOpen ? (
-                  <NetflixLogo width="150" height="50" />
-                ) : (
-                  <Image
-                    src={"/favicon.ico"}
-                    width={36}
-                    height={36}
-                    alt="netflix_logo"
-                  />
-                )}
-              </span>{" "}
-              {/* BARS ICON */}
-              <button
-                id="nav-button"
-                onClick={() => setNavIsOpen((prev) => !prev)}
-                className="flex items-center rounded-md p-2 my-4
-               hover:bg-midgray/20 text-midgray cursor-pointer"
-              >
-                {" "}
-                <span className="w-[0.125rem] h-6 bg-midgray/80"> </span>
-                <BarsIcon
-                  className={` transition-all duration-200 delay-75 ease-in-out ${
-                    navIsOpen ? "w-10 h-10 rotate-180" : "w-6 h-6"
-                  }`}
+                {/* LOGO */}
+                <NavLogo open={navIsOpen} />
+                {/* EXTEND NAV BUTTON */}
+                <NavExtendButton
+                  open={navIsOpen}
+                  extendNav={() => setNavIsOpen((prev) => !prev)}
                 />
-              </button>
-              {/* LINKS */}
-              <ul
-                id="nav-links"
-                className={`flex flex-col items-start justify-around transition-all duration-200 delay-75 ease-in-out
+                {/* LINKS */}
+                <ul
+                  id="nav-links"
+                  className={`flex flex-col items-start justify-around transition-all duration-200 delay-75 ease-in-out
                ${navIsOpen ? "text-smokewt" : "text-midgray"} gap-3`}
-              >
-                {" "}
-                <NavLinks
-                  title="Filmes"
-                  path="/filmes/geral/1"
-                  navIsOpen={navIsOpen}
                 >
-                  <FilmIcon className="w-6 h-6 " />
-                </NavLinks>
-                <NavLinks
-                  title="Séries"
-                  path="/series/geral/1"
-                  navIsOpen={navIsOpen}
-                >
-                  <TVIcon className="w-6 h-6 " />
-                </NavLinks>
-                {myList.length > 0 && (
+                  {" "}
                   <NavLinks
-                    title="Minha Lista"
-                    path="/minha_lista"
+                    title="Filmes"
+                    path="/filmes/geral/1"
                     navIsOpen={navIsOpen}
                   >
-                    <FolderIcon className="w-6 h-6 " />
+                    <FilmIcon className="w-6 h-6 " />
                   </NavLinks>
-                )}
-              </ul>
-              {/* SEARCH ICON */}
-              <CircleSearchIcon
-                onClick={() => {
-                  setShowSearch((prev) => !prev);
-                  showSearch && searchRef.current?.focus();
-                }}
-                className="w-10 h-10 p-1 rounded-full text-midgray hover:bg-midgray/20 cursor-pointer"
-              />
-            </div>
-            {/* USER */}
-            <div className="relative" id="nav--right-div">
-              {!loading && user && (
-                <>
-                  <button
-                    onClick={() => setShowLogoutModal((prev) => !prev)}
-                    onKeyDown={(e) =>
-                      import("../../utils/checkKeyboardKeys").then(
-                        (module) =>
-                          module.default(e.code) &&
-                          setShowLogoutModal((prev) => !prev)
-                      )
-                    }
-                    className="flex px-0  items-center gap-2"
+                  <NavLinks
+                    title="Séries"
+                    path="/series/geral/1"
+                    navIsOpen={navIsOpen}
                   >
-                    <Image
-                      src={`${user?.photoURL}`}
-                      tabIndex={0}
-                      alt="user"
-                      width={30}
-                      height={30}
-                      className="rounded-sm shadow-md hover:cursor-pointer"
-                    />{" "}
-                    {navIsOpen && (
-                      <a className="text-sm " tabIndex={0}>
-                        {user?.displayName}
-                      </a>
-                    )}
-                  </button>
-                  {showLogoutModal && (
-                    <button
-                      onClick={() => {
-                        auth.signOut().then(() => router.push("/login"));
-                      }}
-                      onKeyDown={(e) =>
-                        import("../../utils/checkKeyboardKeys").then(
-                          (module) =>
-                            module.default(e.code) &&
-                            auth.signOut().then(() => router.push("/login"))
-                        )
-                      }
-                      tabIndex={0}
-                      className="flex items-center gap-3 bg-red
-                      text-white px-2 py-1 w-fit mt-3
-                       rounded-md shadow-md hover:cursor-pointer"
+                    <TVIcon className="w-6 h-6 " />
+                  </NavLinks>
+                  {myList.length > 0 && (
+                    <NavLinks
+                      title="Minha Lista"
+                      path="/minha_lista"
+                      navIsOpen={navIsOpen}
                     >
-                      <LogoutIcon className="w-5 h-5" />
-                      <h3 className="text-sm">Sair</h3>
-                    </button>
+                      <FolderIcon className="w-6 h-6 " />
+                    </NavLinks>
                   )}
-                </>
-              )}
-            </div>
-          </nav>
-          {showSearch && (
-            <section className="fixed top-0 left-14 bg-black border-2 border-midgray/20 border-l-0 z-10">
-              <div className="flex items-center p-2 w-fit">
-                <label htmlFor="search">
-                  <SearchIcon className="w-8 h-8 text-smokewt" />
-                </label>
-                <input
-                  ref={searchRef}
-                  className="relative bg-transparent outline-none ml-6 py-2
-                   min-w-max max-w-screen-sm font-thin"
-                  type="text"
-                  id="search"
-                  name="search"
-                  placeholder="Buscar filmes e series"
-                />
+                </ul>
+                {/*NAV SEARCH  */}
+                <NavSearch
+                  OpenNav={() => setNavIsOpen(true)}
+                  navIsOpen={navIsOpen}
+                />{" "}
+                {/* USER */}
+                <div className="relative" id="nav--right-div">
+                  {!loading && user && (
+                    <>
+                      {" "}
+                      <UserBox
+                        userName={user?.displayName}
+                        userPhoto={user?.photoURL}
+                        navIsOpen={navIsOpen}
+                        logout={() =>
+                          auth.signOut().then(() => router.push("/login"))
+                        }
+                      />
+                    </>
+                  )}
+                </div>
               </div>
-            </section>
-          )}
+              {navIsOpen && (
+                <div>
+                  <Results />
+                </div>
+              )}
+            </nav>
+          </SearchProvider>
         </header>
       )}
     </>

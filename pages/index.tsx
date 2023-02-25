@@ -53,8 +53,6 @@ export default function App({
         <link rel="icon" href="/favicon.ico" />
       </Head>
 
-      {/* <Header className="bg-transparent" /> */}
-
       {COMPONENTS.map((component: IComponents, i) => {
         if (i === index) {
           return (

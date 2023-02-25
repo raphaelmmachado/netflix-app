@@ -8,13 +8,14 @@ interface IComponents {
 export interface Media {
   adult: boolean;
   backdrop_path: string | null;
+  poster_path: string | null;
+
   genre_ids: number[];
   id: number;
   original_language: string;
   original_title: string;
   overview: string;
   popularity: number;
-  poster_path: string | null;
   release_date: string;
   title: string;
   name: string;
@@ -23,9 +24,20 @@ export interface Media {
   vote_count: number;
   media_type?: string;
   trailer: IVideo[];
+  profile_path?: string | null;
   first_air_date?: Date | string;
   origin_country?: string[];
   original_name?: string;
+  known_for?: Media[];
+}
+export interface Person {
+  profile_path: string | null;
+  adult?: boolean;
+  id: number;
+  media_type?: "person";
+  name: string;
+  popularity?: number;
+  known_for?: Media[];
 }
 export interface Genre {
   id: number;

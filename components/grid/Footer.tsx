@@ -1,5 +1,5 @@
-import ArrowLeftIcon from "@heroicons/react/24/solid/ArrowLeftIcon";
-import ArrowRightIcon from "@heroicons/react/24/solid/ArrowRightIcon";
+import ArrowLeftIcon from "@heroicons/react/24/solid/ChevronLeftIcon";
+import ArrowRightIcon from "@heroicons/react/24/solid/ChevronRightIcon";
 
 interface Props {
   page?: number;
@@ -10,20 +10,30 @@ export default function Footer({ page, previousPage, nextPage }: Props) {
   return (
     <>
       {" "}
-      <footer className="w-full flex justify-center gap-4 mt-20">
-        {page && page > 1 && (
-          <ArrowLeftIcon
-            onClick={previousPage}
-            className=" w-6 h-6 cursor-pointer text-gray"
-          />
-        )}
-        <div className="text-gray">Página {page} / 500</div>
-        {page && (
-          <ArrowRightIcon
-            onClick={nextPage}
-            className="text-gray w-6 h-6 cursor-pointer"
-          />
-        )}
+      <footer className="mt-48 ">
+        <section className="flex justify-center items-center">
+          <span className="bg-red rounded-bl-md rounded-tl-md">
+            {page && page > 1 && (
+              <ArrowLeftIcon
+                onClick={previousPage}
+                className=" w-10 h-10 cursor-pointer text-smokewt"
+              />
+            )}
+          </span>
+
+          <div className="text-smokewt bg-black border border-l-0 border-r-0 border-smokewt/10 p-2 h-max rounded-sm">
+            Página <span className="text-red">{page}</span> / 500
+          </div>
+
+          <span className="bg-red rounded-br-md rounded-tr-md">
+            {page && (
+              <ArrowRightIcon
+                onClick={nextPage}
+                className="text-smokewt w-10 h-10 cursor-pointer"
+              />
+            )}
+          </span>
+        </section>
       </footer>
     </>
   );

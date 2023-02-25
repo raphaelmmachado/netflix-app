@@ -1,5 +1,4 @@
 import Image from "next/image";
-import { Suspense } from "react";
 import { CSSProperties, useState } from "react";
 interface Props {
   src: string;
@@ -30,6 +29,7 @@ export default function Picture({
   tabIndex,
 }: Props) {
   const [image, setImage] = useState<string>(src);
+
   const fallbackImage = () =>
     setImage(
       `https://via.placeholder.com/${width.toString()}x${height.toString()}/6D6D6E/fff?text=${
@@ -37,25 +37,9 @@ export default function Picture({
       }`
     );
   return (
-    <Suspense
-      fallback={
-        <Image
-          onError={() => fallbackImage()}
-          src={fallBackImage}
-          alt={alt}
-          fill={fill}
-          width={width}
-          height={height}
-          tabIndex={tabIndex}
-          className={className}
-          style={style}
-          priority={priority}
-          sizes={sizes}
-        />
-      }
-    >
+    <>
       <Image
-        onError={() => fallbackImage()}
+        onError={(e) => fallbackImage()}
         src={image}
         alt={alt}
         fill={fill}
@@ -67,6 +51,6 @@ export default function Picture({
         priority={priority}
         sizes={sizes}
       />
-    </Suspense>
+    </>
   );
 }
