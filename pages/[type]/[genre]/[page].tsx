@@ -47,7 +47,7 @@ export default function App({ movies, page, genre, mediaType, path }: Props) {
     genre.length
   )}`;
   return (
-    <main className="px-12 py-8 pl-20 min-h-screen">
+    <main className="px-12 py-8 sm:pl-20 min-h-screen">
       <Head>
         <title>{`${pathTab} - ${genreTab} - ${page}`}</title>
         <meta
@@ -60,7 +60,7 @@ export default function App({ movies, page, genre, mediaType, path }: Props) {
 
       <section
         className="flex flex-col gap-6 sm:flex-row items-center
-       justify-center sm:justify-between my-4 sm:my-10 relative"
+       justify-center sm:justify-between mt-16 sm:my-10 relative"
       >
         <SearchInput
           placeholder={`${

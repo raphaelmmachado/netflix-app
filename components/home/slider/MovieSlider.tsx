@@ -113,6 +113,8 @@ export default function MovieSlider({ medias, title }: IMovieSlider) {
                   key={i}
                   onMouseEnter={() => selectAMedia(media)}
                   onClickCapture={() => {
+                    //i dont want mobile users to navigate to media page
+                    // only to highlight a media that have been clicked
                     if (!navigator.userAgent.toLowerCase().includes("mobi")) {
                       const slug = slugify(
                         selectedMedia?.title ?? selectedMedia?.name!
@@ -128,14 +130,6 @@ export default function MovieSlider({ medias, title }: IMovieSlider) {
                       selectAMedia(media);
                     }
                   }}
-                  onTouchEndCapture={() => {
-                    router.push({
-                      pathname: `/[type]/detalhes/${selectedMedia?.id}`,
-                      query: {
-                        type: `${selectedMedia?.title ? "filmes" : "series"}`,
-                      },
-                    });
-                  }}
                   onKeyDownCapture={(e) =>
                     enterKeyPressed(e.code) && selectAMedia(media)
                   }
@@ -144,7 +138,7 @@ export default function MovieSlider({ medias, title }: IMovieSlider) {
                     src={`${BASE_URL}${BACKDROP_SIZE[0]}/${media.backdrop_path}`}
                     onError={() =>
                       setImage(
-                        `${BASE_URL}${BACKDROP_SIZE[0]}/${media.backdrop_path}`
+                        `https://via.placeholder.com/315x177/141414/fff?text=sem+imagem`
                       )
                     }
                     alt="movie-pic"
@@ -157,7 +151,7 @@ export default function MovieSlider({ medias, title }: IMovieSlider) {
                   />
                   <span className="absolute w-[98%]">
                     <h1
-                      className="text-start text-sm sm:text-base md:text-lg px-2 py-1
+                      className="text-start text-lg px-2 py-1
                      text-smokewt bg-black/20 rounded-md font-thin"
                     >
                       {media.name ?? media.title}

@@ -3,7 +3,7 @@ const BASE_URL = "https://api.themoviedb.org/3";
 const API_KEY = process.env.NEXT_PUBLIC_API_KEY;
 export default async function getMoreDetails(
   id?: number | string | string[],
-  mediaType?: "tv" | "movie",
+  mediaType?: "tv" | "movie" | "person",
   query?: string
 ) {
   try {
@@ -20,7 +20,3 @@ export default async function getMoreDetails(
     console.log(err);
   }
 }
-//credtis
-//trailers
-//recommendations
-// watchproviders

@@ -36,20 +36,17 @@ export default function VideoSection({ trailer, details }: Props) {
   return (
     <>
       {" "}
-      <section className="my-8 bg-def_black">
+      <section className={`my-8 ${showVideo ? "md:p-2 lg:p-12" : ""}`}>
         {showVideo && (
           <>
             <XMarkIcon
               onClick={() => setShowVideo(false)}
-              className="w-8 h-8 text-white hover:cursor-pointer bg-gray/30 rounded-md"
+              className="w-8 h-8 my-2 text-white hover:cursor-pointer bg-gray/30 rounded-md"
             />
             <MediaComponent
               videoIndex={videoIndex}
               selectedVideo={trailer}
               youtubeVideos={youtubeVideos}
-              clearVideo={() => {
-                setShowVideo(false);
-              }}
             />
           </>
         )}

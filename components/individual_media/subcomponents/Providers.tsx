@@ -5,7 +5,10 @@ interface Props {
 }
 export default function Providers({ providers }: Props) {
   return (
-    <section className="flex flex-col sm:flex-row justify-center gap-x-8 place-content-start my-8 px-12">
+    <section
+      className="flex flex-col sm:flex-row justify-center gap-x-8 place-content-start
+     my-8 px-6 sm:px-12"
+    >
       <div>
         {providers.flatrate && providers.flatrate.length > 0 && (
           <>

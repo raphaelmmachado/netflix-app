@@ -9,7 +9,6 @@ export interface Media {
   adult: boolean;
   backdrop_path: string | null;
   poster_path: string | null;
-
   genre_ids: number[];
   id: number;
   original_language: string;
@@ -19,16 +18,15 @@ export interface Media {
   release_date: string;
   title: string;
   name: string;
-  video?: boolean;
+  video: boolean;
   vote_average: number;
   vote_count: number;
   media_type?: string;
-  trailer: IVideo[];
+  trailer?: IVideo[];
   profile_path?: string | null;
   first_air_date?: Date | string;
   origin_country?: string[];
   original_name?: string;
-  known_for?: Media[];
 }
 export interface Person {
   profile_path: string | null;
@@ -38,6 +36,48 @@ export interface Person {
   name: string;
   popularity?: number;
   known_for?: Media[];
+}
+interface Actor {
+  adult: boolean;
+  also_known_as: string[];
+  biography: string;
+  birthday: string;
+  deathday: string | null;
+  gender: number;
+  homepage: string | null;
+  id: number;
+  imdb_id: string;
+  known_for_department: string;
+  name: string;
+  place_of_birth: string;
+  popularity: number;
+  profile_path: string | null;
+}
+// ChatGPT 😂
+// prompt: you are a fronend dev. give me an interface of all possivble response for cast property "know for department"
+// ele vai criar uma lista então só pedi pra ele criar uma interface typescript
+
+interface KnownForDepartment {
+  Acting: string;
+  Directing: string;
+  Writing: string;
+  Producing: string;
+  Cinematography: string;
+  Editing: string;
+  Sound: string;
+  ArtDirection: string;
+  CostumeDesign: string;
+  Makeup: string;
+  SpecialEffects: string;
+  VisualEffects: string;
+  Stunts: string;
+  SecondUnitDirecting: string;
+  CameraAndElectricalDepartment: string;
+  MusicDepartment: string;
+  Animation: string;
+  Casting: string;
+  ProductionManagement: string;
+  ArtDepartment: string;
 }
 export interface Genre {
   id: number;
@@ -86,9 +126,7 @@ interface IRequests {
   brazilianMovies: Media[];
   actionMovies: Media[];
 }
-// interface MediaType {
-//   mediaType?: "tv" | "movie";
-// }
+
 interface IProvider {
   children: JSX.Element | JSX.Element[] | ReactNode;
 }
@@ -103,6 +141,7 @@ interface IContext {
   setModalOpen: Dispatch<SetStateAction<boolean>>;
 }
 type MediaType = "movie" | "tv";
+
 type MediaDetails = MovieDetails & SerieDetails;
 export interface MovieDetails extends SerieDetails {
   adult: boolean;

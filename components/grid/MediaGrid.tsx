@@ -19,7 +19,7 @@ export default function MediaGrid({ medias, mediaType }: Props) {
        place-items-baseline gap-10 my-8"
       >
         {medias.map((media, i) => {
-          return <Card key={media.id} media={media} mediaType={mediaType!} />;
+          return <Card key={media.id} media={media} mediaType={mediaType} />;
         })}
       </section>
 

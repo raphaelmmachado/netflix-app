@@ -83,7 +83,7 @@ export default function Details({
       </header>
       <main
         className="absolute top-80 pt-2 w-full
-          bg-black pl-14"
+          bg-black sm:pl-14"
       >
         <section className="flex px-6 sm:px-12 py-2 w-full justify-between items-center my-4 sm:m-0 sm:p-0">
           <div className="static md:absolute md:top-64 md:left-28">

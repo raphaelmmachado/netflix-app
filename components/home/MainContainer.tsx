@@ -76,17 +76,20 @@ export default function MainContainer({
           }}
         >
           <div
-            className="py-8 pl-14 flex flex-col justify-evenly sm:justify-between bg-gradient-to-r
-          from-black via-black/70 to-black/25 absolute h-full w-full"
+            className="py-12 sm:py-8 sm:pl-14 flex flex-col justify-around
+             sm:justify-between bg-gradient-to-b sm:bg-gradient-to-r  from-black
+             via-black/70 to-black/25 absolute h-full 
+              w-full"
             id="banner-wrapper"
           >
             <section
-              className="flex flex-col sm:flex-row justify-center sm:justify-between items-center flex-grow-0 sm:flex-grow"
+              className="flex flex-col sm:flex-row justify-evenly 
+               sm:justify-between items-center flex-grow"
               id="banner-center"
             >
               <div
                 className="flex flex-col justify-center gap-4 md:py-4
-                px-4 md:px-14"
+                px-6 md:px-14"
                 id="banner-center-left"
               >
                 <BannerText
@@ -101,7 +104,7 @@ export default function MainContainer({
                 />
 
                 <div
-                  className="grid grid-flow-col place-content-start 
+                  className="grid grid-flow-col place-content-center sm:place-content-start 
                   text-sm sm:text-base gap-2 sm:gap-6"
                 >
                   <PlayButton

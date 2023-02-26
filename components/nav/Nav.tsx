@@ -49,16 +49,16 @@ export default function Nav() {
             {/* NAV */}
             <nav
               id="sidebar"
-              className={`fixed z-30 sm:top-0 sm:left-0 py-8
-            min-h-screen min-w-[3.5rem] rounded-br-md rounded-tr-md
-            flex flex-col sm:flex-row
+              className={` fixed sm:top-0 sm:left-0 sm:min-h-screen  sm:min-w-[3.5rem]
+            flex sm:flex-row flex-col min-w-full min-h-max
+            rounded-br-md rounded-tr-md z-30 sm:py-8             
             gap-8 bg-black  border-midgray/20  shadow-def_black
             border border-l-0 transition-all delay-75 duration-150
             ease-in-out shadow-sm ${navIsOpen && "px-4"}`}
             >
               <div
-                className="flex flex-grow flex-col items-center gap-6
-               text-sm sm:text-base"
+                className="flex flex-grow sm:flex-col justify-center items-center gap-6
+               text-sm sm:text-base flex-wrap"
                 id="nav--logo"
               >
                 {/* LOGO */}
@@ -71,7 +71,7 @@ export default function Nav() {
                 {/* LINKS */}
                 <ul
                   id="nav-links"
-                  className={`flex flex-col items-start justify-around transition-all duration-200 delay-75 ease-in-out
+                  className={`flex sm:flex-col items-start justify-around transition-all duration-200 delay-75 ease-in-out
                ${navIsOpen ? "text-smokewt" : "text-midgray"} gap-3`}
                 >
                   {" "}

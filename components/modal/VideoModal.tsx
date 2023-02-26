@@ -132,10 +132,6 @@ export default function VideoModal({ mediaType }: Props) {
                   videoIndex={videoIndex}
                   selectedVideo={DBVideos}
                   youtubeVideos={YTAPIVideos}
-                  clearVideo={() => {
-                    setDBVideos(undefined);
-                    setShowVideo(false);
-                  }}
                 />
               ) : (
                 <article

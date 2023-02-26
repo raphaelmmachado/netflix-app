@@ -10,7 +10,7 @@ export default function Footer({ page, previousPage, nextPage }: Props) {
   return (
     <>
       {" "}
-      <footer className="mt-48 ">
+      <footer className="mt-16 sm:mt-48 ">
         <section className="flex justify-center items-center">
           <span className="bg-red rounded-bl-md rounded-tl-md">
             {page && page > 1 && (

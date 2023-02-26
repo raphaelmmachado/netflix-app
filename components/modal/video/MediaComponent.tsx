@@ -6,16 +6,13 @@ interface Props {
   videoIndex: number;
   selectedVideo?: IVideo[];
   youtubeVideos: YTIds[];
-  clearVideo: () => void;
 }
 export default function MediaComponent({
   videoIndex,
   selectedVideo,
   youtubeVideos,
-  clearVideo,
 }: Props) {
   const { width, mobile } = useWindowSize();
-  //if DB has trailer, play selected trailer. else play selected youtube api generated video.
   if (width! < 3 && mobile)
     return (
       <div className="bg-black flex flex-col items-center">
@@ -28,12 +25,12 @@ export default function MediaComponent({
         </div>
       </div>
     );
+
   return (
+    //if DB has trailer, play selected trailer. else play selected youtube api generated video.
     <>
       {selectedVideo && selectedVideo?.length > 0 ? (
         <iframe
-          // onEnded={() => clearVideo()}
-          // onCompositionEnd={() => clearVideo()}
           id="modal-video"
           className="min-w-full"
           src={`https://www.youtube.com/embed/${selectedVideo[videoIndex].key}`}
@@ -43,8 +40,6 @@ export default function MediaComponent({
         ></iframe>
       ) : (
         <iframe
-          // onEnded={() => clearVideo()}
-          // onCompositionEnd={() => clearVideo()}
           id="modal-video"
           className="min-w-full"
           src={`https://www.youtube.com/embed/${youtubeVideos[videoIndex].id.videoId}`}

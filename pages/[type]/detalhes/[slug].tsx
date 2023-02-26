@@ -57,7 +57,6 @@ export const getServerSideProps: GetServerSideProps = async (content) => {
   const queryID = content.query.id;
   const { type } = content.query;
   const id = Number(queryID);
-  console.log(id, type);
 
   const checkMediaType = () => {
     if (type === "filmes") return "movie";
@@ -98,17 +97,17 @@ export const getServerSideProps: GetServerSideProps = async (content) => {
 
   interface SSRProps {
     details: MovieDetails | SerieDetails;
-    trailer: IVideo[];
+    trailer?: IVideo[];
     providers?: WatchProvider;
-    cast: MediaCast[];
-    recommendations: Media[];
+    cast?: MediaCast[];
+    recommendations?: Media[];
   }
   const props: SSRProps = {
-    trailer: trailer.results,
     details: details,
-    cast: cast.cast,
-    recommendations: recommendations,
   };
+  if (cast) props.cast = cast.cast;
+  if (trailer) props.trailer = trailer.results;
+  if (recommendations) props.recommendations = recommendations;
   if (watchProviders) props.providers = watchProviders;
   return { props };
 };

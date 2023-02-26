@@ -22,14 +22,14 @@ export default function BannerText({
     <>
       {" "}
       <h1
-        className="text-white text-start font-bold line-clamp-3
+        className="text-white text-center sm:text-start font-bold line-clamp-3
     text-3xl sm:text-4xl pb-2"
         id="banner-text-h1"
       >
         {title}
       </h1>
       <div
-        className="flex items-center gap-2 text-center sm:gap-8"
+        className="flex justify-center sm:justify-start items-center gap-2 text-center sm:gap-8"
         id="banner-text-small-text-info"
       >
         <p className={`${rating > 5 ? "text-def_green-300" : "text-smokewt"}`}>
@@ -66,7 +66,7 @@ export default function BannerText({
         {description}
       </p>
       {genres && genres.length > 0 && (
-        <div className="flex gap-1">
+        <div className="flex justify-center sm:justify-start gap-1">
           {genres.map((item, i, arr) => (
             <span key={i} className="text-gray">
               {`${

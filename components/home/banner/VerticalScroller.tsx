@@ -31,7 +31,7 @@ export default function VerticalScroller({
           }`}
           onClick={() => goUp()}
         >
-          <ChevronUpIcon className="w-8 h-8" />
+          <ChevronUpIcon className="w-12 h-12 sm:w-8 sm:h-8" />
         </div>
         {/* BARS */}
         {[...Array(bars).fill(" ")].map((bar, i, arr) => (
@@ -39,13 +39,13 @@ export default function VerticalScroller({
             onClick={() => setIndex(i)}
             id="vertical-bars"
             key={i}
-            className={`hover:cursor-pointer  rounded-sm transition-transform ${
+            className={`hover:cursor-pointer rounded-sm transition-transform ${
               index === i
                 ? "bg-transparent sm:bg-red  h-5 w-fit sm:w-2"
                 : "bg-white/50 hidden sm:inline-flex h-0 w-2 sm:h-5"
             } `}
           >
-            <h1 className="block sm:hidden">{index === i && title}</h1>
+            <h1 className="block sm:hidden text-lg">{index === i && title}</h1>
           </div>
         ))}
         {/* GO DOWN */}
@@ -57,7 +57,7 @@ export default function VerticalScroller({
           }`}
           onClick={() => goDown()}
         >
-          <ChevronDownIcon className="w-8 h-8" />
+          <ChevronDownIcon className="w-12 h-12 sm:w-8 sm:h-8" />
         </div>
       </aside>
     </>
