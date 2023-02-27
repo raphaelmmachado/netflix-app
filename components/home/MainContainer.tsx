@@ -59,7 +59,7 @@ export default function MainContainer({
         <main
           id="banner"
           className="min-h-[100.1vh] relative aspect-video w-screen h-screen
-           bg-no-repeat bg-center"
+           bg-no-repeat bg-center bg-cover"
           style={{
             backgroundImage: `url(${BASE_URL}${SIZE}/${selectedMedia?.backdrop_path})`,
             transition: "background-image 500ms linear 75ms",
