@@ -71,6 +71,7 @@ video,
 iframe,
 picture {
   display: block;
+  height: auto;
 }
 iframe {
   max-width: 100%;

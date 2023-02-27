@@ -2,7 +2,6 @@
 import { Dispatch, SetStateAction, useContext, useEffect } from "react";
 import dynamic from "next/dynamic";
 import { Context } from "../../context/ContextProvider";
-import { useSwipeable } from "react-swipeable";
 //components
 import MovieSlider from "./slider/MovieSlider";
 import BannerText from "./banner/BannerText";
@@ -45,15 +44,6 @@ export default function MainContainer({
     setModalOpen,
   } = useContext(Context);
 
-  // change index when user swipes, for mobile users
-  const swipeHandler = useSwipeable({
-    onSwipedUp: () => {
-      setIndex && setIndex((prev) => (prev + 1 > bars - 1 ? prev : prev + 1));
-    },
-    onSwipedDown: () => {
-      setIndex && setIndex((prev) => (prev - 1 < 0 ? prev : prev - 1));
-    },
-  });
   // select first movie of the slider as the default
   useEffect(() => {
     setSelectedMedia(medias[0]);
@@ -67,7 +57,6 @@ export default function MainContainer({
     <>
       {selectedMedia && (
         <main
-          {...swipeHandler}
           id="banner"
           className="min-h-[100.1vh] relative bg-cover object-cover w-screen h-screen
           bg-center bg-no-repeat transition-all ease-linear duration-500"
@@ -76,7 +65,7 @@ export default function MainContainer({
           }}
         >
           <div
-            className="py-12 sm:py-8 sm:pl-14 flex flex-col justify-around
+            className="pt-16 pb-10 sm:py-8 sm:pl-14 flex flex-col-reverse sm:flex-col justify-center
              sm:justify-between bg-gradient-to-b sm:bg-gradient-to-r  from-black
              via-black/70 to-black/25 absolute h-full 
               w-full"
@@ -127,11 +116,7 @@ export default function MainContainer({
                   />
                   <DetailsButton
                     mediaType={mediaType!}
-                    selectedMediaType={
-                      selectedMedia.title && !selectedMedia.name
-                        ? "movie"
-                        : "tv"
-                    }
+                    selectedMediaType={selectedMedia.title ? "movie" : "tv"}
                     id={selectedMedia.id}
                     slug={selectedMedia?.title ?? selectedMedia.name}
                     className="flex flex-row items-center justify-evenly

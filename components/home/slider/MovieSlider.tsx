@@ -10,6 +10,8 @@ import {
 import { Context } from "../../../context/ContextProvider";
 import { useRouter } from "next/router";
 import Image from "next/image";
+//libraries
+import { useAutoAnimate } from "@formkit/auto-animate/react";
 //custom-hooks
 import useWindowSize from "../../../hooks/useWindowSize";
 //utils
@@ -30,11 +32,10 @@ export default function MovieSlider({ medias, title }: IMovieSlider) {
   const [sliderIndex, setSliderIndex] = useState(0);
   const [progressBarItems, setProgressBarItems] = useState(0);
   const { selectedMedia, setSelectedMedia } = useContext(Context);
-  const [image, setImage] = useState(selectedMedia?.backdrop_path);
   const router = useRouter();
   const { width } = useWindowSize();
   const memoWidth = useMemo(() => width, [width]);
-
+  const [sliderRef] = useAutoAnimate<HTMLDivElement>();
   const selectAMedia = useCallback(
     (media: Media) => {
       setSelectedMedia(media);
@@ -53,7 +54,7 @@ export default function MovieSlider({ medias, title }: IMovieSlider) {
 
   const BASE_URL = apiConfiguration.images.secure_base_url;
   const BACKDROP_SIZE = apiConfiguration.images.backdrop_sizes;
-
+  let image = `${BASE_URL}${BACKDROP_SIZE[0]}/`;
   // This component has css classes mixed with tailwind classes
   return (
     <section className="sm:py-2" id="slider-section">
@@ -101,6 +102,7 @@ export default function MovieSlider({ medias, title }: IMovieSlider) {
               } as CSSProperties
             }
             className="slider"
+            ref={sliderRef}
           >
             {/* CARDS */}
             {medias.map((media: Media, i) => {
@@ -134,12 +136,11 @@ export default function MovieSlider({ medias, title }: IMovieSlider) {
                     enterKeyPressed(e.code) && selectAMedia(media)
                   }
                 >
+                  {/* TODO testar bastante pois eu mudei a src da imagem*/}
                   <Image
-                    src={`${BASE_URL}${BACKDROP_SIZE[0]}/${media.backdrop_path}`}
+                    src={`${image}${media.backdrop_path}`}
                     onError={() =>
-                      setImage(
-                        `https://via.placeholder.com/315x177/141414/fff?text=sem+imagem`
-                      )
+                      (image = `https://via.placeholder.com/315x177/141414/fff?text=sem+imagem`)
                     }
                     alt="movie-pic"
                     width={315}
@@ -151,8 +152,8 @@ export default function MovieSlider({ medias, title }: IMovieSlider) {
                   />
                   <span className="absolute w-[98%]">
                     <h1
-                      className="text-start text-lg px-2 py-1
-                     text-smokewt bg-black/20 rounded-md font-thin"
+                      className=" text-center px-2 py-1
+                     text-smokewt bg-black/40 rounded-md font-thin uppercase"
                     >
                       {media.name ?? media.title}
                     </h1>

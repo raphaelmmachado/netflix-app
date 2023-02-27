@@ -9,6 +9,7 @@
     "lint": "next lint"
   },
   "dependencies": {
+    "@formkit/auto-animate": "^1.0.0-beta.6",
     "@heroicons/react": "^2.0.13",
     "@next/font": "13.1.1",
     "@types/node": "18.11.18",
@@ -19,7 +20,6 @@
     "eslint-config-next": "13.1.1",
     "firebase": "^9.15.0",
     "next": "13.1.1",
-    "nookies": "^2.5.2",
     "react": "18.2.0",
     "react-dom": "18.2.0",
     "react-firebase-hooks": "^5.1.1",

@@ -1,5 +1,6 @@
 /** @type {import('tailwindcss').Config} */
 const colors = require("tailwindcss/colors");
+const defaultTheme = require("tailwindcss/defaultTheme");
 const line_clamp = require("@tailwindcss/line-clamp");
 module.exports = {
   content: [
@@ -26,7 +27,10 @@ module.exports = {
       stone: colors.stone,
       neutral: colors.neutral,
     },
-    extend: {},
+    screens: {
+      xs: "475px",
+      ...defaultTheme.screens,
+    },
   },
   plugins: [line_clamp],
 };

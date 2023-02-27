@@ -5,7 +5,7 @@ interface Props {
   children: JSX.Element;
   navIsOpen: boolean;
 }
-// FIXME SE DER HYDRATION ERROR PODE SER AQUI, SPAN DENTRO DO LINK
+
 export default function NavLinks({ title, path, children, navIsOpen }: Props) {
   return (
     <>

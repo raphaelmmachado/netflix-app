@@ -31,7 +31,7 @@ export default function MediaHeader({
     <div className="flex-grow">
       {" "}
       <h3 className="text-midgray text-sm">Título</h3>
-      <h1 className="text-4xl text-white font-medium">{title}</h1>
+      <h1 className="text-4xl text-white font-medium uppercase">{title}</h1>
       <div className="flex items-center gap-1">
         <span className=" text-midgray font-medium">
           <>

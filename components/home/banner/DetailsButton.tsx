@@ -4,7 +4,7 @@ import Link from "next/link";
 import slugify from "../../../utils/formatters/slugfy";
 interface Props {
   id: string | number;
-  selectedMediaType: string | boolean | undefined;
+  selectedMediaType: string;
   mediaType?: "tv" | "movie";
   className: string;
   iconType: "solid" | "outline";
@@ -18,25 +18,35 @@ export default function DefaultButton({
   iconType,
   slug,
 }: Props) {
-  const slugfy = slugify(slug!);
+  const checkMediaType = (): "filmes" | "series" => {
+    if (mediaType && !selectedMediaType) {
+      return mediaType && mediaType === "movie" ? "filmes" : "series";
+    } else {
+      return selectedMediaType && selectedMediaType === "movie"
+        ? "filmes"
+        : "series";
+    }
+  };
   return (
     <>
       {/* CHECKING MEDIA TYPE */}
       <Link
         href={{
-          pathname: `/[type]/detalhes/${slugfy}`,
+          pathname: `/[type]/detalhes/${slugify(slug)}`,
           query: {
             id: id,
-            type: `${mediaType === "movie" ? "filmes" : "series"}`,
+            type: `${checkMediaType()}`,
           },
         }}
         className={className}
       >
-        {iconType === "solid" && (
-          <InfoIconSol className="text-smokewt h-6 w-6" />
-        )}
-        {iconType === "outline" && (
-          <InfoIconOut className="text-smokewt h-6 w-6" />
+        {iconType === "solid" ? (
+          <InfoIconSol className="text-smokewt  h-6 w-6" />
+        ) : (
+          <>
+            <InfoIconOut className="text-smokewt h-6 w-6" />
+            <span className="font-normal">Detalhes</span>
+          </>
         )}
       </Link>
     </>

@@ -72,21 +72,21 @@ export default function Card({ media, mediaType }: Props) {
               <AddToListButton media={media} />
               <DetailsButton
                 className="rounded-full absolute flex items-center justify-center
-       bg-black border-2 border-gray w-10 h-10  -top-4 -left-4 hover:cursor-pointer"
+                bg-black border-2 border-gray w-10 h-10  -top-4 -left-4 hover:cursor-pointer"
                 id={media.id}
                 mediaType={mediaType}
-                selectedMediaType={media.media_type}
+                selectedMediaType={media.media_type!}
                 iconType={"solid"}
                 slug={media.title ?? media.name}
               />
             </>
           )}
         </section>
-        <section className="w-full flex flex-col gap-1 text-sm p-1 text-white/80 ">
+        <section className="w-full flex flex-col  gap-1 text-sm p-1 text-white/80 ">
           <>
-            <h1 className="">{media.title ?? media.name}</h1>
+            <h1 className="uppercase">{media.title ?? media.name}</h1>
 
-            <div className="flex justify-start items-center gap-4">
+            <div className="flex justify-start gap-4">
               {" "}
               <span className="text-midgray text-sm">
                 {media.release_date
@@ -108,7 +108,7 @@ export default function Card({ media, mediaType }: Props) {
 
             {media.genre_ids.length > 0 && (
               <div
-                className="flex gap-1 justify-start items-center flex-wrap
+                className="flex gap-1 items-center flex-wrap
              text-midgray"
               >
                 {mediaType === "movie"

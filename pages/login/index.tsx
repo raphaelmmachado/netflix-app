@@ -2,8 +2,6 @@
 import Head from "next/head";
 import Image from "next/image";
 import { useRouter } from "next/router";
-
-// cookies
 // icons
 import GoogleIcon from "../../components/auth/GoogleIcon";
 import GithubIcon from "../../components/auth/GithubIcon";
@@ -24,27 +22,28 @@ export default function Login() {
         <meta name="viewport" content="width=device-width, initial-scale=1" />
         <link rel="icon" href="/favicon.ico" />
       </Head>
+
       <main
-        className="grid place-content-center place-items-center
-       min-h-screen object-contain relative"
+        className="grid place-content-stretch place-items-center
+       object-contain relative min-w-screen min-h-screen"
       >
+        {/* BANNER */}
         <Image
           alt="background"
           fill
           priority
           src={bg}
-          className="absolute opacity-30"
+          className="absolute opacity-40"
         />
-        <section
-          className="flex flex-col justify-around items-center gap-4
-       p-12 rounded-md  min-h-[600px] absolute"
-        >
+        <section className="flex flex-col items-center z-10">
+          {/* LOGO */}
           <NetflixLogo width="280" height="150" />
-          <h1 className="text-2xl break-words">
-            Filmes, séries e muito mais.{" "}
-            <span className="text-xl font-normal"> Sem limites.</span>
+          <h1 className="text-5xl break-words">
+            Filmes, séries e muito mais. Sem limites.
           </h1>
-
+          <br />
+          <br />
+          {/* BUTTONS */}
           <div className="flex flex-col gap-6">
             <button
               onClick={() =>
@@ -88,8 +87,9 @@ export default function Login() {
           </div>
         </section>
       </main>
+
       <footer className="font-normal text-sm">
-        Para acessar a Netflix Original
+        Para acessar a Netflix Original{" "}
         <a
           className="text-red"
           href="https://netflix.com"

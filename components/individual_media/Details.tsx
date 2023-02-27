@@ -3,7 +3,7 @@ import dynamic from "next/dynamic";
 import Image from "next/image";
 import { Context } from "../../context/ContextProvider";
 import { useContext } from "react";
-import { useRouter } from "next/router";
+import useWindowSize from "../../hooks/useWindowSize";
 //components
 import MediaHeader from "./subcomponents/MediaHeader";
 import TitleDesc from "./subcomponents/TitleDesc";
@@ -11,12 +11,18 @@ import RatingBox from "./subcomponents/RatingBox";
 import FormateDateToBR from "../../utils/formatters/formatDate";
 import formatToCurrency from "../../utils/formatters/formatToCurrency";
 import calculateRuntime from "../../utils/formatters/calculateRuntime";
-import MovieSlider from "../home/slider/MovieSlider";
+
 import Picture from "../Picture";
 import ListButton from "../home/banner/ListButton";
 import Provider from "./subcomponents/Provider";
-import PosterSlider from "./subcomponents/PosterSlider";
+
 //dynamic components
+const MovieSlider = dynamic(() => import("../home/slider/MovieSlider"), {
+  ssr: false,
+});
+const PosterSlider = dynamic(() => import("./subcomponents/PosterSlider"), {
+  ssr: false,
+});
 const VideoSection = dynamic(() => import("./subcomponents/VideoSection"), {
   ssr: false,
 });
@@ -55,6 +61,7 @@ export default function Details({
   cast,
   recommendations,
 }: Props) {
+  const { width } = useWindowSize();
   const { myList, setMyList } = useContext(Context);
   const [hours, remainingMinutes] = calculateRuntime(
     details.runtime ?? details.episode_run_time[0]
@@ -62,15 +69,10 @@ export default function Details({
   const BASE_URL = tmdbApiConfig.images.secure_base_url;
   const BACKDROP_SIZE = tmdbApiConfig.images.backdrop_sizes;
   const POSTER_SIZE = tmdbApiConfig.images.poster_sizes;
-
   const langs = mostSpokenLanguages;
-  const router = useRouter();
   return (
     <>
-      <header
-        className="bg-gradient-to-t from-black via-black/20 to-black/5
-      relative  min-h-screen  z-0"
-      >
+      <header className="relative  min-h-screen  z-0">
         <Image
           src={`${BASE_URL}${BACKDROP_SIZE[3]}/${details.backdrop_path}`}
           title={details.title ?? details.name}
@@ -78,7 +80,7 @@ export default function Details({
           fill={true}
           priority
           sizes="100vw"
-          className=" aspect-video object-cover"
+          className="aspect-square sm:aspect-video object-cover"
         />
       </header>
       <main
@@ -161,20 +163,37 @@ export default function Details({
           id="media-data-section"
         >
           {/* ABSOLUTE POSITION MAIN POSTER */}
-          <Picture
-            src={`${BASE_URL}${POSTER_SIZE[3]}/${details.poster_path}`}
-            fallBackImage={`${BASE_URL}${POSTER_SIZE[0]}/${details.poster_path}`}
-            title={details.title ?? details.name}
-            alt="poster"
-            priority={true}
-            width={235}
-            height={180}
-            sizes="[190px,200px,235px]"
-            style={{ height: "auto" }}
-            className=" md:absolute shadow-lg
+
+          {width && width < 2 ? (
+            <Picture
+              src={`${BASE_URL}${POSTER_SIZE[3]}/${details.poster_path}`}
+              fallBackImage={`${BASE_URL}${POSTER_SIZE[0]}/${details.poster_path}`}
+              title={details.title ?? details.name}
+              alt="poster"
+              priority={true}
+              width={150}
+              height={180}
+              style={{ height: "auto" }}
+              className=" md:absolute shadow-lg
+            mx- sm:mx-4 rounded-md object-cover
+            md:-top-28 md:left-16"
+            />
+          ) : (
+            <Picture
+              src={`${BASE_URL}${POSTER_SIZE[3]}/${details.poster_path}`}
+              fallBackImage={`${BASE_URL}${POSTER_SIZE[0]}/${details.poster_path}`}
+              title={details.title ?? details.name}
+              alt="poster"
+              priority={true}
+              width={235}
+              height={180}
+              style={{ height: "auto" }}
+              className=" md:absolute shadow-lg
           mx- sm:mx-4 rounded-md object-cover
-           md:-top-28 md:left-16"
-          />
+          md:-top-28 md:left-16"
+            />
+          )}
+
           <div className="grid md:grid-cols-4 place-content-start gap-4">
             {/* MOVIE */}
             {details.runtime && (

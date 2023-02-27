@@ -26,7 +26,7 @@ export default function Grid({ alt, img_path, title, id, type }: Props) {
           })
         }
         className="flex justify-start items-center
-         bg-midgray/20 shadow-lg rounded-md cursor-pointer"
+         bg-midgray/20 hover:bg-midgray/50 shadow-lg rounded-md cursor-pointer"
       >
         <Picture
           alt={alt}

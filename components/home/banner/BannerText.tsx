@@ -23,7 +23,7 @@ export default function BannerText({
       {" "}
       <h1
         className="text-white text-center sm:text-start font-bold line-clamp-3
-    text-3xl sm:text-4xl pb-2"
+    text-3xl sm:text-4xl pb-2 uppercase"
         id="banner-text-h1"
       >
         {title}

@@ -1,5 +1,6 @@
 import { ChevronUpIcon, ChevronDownIcon } from "@heroicons/react/20/solid/";
-import enterKeyPressed from "../../../utils/checkKeyboardKeys";
+import { useSwipeable } from "react-swipeable";
+
 interface Props {
   goUp: () => void;
   goDown: () => void;
@@ -16,9 +17,16 @@ export default function VerticalScroller({
   index,
   title,
 }: Props) {
+  // change index when user swipes, for mobile users
+  const swipeHandler = useSwipeable({
+    onSwipedUp: () => goUp(),
+    onSwipedDown: () => goDown(),
+  });
+
   return (
     <>
       <aside
+        {...swipeHandler}
         className="flex flex-col self-center sm:self-auto
      items-center gap-2  px-4 sm:py-0"
       >

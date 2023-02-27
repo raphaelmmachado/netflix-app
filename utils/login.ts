@@ -7,20 +7,12 @@ import {
 } from "firebase/auth";
 
 import { auth } from "./firebaseConfig";
-import { getGuestSesssionID, storeSessionId } from "./requests/requestToken";
 const googleProvider = new GoogleAuthProvider();
 const facebookProvider = new FacebookAuthProvider();
 const githubProvider = new GithubAuthProvider();
 
 const loginWithGoogle = async () => {
   try {
-    await getGuestSesssionID()
-      .then(
-        (res) =>
-          res?.guest_session_id && storeSessionId(null, res?.guest_session_id)
-      )
-      .catch((err) => console.error(err));
-
     const result = await signInWithPopup(auth, googleProvider);
     return result;
   } catch (error: any) {

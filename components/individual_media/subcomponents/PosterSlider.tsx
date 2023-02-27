@@ -7,6 +7,7 @@ import useWindowSize from "../../../hooks/useWindowSize";
 import { Season } from "../../../typing";
 //components
 import PosterSliderCards from "./PosterSliderCards";
+import formatDate from "../../../utils/formatters/formatDate";
 const SeasonDescription = dynamic(() => import("./SeasonDescription"), {
   ssr: false,
 });
@@ -132,7 +133,10 @@ export default function PosterSlider({ posters, sliderTitle }: Props) {
             title="Episódios"
             value={seasonDetails?.episode_count}
           />
-          <SeasonDescription title="Ao ar em" value={seasonDetails?.air_date} />
+          <SeasonDescription
+            title="Ao ar em"
+            value={formatDate(seasonDetails?.air_date, { dateStyle: "medium" })}
+          />
         </div>
       )}
     </section>

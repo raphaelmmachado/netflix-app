@@ -32,13 +32,13 @@ export default function App({ details, medias }: Props) {
         <meta name="viewport" content="width=device-width, initial-scale=1" />
         <link rel="icon" href="/favicon.ico" />
       </Head>
-      <main className="pl-20 min-h-screen py-20">
+      <main className="sm:pl-20 px-6 sm:px-12 min-h-screen py-20">
         <section
           className="flex justify-center text-4xl
-         items-center uppercase gap-5 sm:px-12"
+         items-center gap-5 uppercase"
         >
           <span>{name.slice(0, name.length - 1)}</span>
-          <span>
+          <span className="flex-shrink">
             <Picture
               src={`${BASE_URL}${PROFILE_SIZE[2]}${details.profile_path}`}
               fallBackImage={`${BASE_URL}${PROFILE_SIZE[0]}${details.profile_path}`}
@@ -53,7 +53,7 @@ export default function App({ details, medias }: Props) {
           <span className="">{name.slice(name.length - 1)}</span>
         </section>
 
-        <section className="my-8 sm:px-12">
+        <section className="my-8 sm:px-12 font-thin">
           {details.biography && (
             <TitleDesc title="Biografia" value={details.biography} />
           )}
@@ -83,10 +83,10 @@ export default function App({ details, medias }: Props) {
           </div>
         </section>
         <br />
-        <section className="sm:px-12">
-          <h2 className="text-midgray">Participações</h2>
+        <section className="">
+          <h2 className="text-midgray px-12">Participações</h2>
           <br />
-          <div className=" grid grid-cols-4 gap-y-8 gap-x-4">
+          <div className="grid grid-cols-1 xs:grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 gap-y-8 gap-x-4">
             {medias.length > 0 &&
               medias.map((media, i) => {
                 return (
