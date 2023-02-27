@@ -58,10 +58,11 @@ export default function MainContainer({
       {selectedMedia && (
         <main
           id="banner"
-          className="min-h-[100.1vh] relative bg-cover object-cover w-screen h-screen
-          bg-center bg-no-repeat transition-all ease-linear duration-500"
+          className="min-h-[100.1vh] relative aspect-video w-screen h-screen
+           bg-no-repeat bg-center"
           style={{
             backgroundImage: `url(${BASE_URL}${SIZE}/${selectedMedia?.backdrop_path})`,
+            transition: "background-image 500ms linear 75ms",
           }}
         >
           <div

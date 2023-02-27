@@ -28,7 +28,7 @@ export default function VerticalScroller({
       <aside
         {...swipeHandler}
         className="flex flex-col self-center sm:self-auto
-     items-center gap-2  px-4 sm:py-0"
+     items-center gap-2 px-4 sm:pr-12 sm:py-0"
       >
         {/* GO UP */}
         <div
