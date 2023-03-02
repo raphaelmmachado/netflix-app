@@ -69,7 +69,7 @@ export default function MainContainer({
         <main
           {...swipeHandler}
           id="banner"
-          className="min-h-[100.1dvh] relative aspect-video w-screen h-screen
+          className="min-h-screen md:min-h-[100.1dvh] relative aspect-video w-screen h-screen
            bg-no-repeat bg-center bg-cover"
           style={{
             backgroundImage: `url(${BASE_URL}${SIZE}/${selectedMedia?.backdrop_path})`,
