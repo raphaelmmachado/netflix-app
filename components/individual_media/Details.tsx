@@ -17,21 +17,11 @@ import ListButton from "../home/banner/ListButton";
 import Provider from "./subcomponents/Provider";
 
 //dynamic components
-const MovieSlider = dynamic(() => import("../home/slider/MovieSlider"), {
-  ssr: false,
-});
-const PosterSlider = dynamic(() => import("./subcomponents/PosterSlider"), {
-  ssr: false,
-});
-const VideoSection = dynamic(() => import("./subcomponents/VideoSection"), {
-  ssr: false,
-});
-const Creators = dynamic(() => import("./subcomponents/Creators"), {
-  ssr: false,
-});
-const Providers = dynamic(() => import("./subcomponents/Providers"), {
-  ssr: false,
-});
+const MovieSlider = dynamic(() => import("../home/slider/MovieSlider"));
+const PosterSlider = dynamic(() => import("./subcomponents/PosterSlider"));
+const VideoSection = dynamic(() => import("./subcomponents/VideoSection"));
+const Creators = dynamic(() => import("./subcomponents/Creators"));
+const Providers = dynamic(() => import("./subcomponents/Providers"));
 const Cast = dynamic(() => import("./subcomponents/Cast"));
 
 //constants / utils
@@ -69,12 +59,17 @@ export default function Details({
   const BASE_URL = tmdbApiConfig.images.secure_base_url;
   const BACKDROP_SIZE = tmdbApiConfig.images.backdrop_sizes;
   const POSTER_SIZE = tmdbApiConfig.images.poster_sizes;
+  const imagePlaceholder = `https://via.placeholder.com/1440x768/141414/fff?text=sem+imagem`;
+
   const langs = mostSpokenLanguages;
   return (
     <>
+      {/* BANNER */}
       <header className="relative  min-h-screen  z-0">
         <Image
           src={`${BASE_URL}${BACKDROP_SIZE[3]}/${details.backdrop_path}`}
+          placeholder="blur"
+          blurDataURL={imagePlaceholder}
           title={details.title ?? details.name}
           alt="backdrop"
           fill={true}
@@ -88,6 +83,7 @@ export default function Details({
           bg-black sm:pl-14"
       >
         <section className="flex px-6 sm:px-12 py-2 w-full justify-between items-center my-4 sm:m-0 sm:p-0">
+          {/* ADD TO LIST BUTTON */}
           <div className="static md:absolute md:top-64 md:left-28">
             <ListButton
               added={myList && myList.some((item) => item.id === details.id)}
@@ -101,6 +97,7 @@ export default function Details({
               }
             />
           </div>{" "}
+          {/* STREAMING PROVIDERS */}
           <div className="static md:absolute -top-14 left-[21.4rem] z-20">
             {" "}
             {providers?.flatrate && providers?.flatrate?.length > 0 && (
@@ -111,11 +108,12 @@ export default function Details({
             )}
           </div>
         </section>
-        <section className="px-6 sm:px-12 md:pl-72">
+        {/* MEDIA INFO HEADER */}
+        <section className="px-6 sm:px-12 md:pl-72 mb-8">
           <div className="flex items-center justify-between">
             <MediaHeader
               title={details.title ?? details.name}
-              description={details.overview!}
+              overview={details.overview}
               originalTitle={details.original_title ?? details.original_name}
               release={FormateDateToBR(
                 details.release_date ?? details.first_air_date,
@@ -132,42 +130,28 @@ export default function Details({
             <div></div>
           </div>
           <br />
-          <section
-            className="flex justify-between items-center"
-            id="overview-section"
-          >
-            <div>
-              {" "}
-              <TitleDesc
-                title="Descrição"
-                value={details.overview!}
-                pClass="font-thin text-lg"
-              />
-            </div>
-          </section>
         </section>
-        <br />
-        <br />
-        <section className="relative my-8" id="cast-seasons-row">
+
+        {/* MEDIA CREDITS  */}
+        <section className="relative my-20" id="cast-seasons-row">
           {details.created_by && details.created_by.length > 0 && (
             <Creators creators={details.created_by} />
           )}
           {cast.length > 0 && <Cast cast={cast} />}
-
+        </section>
+        <section>
           {details.seasons && (
             <PosterSlider posters={details.seasons} sliderTitle="Temporadas" />
           )}
         </section>
+        {/* ABSOLUTE POSITION MAIN POSTER */}
         <section
           className="flex px-6 sm:px-12 gap-6 md:justify-center "
           id="media-data-section"
         >
-          {/* ABSOLUTE POSITION MAIN POSTER */}
-
           {width && width < 2 ? (
             <Picture
               src={`${BASE_URL}${POSTER_SIZE[3]}/${details.poster_path}`}
-              fallBackImage={`${BASE_URL}${POSTER_SIZE[0]}/${details.poster_path}`}
               title={details.title ?? details.name}
               alt="poster"
               priority={true}
@@ -181,7 +165,6 @@ export default function Details({
           ) : (
             <Picture
               src={`${BASE_URL}${POSTER_SIZE[3]}/${details.poster_path}`}
-              fallBackImage={`${BASE_URL}${POSTER_SIZE[0]}/${details.poster_path}`}
               title={details.title ?? details.name}
               alt="poster"
               priority={true}
@@ -194,8 +177,8 @@ export default function Details({
             />
           )}
 
-          <div className="grid md:grid-cols-4 place-content-start gap-4">
-            {/* MOVIE */}
+          <div className="grid md:grid-cols-4 place-content-start gap-4 my-8">
+            {/* MOVIE DETAILS*/}
             {details.runtime && (
               <TitleDesc
                 title={"Duração"}
@@ -215,21 +198,23 @@ export default function Details({
                 value={formatToCurrency(details.revenue)}
               />
             )}
-            {/* TV */}
+            {/* TV DETAILS*/}
             {details.number_of_episodes && (
               <TitleDesc title="Episódios" value={details.number_of_episodes} />
             )}
             {details.number_of_seasons && (
               <TitleDesc title="Temporadas" value={details.number_of_seasons} />
             )}
-            {!details.runtime && details.episode_run_time[0] && (
-              <TitleDesc
-                title={"Duração de Episódio"}
-                value={`${hours > 0 ? `${hours}h` : " "} ${
-                  remainingMinutes > 0 ? `${remainingMinutes}m` : " "
-                }`}
-              />
-            )}
+            {!details.runtime &&
+              details.episode_run_time.length > 0 &&
+              details.episode_run_time[0] && (
+                <TitleDesc
+                  title={"Duração de Episódio"}
+                  value={`${hours > 0 ? `${hours}h` : " "} ${
+                    remainingMinutes > 0 ? `${remainingMinutes}m` : " "
+                  }`}
+                />
+              )}
             {details.original_language && (
               <TitleDesc
                 title={"Idioma Original"}
@@ -240,9 +225,11 @@ export default function Details({
         </section>
 
         <br />
+        {/* VIDEO SECTION */}
         <VideoSection details={details} trailer={trailer} />
         {providers && <Providers providers={providers} />}
         <br />
+        {/* RECOMMENDED MEDIA SLIDER */}
         {recommendations.length > 0 && (
           <MovieSlider medias={recommendations} title="Recomendados" />
         )}

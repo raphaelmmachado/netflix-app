@@ -13,6 +13,7 @@ export default function Results() {
   const { results, showResults, setShowResults } = useContext(SearchContext);
   const listRef = useRef<HTMLUListElement>(null);
   const [resultsRef] = useAutoAnimate<HTMLDivElement>();
+  //if user click outside the box, this window closes
   useEffect(() => {
     const handleClickOutside = (event: any) => {
       if (listRef.current && !listRef.current.contains(event.target)) {
@@ -27,6 +28,21 @@ export default function Results() {
   }, [listRef]);
 
   const router = useRouter();
+  const checkType = (type: string) => {
+    let media_type: string;
+    switch (type) {
+      case "tv":
+        return (media_type = "series");
+
+      case "movie":
+        return (media_type = "filmes");
+
+      case "person":
+        return (media_type = "atores");
+      default:
+        break;
+    }
+  };
   return (
     <>
       {showResults && (
@@ -38,24 +54,41 @@ export default function Results() {
           >
             {results.length > 0 &&
               results.map((item, i) => {
-                if (item.media_type !== "person" && i < 9)
+                if (i < 9)
                   return (
                     <li
                       onClick={() => {
                         const slug = slugify(item.name ?? item.title);
-                        router.push({
-                          pathname: `/[type]/detalhes/${slug}`,
-                          query: {
-                            type:
-                              item.media_type === "tv" ? "series" : "filmes",
-                            id: item.id,
-                          },
-                        });
+                        item.media_type &&
+                          router.push({
+                            pathname:
+                              item.media_type !== "person"
+                                ? `/[type]/detalhes/${slug}`
+                                : `/atores/${slug}`,
+                            query: {
+                              type: checkType(item.media_type),
+                              id: item.id,
+                            },
+                          });
                       }}
                       key={i}
                       className={`flex px-1 gap-3 justify-between items-center rounded-md bg-smokewt cursor-pointer hover:bg-midgray/30`}
                     >
-                      <h1 className="text-black">{item.title ?? item.name}</h1>
+                      <div className="flex flex-col items-start">
+                        <span className="text-sm text-red">
+                          {item.media_type === "person" && "Pessoa"}
+                        </span>
+                        <span className="text-sm text-red">
+                          {item.media_type === "tv" && "Serie"}
+                        </span>
+                        <span className="text-sm text-red">
+                          {item.media_type === "movie" && "Filme"}
+                        </span>
+                        <h1 className="text-black flex-grow">
+                          {item.title ?? item.name}
+                        </h1>
+                      </div>
+
                       <ResultImage
                         title={item.title ?? item.name}
                         image_path={item.backdrop_path}

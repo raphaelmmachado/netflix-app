@@ -11,7 +11,7 @@ export default function NavExtendButton({ open, extendNav }: Props) {
       <button
         id="nav-button"
         onClick={() => extendNav()}
-        className="flex flex-row items-center rounded-md p-2 my-4
+        className="flex flex-row items-center rounded-md p-2 sm:my-4
  hover:bg-midgray/20 text-midgray cursor-pointer rotate-90 sm:rotate-0"
       >
         <span className="w-[0.125rem] h-6 bg-midgray/80"> </span>

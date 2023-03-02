@@ -2,6 +2,8 @@
 import { Dispatch, SetStateAction, useContext, useEffect } from "react";
 import dynamic from "next/dynamic";
 import { Context } from "../../context/ContextProvider";
+//libs
+import { useSwipeable } from "react-swipeable";
 //components
 import MovieSlider from "./slider/MovieSlider";
 import BannerText from "./banner/BannerText";
@@ -49,6 +51,14 @@ export default function MainContainer({
     setSelectedMedia(medias[0]);
   }, []);
 
+  // change index when user swipes, for mobile users
+  const swipeHandler = useSwipeable({
+    onSwipedUp: () =>
+      setIndex && setIndex((prev: number) => (prev - 1 < 0 ? prev : --prev)),
+    onSwipedDown: () =>
+      setIndex &&
+      setIndex((prev: number) => (prev + 1 > bars - 1 ? prev : ++prev)),
+  });
   //tmdb image url
   const BASE_URL = tmdbApiConfig.images.secure_base_url;
   const SIZE = tmdbApiConfig.images.backdrop_sizes[2];
@@ -57,8 +67,9 @@ export default function MainContainer({
     <>
       {selectedMedia && (
         <main
+          {...swipeHandler}
           id="banner"
-          className="min-h-[100.1vh] relative aspect-video w-screen h-screen
+          className="min-h-[100.1dvh] relative aspect-video w-screen h-screen
            bg-no-repeat bg-center bg-cover"
           style={{
             backgroundImage: `url(${BASE_URL}${SIZE}/${selectedMedia?.backdrop_path})`,
@@ -68,7 +79,7 @@ export default function MainContainer({
           <div
             className="pt-16 pb-10 sm:py-8 sm:pl-14 flex flex-col-reverse sm:flex-col justify-center
              sm:justify-between bg-gradient-to-b sm:bg-gradient-to-r  from-black
-             via-black/70 to-black/25 absolute h-full 
+             via-black/70 to-black/25 absolute h-full
               w-full"
             id="banner-wrapper"
           >
@@ -79,7 +90,7 @@ export default function MainContainer({
             >
               <div
                 className="flex flex-col justify-center gap-4 md:py-4
-                px-6 md:px-14"
+                px-1 sm:px-6 md:px-14"
                 id="banner-center-left"
               >
                 <BannerText

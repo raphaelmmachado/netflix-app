@@ -12,8 +12,9 @@ import { Context } from "../../context/ContextProvider";
 import useList from "../../hooks/useList";
 //components
 import NavLinks from "./NavLinks";
+//libs
+import { useAutoAnimate } from "@formkit/auto-animate/react";
 //icons
-
 import TVIcon from "@heroicons/react/24/solid/TvIcon";
 import FilmIcon from "@heroicons/react/24/solid/FilmIcon";
 import FolderIcon from "@heroicons/react/24/solid/BookmarkIcon";
@@ -29,6 +30,7 @@ export default function Nav() {
   const [navIsOpen, setNavIsOpen] = useState(false);
   const [user, loading, error] = useAuthState(auth);
   const router = useRouter();
+  const [linksRef] = useAutoAnimate<HTMLElement>();
 
   useList();
 
@@ -41,23 +43,21 @@ export default function Nav() {
   return (
     <>
       {!loading && user && (
-        <header
-          className="transition-all duration-200 delay-200 ease-in-out"
-          id="nav-header"
-        >
+        <header className="" id="nav-header">
           <SearchProvider>
             {/* NAV */}
             <nav
-              id="sidebar"
-              className={` fixed sm:top-0 sm:left-0 sm:min-h-screen  sm:min-w-[3.5rem]
-            flex sm:flex-row flex-col min-w-full min-h-max
-            rounded-br-md rounded-tr-md z-30 sm:py-8             
+              id="navbar"
+              className={`fixed sm:top-0 sm:left-0 sm:min-h-screen sm:min-w-[3.5rem]
+            flex sm:flex-row  flex-col min-w-full min-h-max
+            rounded-bl-md rounded-br-md transition-all delay-75 duration-75 ease-linear
+            sm:rounded-br-md sm:rounded-tr-md z-30 py-1 sm:py-8             
             gap-8 bg-black  border-midgray/20  shadow-def_black
-            border border-l-0 transition-all delay-75 duration-150
-            ease-in-out shadow-sm ${navIsOpen && "px-4"}`}
+            border border-l-0 shadow-sm ${navIsOpen && "px-4"}`}
             >
               <div
-                className="flex flex-grow sm:flex-col justify-center items-center gap-6
+                className="flex flex-grow sm:flex-col 
+                justify-center sm:justify-start items-center gap-4 sm:gap-6
                text-sm sm:text-base flex-wrap"
                 id="nav--logo"
               >
@@ -71,7 +71,9 @@ export default function Nav() {
                 {/* LINKS */}
                 <ul
                   id="nav-links"
-                  className={`flex sm:flex-col items-start justify-around transition-all duration-200 delay-75 ease-in-out
+                  ref={linksRef}
+                  className={`flex sm:flex-col items-start justify-around
+                   transition-colors duration-200 delay-100 ease-in-out
                ${navIsOpen ? "text-smokewt" : "text-midgray"} gap-3`}
                 >
                   {" "}
@@ -115,6 +117,9 @@ export default function Nav() {
                         navIsOpen={navIsOpen}
                         logout={() =>
                           auth.signOut().then(() => router.push("/login"))
+                        }
+                        userDelete={() =>
+                          user.delete().then(() => router.push("/login"))
                         }
                       />
                     </>

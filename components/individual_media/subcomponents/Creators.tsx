@@ -22,7 +22,6 @@ export default function Creators({ creators }: Props) {
               >
                 <Picture
                   src={`${BASE_URL}${PROFILE_SIZE[1]}${item.profile_path}`}
-                  fallBackImage={`${BASE_URL}${PROFILE_SIZE[0]}${item.profile_path}`}
                   title={item.name}
                   alt="profile"
                   width={50}

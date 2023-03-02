@@ -5,7 +5,6 @@ interface Props {
   width: number;
   height: number;
   alt: string;
-  fallBackImage: string;
   className?: string;
   style?: CSSProperties;
   fill?: boolean;
@@ -19,7 +18,6 @@ export default function Picture({
   width,
   height,
   alt,
-  fallBackImage,
   fill,
   priority,
   className,
@@ -32,14 +30,14 @@ export default function Picture({
 
   const fallbackImage = () =>
     setImage(
-      `https://via.placeholder.com/${width.toString()}x${height.toString()}/6D6D6E/fff?text=${
-        title ? title : "Não encontada"
-      }`
+      `https://via.placeholder.com/${width.toString()}x${height.toString()}/6D6D6E/fff?text=sem+imagem`
     );
   return (
     <>
       <Image
         onError={(e) => fallbackImage()}
+        blurDataURL={`https://via.placeholder.com/${width.toString()}x${height.toString()}/6D6D6E/fff?text=sem+imagem`}
+        placeholder="blur"
         src={image}
         alt={alt}
         fill={fill}

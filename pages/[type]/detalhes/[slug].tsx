@@ -54,6 +54,10 @@ export default function App({
 }
 
 export const getServerSideProps: GetServerSideProps = async (content) => {
+  content.res.setHeader(
+    "Cache-Control",
+    "public, s-maxage=10, stale-while-revalidate=59"
+  );
   const queryID = content.query.id;
   const { type } = content.query;
   const id = Number(queryID);

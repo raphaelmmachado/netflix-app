@@ -4,7 +4,7 @@ import Image from "next/image";
 //components
 import MediaComponent from "./video/MediaComponent";
 import XMarkIcon from "@heroicons/react/24/solid/XMarkIcon";
-import FilmIcon from "@heroicons/react/24/solid/FilmIcon";
+import ArrowDownIcon from "@heroicons/react/24/solid/ArrowDownTrayIcon";
 import VideoLinks from "./video/VideoLinks";
 // typing
 import { IVideo, MediaType, YTIds } from "../../typing";
@@ -91,24 +91,26 @@ export default function VideoModal({ mediaType }: Props) {
         flex justify-center items-center z-50 inset-0 sm:px-12"
         >
           <div
-            className="rounded-sm min-w-[420px] sm:min-w-[615px]
+            className="rounded-sm    
+            xs:min-w-[420px] sm:min-w-[615px]
             md:min-w-[740px] lg:min-w-[990px]
+            max-h-screen
             flex flex-col border border-gray"
             id="video-modal-container"
           >
             <header
               className="flex justify-between items-center
-              w-full bg-black px-1"
+              w-full bg-black px-2"
               id="modal_header"
             >
-              <h1 className="text-lg">
+              <h1 className="text-lg ">
                 {selectedMedia.title ?? selectedMedia.name}
               </h1>
 
               <span className="flex items-center gap-3">
                 {showVideo && (
                   <button onClick={() => setShowVideo(false)}>
-                    <FilmIcon
+                    <ArrowDownIcon
                       className="w-7 h-7 text-white 
                     hover:bg-gray/30 rounded-md"
                     />
@@ -134,22 +136,21 @@ export default function VideoModal({ mediaType }: Props) {
                   youtubeVideos={YTAPIVideos}
                 />
               ) : (
-                <article
-                  className="grid grid-rows-1 grid-cols-2
-                place-content-center place-items-start p-4 bg-black"
-                >
-                  <div className="font-thin place-self-center">
+                <article className="flex flex-col py-1 sm:flex-row gap-3 bg-black">
+                  <div className="font-extralight p-2">
                     {" "}
                     <p>{selectedMedia.overview}</p>
                   </div>
-                  <Image
-                    src={`${base_url}${size}/${selectedMedia?.poster_path}`}
-                    width={170}
-                    height={285}
-                    alt="poster image"
-                    className="place-self-center"
-                  />
-                  <VideoTags mediaType={mediaType} />
+                  <div className="hidden sm:flex flex-col gap-1 items-center">
+                    <Image
+                      src={`${base_url}${size}/${selectedMedia?.poster_path}`}
+                      width={170}
+                      height={285}
+                      alt="poster image"
+                      className=""
+                    />
+                    <VideoTags mediaType={mediaType} />
+                  </div>
                 </article>
               )}
             </main>

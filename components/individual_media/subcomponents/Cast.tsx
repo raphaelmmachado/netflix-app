@@ -14,7 +14,7 @@ export default function Cast({ cast }: Props) {
     (person) => person.known_for_department === "Acting" && person.order < 8
   );
   return (
-    <section className="px-6 sm:px-12 my-16" id="cast-section">
+    <section className="px-6 sm:px-12" id="cast-section">
       <h1 className="text-lg text-gray my-2">Elenco</h1>
       <div
         className="grid grid-cols-1
@@ -36,7 +36,6 @@ export default function Cast({ cast }: Props) {
               <Picture
                 alt={person.name}
                 src={`${BASE_URL}${PROFILE_SIZE[1]}${person.profile_path}`}
-                fallBackImage={`${BASE_URL}${PROFILE_SIZE[0]}${person.profile_path}`}
                 title={person.name}
                 width={70}
                 height={50}

@@ -31,7 +31,6 @@ export default function Grid({ alt, img_path, title, id, type }: Props) {
         <Picture
           alt={alt}
           src={`${BASE_URL}${POSTER_SIZES[1]}${img_path}`}
-          fallBackImage={`${BASE_URL}${POSTER_SIZES[0]}${img_path}`}
           width={55}
           height={77}
           title={title}

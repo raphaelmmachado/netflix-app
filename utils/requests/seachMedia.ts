@@ -2,11 +2,6 @@ import axios from "axios";
 import { Media } from "../../typing";
 import { getSecret } from "./getSecret";
 
-interface Props {
-  query: string;
-  mediaType: "tv" | "movie";
-}
-
 interface Results {
   data: {
     page: number;
@@ -14,6 +9,10 @@ interface Results {
     total_pages: number;
     total_results: number;
   };
+}
+interface Props {
+  query: string;
+  mediaType: "tv" | "movie";
 }
 const BASE_URL = "https://api.themoviedb.org/3/search/";
 export async function searchMedia({ query, mediaType }: Props) {

@@ -32,7 +32,6 @@ export default function Card({ media, mediaType }: Props) {
     },
     [selectedMedia]
   );
-
   const url = apiConfiguration.images.base_url;
   const posterSize = apiConfiguration.images.poster_sizes;
 
@@ -56,7 +55,6 @@ export default function Card({ media, mediaType }: Props) {
             width={170}
             height={250}
             src={`${url}${posterSize[2]}/${media.poster_path}`}
-            fallBackImage={`${url}${posterSize[0]}/${media.poster_path}`}
             alt={media.title ?? media.name}
             className="rounded-md shadow-md border-2 border-gray/20"
           />
@@ -111,43 +109,24 @@ export default function Card({ media, mediaType }: Props) {
                 className="flex gap-1 items-center flex-wrap
              text-midgray"
               >
-                {mediaType === "movie"
-                  ? media.genre_ids.map((item, i) => {
-                      return (
-                        <Link
-                          href={{
-                            pathname: `/[type]/[genre]/1`,
-                            query: {
-                              type: "filmes",
-                              genre: `${movieGenres[item].slug}`,
-                            },
-                          }}
-                          key={i}
-                          className="text-sm bg-midgray/20 items-center
+                {media.genre_ids.map((item, i) => {
+                  return (
+                    <Link
+                      href={{
+                        pathname: `/[type]/[genre]/1`,
+                        query: {
+                          type: mediaType === "tv" ? "series" : "filmes",
+                          genre: `${movieGenres[item]?.slug}`,
+                        },
+                      }}
+                      key={i}
+                      className="text-sm bg-midgray/20 items-center
                         px-1 rounded-md  cursor-pointer"
-                        >
-                          {movieGenres[item]?.name}
-                        </Link>
-                      );
-                    })
-                  : media.genre_ids.map((item, i) => {
-                      return (
-                        <Link
-                          href={{
-                            pathname: `/[type]/[genre]/1`,
-                            query: {
-                              type: "series",
-                              genre: `${tvGenres[item].slug}`,
-                            },
-                          }}
-                          key={i}
-                          className="text-sm bg-midgray/20 items-center
-                      p-1 rounded-md cursor-pointer"
-                        >
-                          {tvGenres[item]?.name}
-                        </Link>
-                      );
-                    })}
+                    >
+                      {movieGenres[item]?.name}
+                    </Link>
+                  );
+                })}
               </div>
             )}
           </>

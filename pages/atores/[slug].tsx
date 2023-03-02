@@ -34,19 +34,18 @@ export default function App({ details, medias }: Props) {
       </Head>
       <main className="sm:pl-20 px-6 sm:px-12 min-h-screen py-20">
         <section
-          className="flex justify-center text-4xl
+          className="flex flex-col sm:flex-row justify-center text-4xl
          items-center gap-5 uppercase"
         >
           <span>{name.slice(0, name.length - 1)}</span>
           <span className="flex-shrink">
             <Picture
               src={`${BASE_URL}${PROFILE_SIZE[2]}${details.profile_path}`}
-              fallBackImage={`${BASE_URL}${PROFILE_SIZE[0]}${details.profile_path}`}
               alt={details.name}
               width={125}
               height={75}
               title={details.name}
-              className="rounded-lg"
+              className="rounded-lg "
               style={{ height: "auto" }}
             />
           </span>

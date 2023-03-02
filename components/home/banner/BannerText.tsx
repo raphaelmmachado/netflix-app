@@ -22,7 +22,7 @@ export default function BannerText({
     <>
       {" "}
       <h1
-        className="text-white text-center sm:text-start font-bold line-clamp-3
+        className="hidden sm:block text-white text-center sm:text-start font-bold
     text-3xl sm:text-4xl pb-2 uppercase"
         id="banner-text-h1"
       >
@@ -59,8 +59,8 @@ export default function BannerText({
         }
       </div>
       <p
-        className="text-gray hidden sm:block max-w-fit 
-         sm:line-clamp-2 md:line-clamp-3 sm:max-w-sm md:max-w-md lg:max-w-lg"
+        className="text-gray line-clamp-3 max-w-fit 
+         sm:max-w-sm md:max-w-md lg:max-w-lg"
         id="banner-center-left-description"
       >
         {description}

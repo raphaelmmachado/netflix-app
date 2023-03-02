@@ -2,7 +2,7 @@
 import { useState, useEffect, useMemo, CSSProperties } from "react";
 import dynamic from "next/dynamic";
 import useWindowSize from "../../../hooks/useWindowSize";
-
+import { useAutoAnimate } from "@formkit/auto-animate/react";
 //typing
 import { Season } from "../../../typing";
 //components
@@ -24,6 +24,9 @@ export default function PosterSlider({ posters, sliderTitle }: Props) {
   const { width } = useWindowSize();
   const memoWidth = useMemo(() => width, [width]);
   const [seasonDetails, setSeasonDetails] = useState<Season | null>();
+  const [sliderRef] = useAutoAnimate<HTMLElement>();
+  const [descriptionRef] = useAutoAnimate<HTMLDivElement>();
+
   //set sliders items per screen based on screen width
   useEffect(() => {
     if (memoWidth !== undefined) {
@@ -49,6 +52,7 @@ export default function PosterSlider({ posters, sliderTitle }: Props) {
   // This component has css classes mixed with tailwind classes
   return (
     <section
+      ref={sliderRef}
       className="sm:py-2"
       id="slider-section"
       onMouseLeave={() => setSeasonDetails(null)}
@@ -118,6 +122,7 @@ export default function PosterSlider({ posters, sliderTitle }: Props) {
 
       {seasonDetails && (
         <div
+          ref={descriptionRef}
           className="bg-midgray/20 mx-6 sm:mx-12 sm:my-4 rounded-md z-50
             border-smokewt border p-1 w-fit
             min-h-[200px]"

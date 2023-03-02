@@ -19,7 +19,6 @@ export default function Provider({ name, path }: Props) {
         {" "}
         <Picture
           src={`${BASE_URL}${LOGO_SIZE[1]}${path}`}
-          fallBackImage={`${BASE_URL}${LOGO_SIZE[0]}${path}`}
           title={name!}
           width={50}
           height={50}

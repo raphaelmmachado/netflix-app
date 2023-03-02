@@ -1,8 +1,9 @@
 import { movieGenres, tvGenres } from "../../../constants/genres";
 import { MediaType } from "../../../typing";
+import TitleDesc from "./TitleDesc";
 interface Props {
   title: string;
-  description: string;
+  overview: string;
   originalTitle: string;
   release: string | Date;
   last?: string | Date;
@@ -23,20 +24,20 @@ export default function MediaHeader({
   originalTitle,
   release,
   genres,
-  description,
+  overview,
   mediaType,
   last,
 }: Props) {
   return (
     <div className="flex-grow">
       {" "}
-      <h3 className="text-midgray text-sm">Título</h3>
+      <span className="text-midgray text-sm">Título</span>
       <h1 className="text-4xl text-white font-medium uppercase">{title}</h1>
       <div className="flex items-center gap-1">
-        <span className=" text-midgray font-medium">
+        <span className="text-midgray font-medium">
           <>
             {originalTitle}
-            {` · ${release}`}
+            {` · ${release} ${last ? `~ ${last}` : ""}`}
           </>
         </span>
       </div>
@@ -50,6 +51,18 @@ export default function MediaHeader({
             </div>
           );
         })}
+      </div>
+      <div
+        className="flex justify-between items-center my-4"
+        id="overview-section"
+      >
+        {overview && (
+          <TitleDesc
+            title="Descrição"
+            value={overview!}
+            pClass="font-thin text-lg"
+          />
+        )}
       </div>
     </div>
   );

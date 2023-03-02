@@ -1,5 +1,4 @@
 import { ChevronUpIcon, ChevronDownIcon } from "@heroicons/react/20/solid/";
-import { useSwipeable } from "react-swipeable";
 
 interface Props {
   goUp: () => void;
@@ -17,29 +16,22 @@ export default function VerticalScroller({
   index,
   title,
 }: Props) {
-  // change index when user swipes, for mobile users
-  const swipeHandler = useSwipeable({
-    onSwipedUp: () => goUp(),
-    onSwipedDown: () => goDown(),
-  });
-
   return (
     <>
       <aside
-        {...swipeHandler}
         className="flex flex-col self-center sm:self-auto
-     items-center gap-2 px-4 sm:pr-12 sm:py-0"
+     items-center gap-2 sm:mr-12 sm:py-0"
       >
         {/* GO UP */}
         <div
           tabIndex={0}
           id="prev-component-button"
           className={`cursor-pointer ${
-            index - 1 < 0 ? "text-transparent cursor-default" : "block"
+            index - 1 < 0 ? "invisible cursor-default" : "visible"
           }`}
           onClick={() => goUp()}
         >
-          <ChevronUpIcon className="w-12 h-12 sm:w-8 sm:h-8" />
+          <ChevronUpIcon className="w-12 h-12 sm:w-8 sm:h-8  text-red sm:text-smokewt" />
         </div>
         {/* BARS */}
         {[...Array(bars).fill(" ")].map((bar, i, arr) => (
@@ -53,7 +45,10 @@ export default function VerticalScroller({
                 : "bg-white/50 hidden sm:inline-flex h-0 w-2 sm:h-5"
             } `}
           >
-            <h1 className="block sm:hidden text-lg">{index === i && title}</h1>
+            <h1 className="block sm:hidden text-lg">
+              <span className="text-red font-bold">{"Seção: "}</span>
+              {index === i && title}
+            </h1>
           </div>
         ))}
         {/* GO DOWN */}
@@ -61,11 +56,11 @@ export default function VerticalScroller({
           tabIndex={0}
           id="next-component-button"
           className={`cursor-pointer ${
-            index + 1 > bars - 1 ? "text-transparent cursor-default" : "block"
+            index + 1 > bars - 1 ? "invisible cursor-default" : "visible"
           }`}
           onClick={() => goDown()}
         >
-          <ChevronDownIcon className="w-12 h-12 sm:w-8 sm:h-8" />
+          <ChevronDownIcon className="w-12 h-12 sm:w-8 sm:h-8 text-red sm:text-smokewt" />
         </div>
       </aside>
     </>

@@ -2,7 +2,6 @@
 import { GetServerSideProps } from "next";
 import Head from "next/head";
 //components
-
 import MainContainer from "../components/home/MainContainer";
 import Loading from "../components/auth/Loading";
 //types

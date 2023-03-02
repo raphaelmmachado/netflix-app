@@ -13,7 +13,7 @@ export default function VideoTags({ mediaType }: Props) {
   return (
     <>
       {" "}
-      <div className="flex gap-1 place-self-center col-span-2">
+      <div className="flex gap-1">
         {selectedMedia?.original_language && (
           <span className="flex items-center gap-1 bg-midgray w-fit font-thin text-sm  px-2 rounded-md ">
             <SpeakerWaveIcon className="text-white w-5 h-5" />{" "}
@@ -45,8 +45,6 @@ export default function VideoTags({ mediaType }: Props) {
                   : mediaType === "movie"
                   ? movieGenres[genre].name
                   : tvGenres[genre].name}
-                {/* {mediaType === "movie" && movieGenres[genre].name}
-                {mediaType === "tv" && tvGenres[genre].name} */}
               </>
             </span>
           ))}

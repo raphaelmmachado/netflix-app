@@ -18,7 +18,6 @@ export default function PosterSliderCards({ media, setDetails }: Props) {
       <Picture
         title={media.name}
         src={`${BASE_URL}${POSTER_SIZE[2]}/${media.poster_path}`}
-        fallBackImage={`${BASE_URL}${POSTER_SIZE[0]}/${media.poster_path}`}
         alt={media.name}
         width={100}
         height={0}

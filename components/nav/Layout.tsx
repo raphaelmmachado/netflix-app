@@ -11,8 +11,3 @@ export default function Layout({ children }: Props) {
     </>
   );
 }
-// ${
-//   transparentNav
-//     ? "bg-opacity-0 hover:bg-opacity-100"
-//     : "bg-opacity-100"
-// }

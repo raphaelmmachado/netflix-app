@@ -25,7 +25,7 @@ interface Props {
 export default function App({ movies, page, genre, mediaType, path }: Props) {
   const [searchResults, setSearchResults] = useState<Media[]>([]);
 
-  const handleFoundMedia = (media: Media[], total_results: number) => {
+  const handleFoundMedia = (media: Media[]) => {
     setSearchResults(media);
   };
   const router = useRouter();
@@ -76,7 +76,7 @@ export default function App({ movies, page, genre, mediaType, path }: Props) {
       </section>
 
       {searchResults.length > 0 ? (
-        <MediaGrid medias={searchResults!} mediaType={mediaType} />
+        <MediaGrid medias={searchResults} mediaType={mediaType} />
       ) : (
         <MediaGrid medias={movies} mediaType={mediaType} />
       )}
