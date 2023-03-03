@@ -4,7 +4,7 @@ import Image from "next/image";
 //components
 import MediaComponent from "./video/MediaComponent";
 import XMarkIcon from "@heroicons/react/24/solid/XMarkIcon";
-import ArrowDownIcon from "@heroicons/react/24/solid/ArrowDownTrayIcon";
+import XMarkCircleIcon from "@heroicons/react/24/solid/XCircleIcon";
 import VideoLinks from "./video/VideoLinks";
 // typing
 import { IVideo, MediaType, YTIds } from "../../typing";
@@ -31,9 +31,9 @@ export default function VideoModal({ mediaType }: Props) {
 
   //check if tmdb has video
   useEffect(() => {
-    // checking if is a mixed component with both tv and movie items
-    // if is a mixed component, the api will give me "media_type"
-    // if not use media type from component
+    // checking if it is a mixed component with both tv and movie items
+    // if it is a mixed component, the api will give me "media_type"
+    // if it is not, use media type from component
     const type = !selectedMedia?.media_type
       ? selectedMedia?.title
         ? "movie"
@@ -110,7 +110,7 @@ export default function VideoModal({ mediaType }: Props) {
               <span className="flex items-center gap-3">
                 {showVideo && (
                   <button onClick={() => setShowVideo(false)}>
-                    <ArrowDownIcon
+                    <XMarkCircleIcon
                       className="w-7 h-7 text-white 
                     hover:bg-gray/30 rounded-md"
                     />

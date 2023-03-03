@@ -24,7 +24,7 @@ interface Props {
 
 export default function App({ movies, page, genre, mediaType, path }: Props) {
   const [searchResults, setSearchResults] = useState<Media[]>([]);
-
+  console.log(movies);
   const handleFoundMedia = (media: Media[]) => {
     setSearchResults(media);
   };
@@ -72,6 +72,7 @@ export default function App({ movies, page, genre, mediaType, path }: Props) {
         <GenreSelect
           items={path === "filmes" ? movieGenres : tvGenres}
           path={path}
+          genre={genreTab}
         />
       </section>
 

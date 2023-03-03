@@ -45,8 +45,8 @@ export default function VerticalScroller({
                 : "bg-white/50 hidden sm:inline-flex h-0 w-2 sm:h-5"
             } `}
           >
-            <h1 className="block sm:hidden text-lg">
-              <span className="text-red font-bold">{"Seção: "}</span>
+            <h1 className="block sm:hidden text-lg bg-black px-2 py-1 rounded-md">
+              <span className="text-red">Seção: </span>
               {index === i && title}
             </h1>
           </div>

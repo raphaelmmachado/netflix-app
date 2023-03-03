@@ -2,8 +2,7 @@
 import { Dispatch, SetStateAction, useContext, useEffect } from "react";
 import dynamic from "next/dynamic";
 import { Context } from "../../context/ContextProvider";
-//libs
-import { useSwipeable } from "react-swipeable";
+
 //components
 import MovieSlider from "./slider/MovieSlider";
 import BannerText from "./banner/BannerText";
@@ -51,14 +50,6 @@ export default function MainContainer({
     setSelectedMedia(medias[0]);
   }, []);
 
-  // change index when user swipes, for mobile users
-  const swipeHandler = useSwipeable({
-    onSwipedUp: () =>
-      setIndex && setIndex((prev: number) => (prev - 1 < 0 ? prev : --prev)),
-    onSwipedDown: () =>
-      setIndex &&
-      setIndex((prev: number) => (prev + 1 > bars - 1 ? prev : ++prev)),
-  });
   //tmdb image url
   const BASE_URL = tmdbApiConfig.images.secure_base_url;
   const SIZE = tmdbApiConfig.images.backdrop_sizes[2];
@@ -67,7 +58,6 @@ export default function MainContainer({
     <>
       {selectedMedia && (
         <main
-          {...swipeHandler}
           id="banner"
           className="min-h-screen md:min-h-[100.1dvh] relative aspect-video w-screen h-screen
            bg-no-repeat bg-center bg-cover"
@@ -77,7 +67,7 @@ export default function MainContainer({
           }}
         >
           <div
-            className="pt-16 pb-10 sm:py-8 sm:pl-14 flex flex-col-reverse sm:flex-col justify-center
+            className="pt-16 pb-10 sm:py-8 sm:pl-14 flex flex-col-reverse tall:flex-col sm:flex-col justify-center
              sm:justify-between bg-gradient-to-b sm:bg-gradient-to-r  from-black
              via-black/70 to-black/25 absolute h-full
               w-full"
@@ -132,7 +122,7 @@ export default function MainContainer({
                     id={selectedMedia.id}
                     slug={selectedMedia?.title ?? selectedMedia.name}
                     className="flex flex-row items-center justify-evenly
-                    gap-2 font-bold px-4 py-2 md:py-2 md:px-6
+                    gap-2 font-bold p-2 xs:px-4 xs:py-2 md:px-6
                    rounded-md bg-black text-smokewt"
                     iconType={"outline"}
                   />

@@ -23,13 +23,7 @@ interface Props {
   cast: MediaCast[];
   recommendations: Media[];
 }
-export default function App({
-  details,
-  trailer,
-  providers,
-  cast,
-  recommendations,
-}: Props) {
+export default function App({ details }: Props) {
   return (
     <>
       <Head>
@@ -42,13 +36,7 @@ export default function App({
         <link rel="icon" href="/favicon.ico" />
       </Head>
 
-      <Details
-        details={details}
-        trailer={trailer}
-        providers={providers}
-        cast={cast}
-        recommendations={recommendations}
-      />
+      <Details details={details} />
     </>
   );
 }
@@ -71,25 +59,11 @@ export const getServerSideProps: GetServerSideProps = async (content) => {
   };
   const mediaType = checkMediaType();
 
-  const [results, trailer, watchProviders, cast, recommendations] =
-    await Promise.all([
-      getMoreDetails(id, mediaType, "").then(
-        (res: MovieDetails | SerieDetails) => res
-      ),
-      getServerSideTrailers(id, mediaType).then((res: IVideoRequest) => res),
-      getMoreDetails(id, mediaType, "/watch/providers").then((res) => {
-        const providers: WatchProvider = res.results.BR;
-        return providers;
-      }),
-      getMoreDetails(id, mediaType, "/credits").then(
-        (res: MediaCredits) => res
-      ),
-      getMoreDetails(id, mediaType, "/recommendations").then((res) => {
-        const rec: Media[] = res.results;
-        return rec;
-      }),
-    ]);
-
+  const [results] = await Promise.all([
+    getMoreDetails(id, mediaType, "").then(
+      (res: MovieDetails | SerieDetails) => res
+    ),
+  ]);
   const details = isMovie(results);
 
   function isMovie(arg: MovieDetails | SerieDetails) {
@@ -101,17 +75,12 @@ export const getServerSideProps: GetServerSideProps = async (content) => {
 
   interface SSRProps {
     details: MovieDetails | SerieDetails;
-    trailer?: IVideo[];
+
     providers?: WatchProvider;
-    cast?: MediaCast[];
-    recommendations?: Media[];
   }
   const props: SSRProps = {
     details: details,
   };
-  if (cast) props.cast = cast.cast;
-  if (trailer) props.trailer = trailer.results;
-  if (recommendations) props.recommendations = recommendations;
-  if (watchProviders) props.providers = watchProviders;
+
   return { props };
 };

@@ -31,6 +31,12 @@ module.exports = {
       xs: "475px",
       ...defaultTheme.screens,
     },
+    extend: {
+      screens: {
+        tall: { raw: "(min-height: 720px)" },
+        // => @media (min-height: 720px) { ... }
+      },
+    },
   },
   plugins: [line_clamp],
 };

@@ -143,6 +143,7 @@ interface IContext {
 type MediaType = "movie" | "tv";
 
 type MediaDetails = MovieDetails & SerieDetails;
+
 export interface MovieDetails extends SerieDetails {
   adult: boolean;
   backdrop_path: string | null;
@@ -170,7 +171,20 @@ export interface MovieDetails extends SerieDetails {
   vote_average: number;
   vote_count: number;
   genre_ids?: number[];
-  trailer?: IVideo[];
+
+  videos?: { results: IVideo[] };
+  credits?: MediaCredits;
+  recommendations?: {
+    page: number;
+    results: Media[];
+    total_pages: number;
+    total_results: number;
+  };
+  "watch/providers": {
+    results: {
+      [key: string]: WatchProvider;
+    };
+  };
 }
 
 export interface Genre {

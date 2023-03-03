@@ -15,7 +15,7 @@ export default function Cast({ cast }: Props) {
   );
   return (
     <section className="px-6 sm:px-12" id="cast-section">
-      <h1 className="text-lg text-gray my-2">Elenco</h1>
+      <h2 className="text-lg text-gray my-2">Elenco</h2>
       <div
         className="grid grid-cols-1
        sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6 place-content-center"
@@ -44,11 +44,11 @@ export default function Cast({ cast }: Props) {
                 style={{ height: "auto" }}
               />
               <div>
-                <h1 className="text-lg">{person.name}</h1>
+                <h3 className="text-lg">{person.name}</h3>
                 <span className="text-sm text-midgray">
                   {person.known_for_department === "Acting" && "Atuando como"}
                 </span>
-                <h2 className="italic">{person.character}</h2>
+                <h4 className="italic">{person.character}</h4>
               </div>
             </div>
           );

@@ -5,10 +5,11 @@ import ChevronLeftIcon from "@heroicons/react/20/solid/ChevronLeftIcon";
 interface Props {
   items: IDs;
   path: "filmes" | "series";
+  genre: string;
 }
-export default function GenreSelect({ items, path }: Props) {
+export default function GenreSelect({ items, path, genre }: Props) {
   const [showSelect, setShowSelect] = useState(false);
-  const [gender, setGender] = useState("Geral");
+  const [gender, setGender] = useState(genre);
   const genderRef = useRef<HTMLHeadingElement>(null);
   const router = useRouter();
 
@@ -21,7 +22,6 @@ export default function GenreSelect({ items, path }: Props) {
   }
   const selectGender = ({ gender }: Gender) => {
     router.push(`/${path}/${gender.slug}/1`);
-
     setShowSelect((prev) => !prev);
     setGender(gender.name);
   };

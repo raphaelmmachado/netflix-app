@@ -27,30 +27,14 @@ const Cast = dynamic(() => import("./subcomponents/Cast"));
 //constants / utils
 import tmdbApiConfig from "../../constants/apiConfiguration";
 import mostSpokenLanguages from "../../constants/mostSpokenLanguages";
-import {
-  IVideo,
-  Media,
-  MediaCast,
-  MovieDetails,
-  SerieDetails,
-  WatchProvider,
-} from "../../typing";
+import { Media, MovieDetails, SerieDetails, WatchProvider } from "../../typing";
+import LastEpisode from "./subcomponents/LastEpisode";
 
 interface Props {
   details: MovieDetails & SerieDetails;
-  recommendations: Media[];
-  trailer: IVideo[];
-  providers: WatchProvider;
-  cast: MediaCast[];
 }
 
-export default function Details({
-  details,
-  trailer,
-  providers,
-  cast,
-  recommendations,
-}: Props) {
+export default function Details({ details }: Props) {
   const { width } = useWindowSize();
   const { myList, setMyList } = useContext(Context);
   const [hours, remainingMinutes] = calculateRuntime(
@@ -59,13 +43,15 @@ export default function Details({
   const BASE_URL = tmdbApiConfig.images.secure_base_url;
   const BACKDROP_SIZE = tmdbApiConfig.images.backdrop_sizes;
   const POSTER_SIZE = tmdbApiConfig.images.poster_sizes;
+  const STILL_SIZE = tmdbApiConfig.images.still_sizes;
   const imagePlaceholder = `https://via.placeholder.com/1440x768/141414/fff?text=sem+imagem`;
 
   const langs = mostSpokenLanguages;
+
   return (
     <>
       {/* BANNER */}
-      <header className="relative  min-h-screen  z-0">
+      <header className="relative flex items-center justify-center  min-h-screen  z-0">
         <Image
           src={`${BASE_URL}${BACKDROP_SIZE[3]}/${details.backdrop_path}`}
           placeholder="blur"
@@ -90,7 +76,6 @@ export default function Details({
               addToList={() =>
                 import("../../utils/addMediaToList").then((module) => {
                   const genre_ids = details.genres.map((item) => item.id);
-                  details.trailer = trailer;
                   details.genre_ids = genre_ids;
                   module.default(details as Media, myList, setMyList);
                 })
@@ -100,12 +85,18 @@ export default function Details({
           {/* STREAMING PROVIDERS */}
           <div className="static md:absolute -top-14 left-[21.4rem] z-20">
             {" "}
-            {providers?.flatrate && providers?.flatrate?.length > 0 && (
-              <Provider
-                name={providers.flatrate[0].provider_name}
-                path={providers.flatrate[0].logo_path}
-              />
-            )}
+            {details["watch/providers"].results.BR.flatrate &&
+              details["watch/providers"].results.BR.flatrate.length > 0 && (
+                <Provider
+                  name={
+                    details["watch/providers"].results.BR.flatrate[0]
+                      .provider_name
+                  }
+                  path={
+                    details["watch/providers"].results.BR.flatrate[0].logo_path
+                  }
+                />
+              )}
           </div>
         </section>
         {/* MEDIA INFO HEADER */}
@@ -127,18 +118,40 @@ export default function Details({
               mediaType={details.title ? "movie" : "tv"}
               genres={details.genres}
             />
-            <div></div>
           </div>
           <br />
         </section>
-
+        {/* TAGLINE */}
+        <section className="px-6 sm:px-12 my-20">
+          {details.tagline && (
+            <h3 className="text-center text-3xl italic before:content-[open-quote] after:content-[close-quote]">
+              {details.tagline}
+            </h3>
+          )}
+        </section>
         {/* MEDIA CREDITS  */}
-        <section className="relative my-20" id="cast-seasons-row">
+        <section className="my-14" id="cast-seasons-row">
           {details.created_by && details.created_by.length > 0 && (
             <Creators creators={details.created_by} />
           )}
-          {cast.length > 0 && <Cast cast={cast} />}
+          {details.credits?.cast && details.credits?.cast?.length > 0 && (
+            <Cast cast={details.credits?.cast} />
+          )}
         </section>
+        {/* LAST EPISODE TO AIR */}
+
+        <section className="px-6 sm:px-12 my-8">
+          {details.last_episode_to_air && (
+            <LastEpisode
+              title={details.last_episode_to_air.name}
+              episode_number={details.last_episode_to_air.episode_number}
+              description={details.last_episode_to_air.overview}
+              date={details.last_episode_to_air.air_date}
+              image_path={`${BASE_URL}${STILL_SIZE[3]}/${details.last_episode_to_air.still_path}`}
+            />
+          )}
+        </section>
+        {/* POSTER SLIDER */}
         <section>
           {details.seasons && (
             <PosterSlider posters={details.seasons} sliderTitle="Temporadas" />
@@ -146,7 +159,7 @@ export default function Details({
         </section>
         {/* ABSOLUTE POSITION MAIN POSTER */}
         <section
-          className="flex px-6 sm:px-12 gap-6 md:justify-center "
+          className="flex px-6 sm:px-12 my-8 sm:my-0 gap-6 md:justify-center "
           id="media-data-section"
         >
           {width && width < 2 ? (
@@ -221,18 +234,32 @@ export default function Details({
                 value={langs[details.original_language]}
               />
             )}
+            {/* {details.production_countries && (
+              <TitleDesc
+                title={"Feito no"}
+                value={details.production_countries[0].iso_3166_1}
+              />
+            )} */}
           </div>
         </section>
 
         <br />
         {/* VIDEO SECTION */}
-        <VideoSection details={details} trailer={trailer} />
-        {providers && <Providers providers={providers} />}
+        {details.videos?.results && details.videos?.results?.length > 0 && (
+          <VideoSection details={details} trailer={details.videos?.results} />
+        )}
+        {details["watch/providers"].results.BR && (
+          <Providers providers={details["watch/providers"].results.BR} />
+        )}
         <br />
         {/* RECOMMENDED MEDIA SLIDER */}
-        {recommendations.length > 0 && (
-          <MovieSlider medias={recommendations} title="Recomendados" />
-        )}
+        {details.recommendations &&
+          details.recommendations.results.length > 0 && (
+            <MovieSlider
+              medias={details.recommendations.results}
+              title="Recomendados"
+            />
+          )}
       </main>
     </>
   );

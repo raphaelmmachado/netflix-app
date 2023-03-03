@@ -22,7 +22,7 @@ export default function BannerText({
     <>
       {" "}
       <h1
-        className="hidden sm:block text-white text-center sm:text-start font-bold
+        className="hidden sm:block tall:block text-white text-center sm:text-start font-bold
     text-3xl sm:text-4xl pb-2 uppercase"
         id="banner-text-h1"
       >

@@ -8,6 +8,6 @@ interface Props {
 const movieRequests = ({ page, mediaType, id }: Props) => {
   return `${BASE_URL}${mediaType}?api_key=${API_KEY}&page=${page}&${
     id !== 0 ? `with_genres=${id}` : ""
-  }&language=pt-BR&sort_by=popularity.desc&include_adult=false&include_video=true&with_watch_monetization_types=flatrate`;
+  }&language=pt-BR&include_image_language=pt-BR&sort_by=popularity.desc&include_adult=false&include_video=true&with_watch_monetization_types=flatrate`;
 };
 export { BASE_URL, movieRequests };

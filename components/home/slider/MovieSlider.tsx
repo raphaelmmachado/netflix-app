@@ -150,9 +150,6 @@ export default function MovieSlider({ medias, title }: IMovieSlider) {
                     }
                   }}
                 >
-                  {/* FIXME QUANDO ADICIONA E REMOVE ITEMS DA LISTA A IMGEM NAO ATUALIZA,
-                   MOTIVO, A IMAGEM VEM DE CONTEXT E CONTEXT NAO É STATE,
-                    ENTAO IMAGE NAO VAI ATUALIZAR  */}
                   <Image
                     src={`${image}${media.backdrop_path}`}
                     alt="movie-pic"
@@ -165,7 +162,7 @@ export default function MovieSlider({ medias, title }: IMovieSlider) {
                   <span className="absolute w-[98%]">
                     <h1
                       className=" text-center px-2 py-1
-                     text-smokewt bg-black/40 rounded-md font-bold sm:font-thin uppercase text-xl sm:text-base"
+                     text-smokewt bg-black/40 rounded-md font-bold sm:font-thin uppercase text-xl  sm:text-base tall:text-base"
                     >
                       {media.name ?? media.title}
                     </h1>
