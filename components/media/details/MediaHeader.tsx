@@ -29,7 +29,7 @@ export default function MediaHeader({
   last,
 }: Props) {
   return (
-    <div className="flex-grow">
+    <div className="flex-grow min-h-[225px]">
       {" "}
       <span className="text-midgray text-sm">Título</span>
       <h1 className="text-4xl text-white font-medium uppercase">{title}</h1>
