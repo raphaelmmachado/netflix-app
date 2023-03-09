@@ -2,6 +2,23 @@
 @tailwind components;
 @tailwind utilities;
 
+@media (min-width: 1024px) {
+  @keyframes banner {
+    from {
+      background-position-x: 0px;
+    }
+    50% {
+      background-position-x: 50px;
+    }
+    to {
+      background-position-x: 0px;
+    }
+  }
+  #banner {
+    animation: banner 30s ease-in-out infinite;
+  }
+}
+
 /* TAILWINDCSS */
 @layer base {
   * {
@@ -104,24 +121,24 @@ select {
 }
 
 /* Hide scrollbar for Chrome, Safari and Opera */
-body::-webkit-scrollbar {
+body:has(#banner)::-webkit-scrollbar {
   display: none;
 }
 
 /* Hide scrollbar for IE, Edge and Firefox */
-body {
+body:has(#banner) {
   -ms-overflow-style: none; /* IE and Edge */
   scrollbar-width: none; /* Firefox */
 }
 /* width */
 ::-webkit-scrollbar {
-  width: 20px;
+  width: 0.4rem;
   height: 1rem;
 }
 
 /* Handle */
 ::-webkit-scrollbar-thumb {
-  background: #6d6d6d;
+  background: #5e5e5e;
   border-radius: 0.375rem;
 }
 
@@ -129,7 +146,7 @@ body {
 ::-webkit-scrollbar-track {
   box-shadow: inset 0 0 1px grey;
   border-radius: 0.375rem;
-  background: #e5e5e5;
+  background: #141414;
 }
 
 ::-moz-scrollbar {

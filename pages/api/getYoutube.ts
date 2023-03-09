@@ -1,3 +1,5 @@
+// API TO GET YOUTUBE VIDEOS WITHOUT LEAKING MY YOUTUBE KEY
+
 import type { NextApiRequest, NextApiResponse } from "next";
 const API_KEY = process.env.NEXT_PUBLIC_YOUTUBE_API_KEY;
 import axios from "axios";

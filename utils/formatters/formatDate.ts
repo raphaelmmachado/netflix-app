@@ -1,3 +1,4 @@
+// format date to brazilian portuguese
 export default function FormateDateToBR(
   arg: string | Date,
   options: Intl.DateTimeFormatOptions | undefined

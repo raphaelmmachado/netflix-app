@@ -60,10 +60,10 @@ export default function MainContainer({
         <main
           id="banner"
           className="min-h-screen md:min-h-[100.1dvh] relative aspect-video w-screen h-screen
-           bg-no-repeat bg-center bg-cover"
+           bg-no-repeat bg-cover bg-center"
           style={{
             backgroundImage: `url(${BASE_URL}${SIZE}/${selectedMedia?.backdrop_path})`,
-            transition: "background-image 500ms linear 75ms",
+            transition: "background-image 500ms ease-in-out",
           }}
         >
           <div

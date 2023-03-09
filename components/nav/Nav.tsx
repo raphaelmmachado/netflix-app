@@ -74,7 +74,7 @@ export default function Nav() {
                   ref={linksRef}
                   className={`flex sm:flex-col items-start justify-around
                    transition-colors duration-200 delay-100 ease-in-out
-               ${navIsOpen ? "text-smokewt" : "text-midgray"} gap-3`}
+                gap-3`}
                 >
                   {" "}
                   <NavLinks

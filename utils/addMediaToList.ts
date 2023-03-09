@@ -1,3 +1,4 @@
+// function to add media to list context
 import { Dispatch, SetStateAction } from "react";
 import { Media } from "../typing";
 

@@ -6,10 +6,10 @@ import Picture from "../../components/Picture";
 import { Actor, Media } from "../../typing";
 import getMoreDetails from "../../utils/requests/getMoreDetails";
 import apiConfiguration from "../../constants/apiConfiguration";
-import TitleDesc from "../../components/individual_media/subcomponents/TitleDesc";
+import TitleDesc from "../../components/media/details/TitleDesc";
 import formatDate from "../../utils/formatters/formatDate";
 import department from "../../constants/knowForDepartment";
-const Grid = dynamic(() => import("../../components/cast/Grid"), {
+const Grid = dynamic(() => import("../../components/actor/Grid"), {
   ssr: false,
 });
 
@@ -17,6 +17,7 @@ interface Props {
   details: Actor;
   medias: Media[];
 }
+
 export default function App({ details, medias }: Props) {
   const BASE_URL = apiConfiguration.images.secure_base_url;
   const PROFILE_SIZE = apiConfiguration.images.profile_sizes;

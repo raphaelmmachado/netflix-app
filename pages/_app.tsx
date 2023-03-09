@@ -4,8 +4,10 @@ import type { AppProps } from "next/app";
 import localFont from "@next/font/local";
 import { ContextProvider } from "../context/ContextProvider";
 
+// Nav bar
 import Layout from "../components/nav/Layout";
 
+// Netflix font
 const netFlixSans = localFont({
   src: [
     { path: "./fonts/light.otf", weight: "100", style: "normal" },
@@ -14,6 +16,7 @@ const netFlixSans = localFont({
     { path: "./fonts/bold.otf", weight: "800", style: "normal" },
   ],
 });
+
 export default function MyApp({ Component, pageProps }: AppProps) {
   return (
     <main className={`${netFlixSans.className} bg-black`}>

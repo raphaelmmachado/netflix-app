@@ -12,7 +12,7 @@ const Footer = dynamic(() => import("../../../components/grid/Footer"));
 //type
 import { Media, MediaType } from "../../../typing";
 //constants
-import { movieRequests } from "../../../constants/moviesRequests";
+import { movieRequests } from "../../../utils/requests/moviesRequests";
 import { movieGenres, slugs, tvGenres } from "../../../constants/genres";
 interface Props {
   movies: Media[];
@@ -24,28 +24,32 @@ interface Props {
 
 export default function App({ movies, page, genre, mediaType, path }: Props) {
   const [searchResults, setSearchResults] = useState<Media[]>([]);
-  console.log(movies);
+
+  //results from search input
   const handleFoundMedia = (media: Media[]) => {
     setSearchResults(media);
   };
+
   const router = useRouter();
 
+  // navigate through pages
   const previousPage = () => {
     if (page && page > 1) {
       router.push(`/${path}/${genre}/${--page}`);
     }
   };
-
   const nextPage = () => {
     if (page && page < 500) {
       router.push(`/${path}/${genre}/${++page}`);
     }
   };
+  // 'path' and 'genre' first letter to uppercase
   const pathTab = `${path[0].toUpperCase()}${path.substring(1, path.length)}`;
   const genreTab = `${genre[0].toUpperCase()}${genre.substring(
     1,
     genre.length
   )}`;
+
   return (
     <main className="px-12 py-8 sm:pl-20 min-h-screen">
       <Head>

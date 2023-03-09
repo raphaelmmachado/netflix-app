@@ -161,7 +161,7 @@ export default function MovieSlider({ medias, title }: IMovieSlider) {
                   />
                   <span className="absolute w-[98%]">
                     <h1
-                      className=" text-center px-2 py-1
+                      className=" text-center px-2 py-1 overflow-hidden
                      text-smokewt bg-black/40 rounded-md font-bold sm:font-thin uppercase text-xl  sm:text-base tall:text-base"
                     >
                       {media.name ?? media.title}

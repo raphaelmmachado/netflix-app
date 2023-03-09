@@ -41,10 +41,13 @@ export default function NavSearch({ OpenNav, navIsOpen }: Props) {
     <>
       {" "}
       <div className="flex flex-col sm:flex-row items-center gap-3">
-        <label htmlFor="search">
+        <label htmlFor="search" tabIndex={0}>
           <CircleSearchIcon
             onClick={() => OpenNav()}
-            className="w-10 h-10 p-1 rounded-full text-red hover:bg-midgray/20 cursor-pointer"
+            className={`w-10 h-10 p-1 rounded-full ${
+              navIsOpen ? "text-red" : "text-midgray hover:text-smokewt"
+            }  hover:bg-midgray/20 
+             cursor-pointer`}
           />
         </label>
         {navIsOpen && (

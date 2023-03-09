@@ -1,3 +1,4 @@
+//format title to slug
 //CHAT GPT 🤣
 export default function slugify(title: string): string {
   // Remove any non-alphanumeric characters and convert spaces to hyphens

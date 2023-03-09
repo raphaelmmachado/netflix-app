@@ -1,27 +1,13 @@
 import { GetServerSideProps } from "next";
-import {
-  IVideo,
-  IVideoRequest,
-  Media,
-  MediaCast,
-  MediaCredits,
-  MovieDetails,
-  SerieDetails,
-  WatchProvider,
-} from "../../../typing";
+import { MovieDetails, SerieDetails, WatchProvider } from "../../../typing";
 
-import Details from "../../../components/individual_media/Details";
+import Details from "../../../components/media/Details";
 import Head from "next/head";
-import { getServerSideTrailers } from "../../../utils/requests/getTrailers";
 
 import getMoreDetails from "../../../utils/requests/getMoreDetails";
 
 interface Props {
   details: MovieDetails & SerieDetails;
-  trailer: IVideo[];
-  providers: WatchProvider;
-  cast: MediaCast[];
-  recommendations: Media[];
 }
 export default function App({ details }: Props) {
   return (

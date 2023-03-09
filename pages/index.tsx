@@ -35,6 +35,7 @@ export default function App({
   // this custom hook increments index if user scrolls down
   // or decrements if scrolls up
   const { index, setIndex } = useScroll(COMPONENTS.length);
+
   // hook to get authorized user info
   const [user, loading] = useAuthState(auth);
 

@@ -1,3 +1,4 @@
+// function to change components when user scrolls
 import { Dispatch, SetStateAction } from "react";
 
 const decrementSliderIndex = (

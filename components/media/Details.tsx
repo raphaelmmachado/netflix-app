@@ -5,30 +5,30 @@ import { Context } from "../../context/ContextProvider";
 import { useContext } from "react";
 import useWindowSize from "../../hooks/useWindowSize";
 //components
-import MediaHeader from "./subcomponents/MediaHeader";
-import TitleDesc from "./subcomponents/TitleDesc";
-import RatingBox from "./subcomponents/RatingBox";
+import MediaHeader from "./details/MediaHeader";
+import TitleDesc from "./details/TitleDesc";
+import RatingBox from "./details/RatingBox";
 import FormateDateToBR from "../../utils/formatters/formatDate";
 import formatToCurrency from "../../utils/formatters/formatToCurrency";
 import calculateRuntime from "../../utils/formatters/calculateRuntime";
 
 import Picture from "../Picture";
 import ListButton from "../home/banner/ListButton";
-import Provider from "./subcomponents/Provider";
+import Provider from "./details/Provider";
 
 //dynamic components
 const MovieSlider = dynamic(() => import("../home/slider/MovieSlider"));
-const PosterSlider = dynamic(() => import("./subcomponents/PosterSlider"));
-const VideoSection = dynamic(() => import("./subcomponents/VideoSection"));
-const Creators = dynamic(() => import("./subcomponents/Creators"));
-const Providers = dynamic(() => import("./subcomponents/Providers"));
-const Cast = dynamic(() => import("./subcomponents/Cast"));
+const PosterSlider = dynamic(() => import("./details/PosterSlider"));
+const VideoSection = dynamic(() => import("./details/VideoSection"));
+const Creators = dynamic(() => import("./details/Creators"));
+const Providers = dynamic(() => import("./details/Providers"));
+const Cast = dynamic(() => import("./details/Cast"));
 
 //constants / utils
 import tmdbApiConfig from "../../constants/apiConfiguration";
 import mostSpokenLanguages from "../../constants/mostSpokenLanguages";
-import { Media, MovieDetails, SerieDetails, WatchProvider } from "../../typing";
-import LastEpisode from "./subcomponents/LastEpisode";
+import { Media, MovieDetails, SerieDetails } from "../../typing";
+import LastEpisode from "./details/LastEpisode";
 
 interface Props {
   details: MovieDetails & SerieDetails;
@@ -37,6 +37,7 @@ interface Props {
 export default function Details({ details }: Props) {
   const { width } = useWindowSize();
   const { myList, setMyList } = useContext(Context);
+
   const [hours, remainingMinutes] = calculateRuntime(
     details.runtime ?? details.episode_run_time[0]
   );
@@ -85,7 +86,7 @@ export default function Details({ details }: Props) {
           {/* STREAMING PROVIDERS */}
           <div className="static md:absolute -top-14 left-[21.4rem] z-20">
             {" "}
-            {details["watch/providers"].results.BR.flatrate &&
+            {details["watch/providers"].results.BR?.flatrate &&
               details["watch/providers"].results.BR.flatrate.length > 0 && (
                 <Provider
                   name={

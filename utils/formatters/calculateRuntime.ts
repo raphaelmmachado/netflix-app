@@ -1,3 +1,4 @@
+//calculate movie / tv runtime
 export default function divideMinutes(
   minutes: number
 ): [hours: number, remainingMinutes: number] {
