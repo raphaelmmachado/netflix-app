@@ -61,11 +61,11 @@ Este é um clone da Netflix desenvolvido com Next.js e TypeScript como parte do 
 
 - Decidi criar uma aplicação que consome uma api de filmes para aprender a utilizar Nextjs e Typescript
 
-### Por que a escolha de nextjs / typescript
+### Por que a escolha de nextjs / typescript?
 
 - Precisava aprender sobre novas formas de renderizar a página
 
-### O que estou aprendendo?
+### O que estou aprendendo
 
 - Typescript com React: Passar props, criar interfaces e tipos genéricos.
 
@@ -77,7 +77,7 @@ Este é um clone da Netflix desenvolvido com Next.js e TypeScript como parte do 
 
 - Firebase Authentication e Realtime Database
 
-### Maiores dificuldades?
+### Maiores dificuldades
 
 - Resolver erros de Hydration. O Nextjs não diz onde está o erro, então eu tenho que procurar o que poderia estar causando essse erro.
 
