@@ -2,9 +2,10 @@
 
 Este é um clone da Netflix desenvolvido com Next.js e TypeScript como parte do meu aprendizado de desenvolvimento web. Ele permite que os usuários pesquisem filmes e séries, assistam trailers e adicionem títulos a uma lista pessoal de favoritos.
 
-## Live demo
-
+### Vercel site
 [netflix-clone](https://nextflix-rm.vercel.app/)
+### Video
+[![video](https://i.ytimg.com/vi/0m8T--FJXlU/maxresdefault.jpg)](https://www.youtube.com/watch?v=0m8T--FJXlU)
 
 ## Funcionalidades
 
