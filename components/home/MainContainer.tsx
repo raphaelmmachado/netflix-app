@@ -19,11 +19,11 @@ import DetailsButton from "./banner/DetailsButton";
 const VerticalScroller = dynamic(() => import("./banner/VerticalScroller"));
 const VideoModal = dynamic(() => import("../modal/VideoModal"), { ssr: false });
 //custom hook
+import useMouseIdle from "../../hooks/useIdle";
 //types
 import { Media } from "../../typing";
 //constants
 import tmdbApiConfig from "../../constants/apiConfiguration";
-import useMouseIdle from "../../hooks/useIdle";
 
 interface Props {
   medias: Media[];
@@ -49,6 +49,7 @@ export default function MainContainer({
     setShowVideoModal,
     myList,
     setMyList,
+    modalOpen,
     setModalOpen,
   } = useContext(Context);
 
@@ -70,7 +71,7 @@ export default function MainContainer({
       );
     }, 10000);
 
-    if (!isIdle) clearInterval(interval);
+    if (modalOpen || !isIdle) clearInterval(interval);
     return () => clearInterval(interval);
   }, [count, isIdle]);
 
