@@ -14,7 +14,7 @@ export async function searchYoutubeVideos(query: string) {
     const data: YTIds[] = await fetch("/api/getYoutube", init)
       .then((res) => res.json())
       .catch((e) => {
-        return { msg: "erro ao buscar video", err: e };
+        return { msg: "erro ao buscar video" };
       });
     return data;
   } catch (error) {

@@ -7,6 +7,7 @@ const BASE_URL = "https://api.themoviedb.org/3";
 export async function getTrailers(
   id: string | number,
   type: MediaType,
+  language: "pt-BR" | "en-US",
   mediaType?: MediaType
 ) {
   try {
@@ -15,7 +16,7 @@ export async function getTrailers(
       .get(
         `${BASE_URL}/${
           mediaType ?? type
-        }/${id}/videos?api_key=${secret}&language=pt-BR`
+        }/${id}/videos?api_key=${secret}&language=${language}`
       )
       .then((res) => res);
 

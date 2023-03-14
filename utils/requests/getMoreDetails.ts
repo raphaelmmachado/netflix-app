@@ -9,7 +9,7 @@ export default async function getMoreDetails(
   try {
     const { data, status, statusText } = await axios
       .get(
-        `${BASE_URL}/${mediaType}/${id}${query}?api_key=${API_KEY}&language=pt-BR&append_to_response=videos,credits,recommendations,watch/providers`
+        `${BASE_URL}/${mediaType}/${id}${query}?api_key=${API_KEY}&language=pt-BR,en-US&append_to_response=videos,credits,recommendations,watch/providers`
       )
       .then((res) => res);
 

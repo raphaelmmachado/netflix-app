@@ -11,7 +11,7 @@ import ListButton from "./banner/ListButton";
 import DetailsButton from "./banner/DetailsButton";
 //lazy components
 const VerticalScroller = dynamic(() => import("./banner/VerticalScroller"));
-const VideoModal = dynamic(() => import("../modal/VideoModal"));
+const VideoModal = dynamic(() => import("../modal/VideoModal"), { ssr: false });
 
 //types
 import { Media } from "../../typing";

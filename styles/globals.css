@@ -19,6 +19,30 @@
   }
 }
 
+@keyframes change-section {
+  from {
+    /* Starting position */
+    transform: translateY(-100px);
+    opacity: 0;
+  }
+  /* middle position */
+  50% {
+    transform: translateY(100px);
+    opacity: 0.2;
+  }
+  to {
+    /* Ending position */
+    transform: translateY(0);
+    opacity: 1;
+  }
+}
+/* Apply the animation to an element */
+.carousel {
+  animation-name: change-section;
+  animation-duration: 400ms; /* Animation duration */
+  animation-timing-function: ease-in-out; /* Animation timing function */
+}
+
 /* TAILWINDCSS */
 @layer base {
   * {

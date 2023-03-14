@@ -31,6 +31,13 @@ export default function VideoModal({ mediaType }: Props) {
 
   //check if tmdb has video
   useEffect(() => {
+    getVideos();
+    return () => {
+      setDBVideos(undefined);
+    };
+  }, [showVideoModal]);
+
+  async function getVideos() {
     // checking if it is a mixed component with both tv and movie items
     // if it is a mixed component, the api will give me "media_type"
     // if it is not, use media type from component
@@ -40,26 +47,50 @@ export default function VideoModal({ mediaType }: Props) {
         : "tv"
       : selectedMedia?.media_type;
     const id = selectedMedia?.id;
-    selectedMedia &&
-      id &&
-      getTrailers(id, type as MediaType, mediaType)
-        .then(({ results }: Results) => {
-          if (results.length < 1) {
-            setDBVideos(undefined);
-            searchOnYT();
-          } else {
-            setDBVideos(results);
-          }
-        })
-        .catch((error) =>
-          console.log({
-            error: error,
-            mensagem: `Não encontramos video em português.
+    if (selectedMedia && id) {
+      //get trailers in portuguese
+      // if there is no trailers in portuguese, get english
+      // if theres is no trailers in pt-BR and en-US, search on youtube
+      const [portugueseVideos, englishVideos] = await Promise.all([
+        getTrailers(id, type as MediaType, "pt-BR", mediaType)
+          .then(({ results }: Results) => results)
+          .catch((error) =>
+            console.log({
+              error: error,
+              mensagem: `Não encontramos video em português.`,
+            })
+          ),
+        getTrailers(id, type as MediaType, "en-US", mediaType)
+          .then(({ results }: Results) => results)
+          .catch((error) =>
+            console.log({
+              error: error,
+              mensagem: `Não encontramos video em inglês.
                Usaremos API do youtube para buscar videos`,
-          })
-        );
-    return () => setDBVideos(undefined);
-  }, [showVideoModal]);
+            })
+          ),
+      ]);
+
+      if (portugueseVideos && portugueseVideos.length > 0)
+        setDBVideos(portugueseVideos);
+
+      if (
+        portugueseVideos &&
+        portugueseVideos.length < 1 &&
+        englishVideos &&
+        englishVideos.length > 0
+      )
+        setDBVideos(englishVideos);
+      if (
+        (portugueseVideos && portugueseVideos.length > 0) ||
+        (englishVideos && englishVideos.length > 0)
+      )
+        return;
+      else {
+        searchOnYT();
+      }
+    }
+  }
 
   //if there is not video, search on youtube
   function searchOnYT() {
@@ -68,8 +99,8 @@ export default function VideoModal({ mediaType }: Props) {
       query = `filme ${selectedMedia.title} trailer oficial ${selectedMedia.original_title}`;
     }
     if (selectedMedia?.name || selectedMedia?.original_name) {
-      query = `serie ${selectedMedia.name}  
-      } cena trailer oficial ${selectedMedia.original_name}`;
+      query = `serie ${selectedMedia.name}
+        } cena trailer oficial ${selectedMedia.original_name}`;
     }
     selectedMedia &&
       searchYoutubeVideos(query)
@@ -170,7 +201,7 @@ export default function VideoModal({ mediaType }: Props) {
                       />
                     );
                   })}
-                {YTAPIVideos &&
+                {YTAPIVideos.length > 0 &&
                   !DBVideos &&
                   YTAPIVideos?.map((item, i) => {
                     return (

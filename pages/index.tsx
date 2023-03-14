@@ -32,13 +32,14 @@ export default function App({
     [brazilianMovies, "Filmes Nacionais", "movie"],
     [horrorMovies, "Filmes de terror", "movie"],
   ];
-  // this custom hook increments index if user scrolls down
-  // or decrements if scrolls up
+  // this custom hook increments index if user scrolls mouse wheel down
+  // or decrements if scrolls mouse wheel up
   const { index, setIndex } = useScroll(COMPONENTS.length);
 
   // hook to get authorized user info
   const [user, loading] = useAuthState(auth);
 
+  // if there is no user, show loading screen
   if (loading && !user) return <Loading />;
 
   return (

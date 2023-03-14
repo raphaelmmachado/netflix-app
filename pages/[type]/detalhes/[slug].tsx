@@ -61,7 +61,6 @@ export const getServerSideProps: GetServerSideProps = async (content) => {
 
   interface SSRProps {
     details: MovieDetails | SerieDetails;
-
     providers?: WatchProvider;
   }
   const props: SSRProps = {

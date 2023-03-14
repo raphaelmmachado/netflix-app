@@ -1,4 +1,4 @@
-//hooks
+// react
 import {
   useState,
   useEffect,
@@ -7,20 +7,22 @@ import {
   useCallback,
   useContext,
 } from "react";
+
 import { Context } from "../../../context/ContextProvider";
 import { useRouter } from "next/router";
 
 //libraries
 import { useAutoAnimate } from "@formkit/auto-animate/react";
+
 //custom-hooks
 import useWindowSize from "../../../hooks/useWindowSize";
 //utils
 import apiConfiguration from "../../../constants/apiConfiguration";
-import enterKeyPressed from "../../../utils/checkKeyboardKeys";
+
 //typing
 import { Media } from "../../../typing";
 import slugify from "../../../utils/formatters/slugfy";
-import Picture from "../../Picture";
+
 import Image from "next/image";
 //components
 
@@ -32,6 +34,7 @@ interface IMovieSlider {
 export default function MovieSlider({ medias, title }: IMovieSlider) {
   const [itemsPerScreen, setItemsPerScreen] = useState(5);
   const [sliderIndex, setSliderIndex] = useState(0);
+
   const [progressBarItems, setProgressBarItems] = useState(0);
   const [cardIndex, setCardIndex] = useState(0);
   const { selectedMedia, setSelectedMedia } = useContext(Context);
@@ -61,13 +64,13 @@ export default function MovieSlider({ medias, title }: IMovieSlider) {
 
   const BASE_URL = apiConfiguration.images.secure_base_url;
   const BACKDROP_SIZE = apiConfiguration.images.backdrop_sizes;
-  const imagePlaceholder = `https://via.placeholder.com/315x177/141414/fff?text=sem+imagem`;
+
   let image = `${BASE_URL}${BACKDROP_SIZE[0]}/`;
 
   // This component has css classes mixed with tailwind classes
   return (
     <section className="sm:py-2" id="slider-section">
-      <main className="flex flex-col gap-3" id="slider-row">
+      <div className="flex flex-col gap-3" id="slider-row">
         <div className="header px-4 lg:px-14">
           <h2
             className="text-xl tracking-wide 
@@ -91,6 +94,7 @@ export default function MovieSlider({ medias, title }: IMovieSlider) {
               })}
           </div>
         </div>
+
         <div id="container" className="carousel select-none">
           {/* ARROW LEFT */}
           <div
@@ -189,7 +193,7 @@ export default function MovieSlider({ medias, title }: IMovieSlider) {
             className={`handle right-handle`}
           ></div>
         </div>
-      </main>
+      </div>
     </section>
   );
 }

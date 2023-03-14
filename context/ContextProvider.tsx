@@ -19,7 +19,6 @@ export function ContextProvider({ children }: IProvider) {
   const [showVideoModal, setShowVideoModal] = useState<boolean>(false);
   const [myList, setMyList] = useState<Media[]>([]);
   const [modalOpen, setModalOpen] = useState(false);
-
   return (
     <Context.Provider
       value={{
