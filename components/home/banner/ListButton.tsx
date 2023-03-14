@@ -11,7 +11,7 @@ export default function ListButton({ added, addToList }: Props) {
       <button
         onClick={() => addToList()}
         className={`flex flex-row items-center justify-evenly
-        gap-2 font-bold p-2 xs:px-4 xs:py-2 md:px-6 trasition delay-75 duration-200 ease-in-out
+        gap-2 font-bold p-2 xs:px-4 xs:py-2 md:px-6  trasition delay-75 duration-200 ease-in-out
        rounded-md ${added ? "bg-midgray" : "bg-white"} text-black`}
       >
         {added ? (

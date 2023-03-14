@@ -6,12 +6,15 @@
   @keyframes banner {
     from {
       background-position-x: 0px;
+      background-size: 105%;
     }
     50% {
       background-position-x: 50px;
+      background-size: 120%;
     }
     to {
       background-position-x: 0px;
+      background-size: 105%;
     }
   }
   #banner {

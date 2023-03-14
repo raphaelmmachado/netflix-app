@@ -1,5 +1,11 @@
 //hooks //context
-import { Dispatch, SetStateAction, useContext, useEffect } from "react";
+import {
+  Dispatch,
+  SetStateAction,
+  useContext,
+  useEffect,
+  useState,
+} from "react";
 import dynamic from "next/dynamic";
 import { Context } from "../../context/ContextProvider";
 
@@ -12,11 +18,12 @@ import DetailsButton from "./banner/DetailsButton";
 //lazy components
 const VerticalScroller = dynamic(() => import("./banner/VerticalScroller"));
 const VideoModal = dynamic(() => import("../modal/VideoModal"), { ssr: false });
-
+//custom hook
 //types
 import { Media } from "../../typing";
 //constants
 import tmdbApiConfig from "../../constants/apiConfiguration";
+import useMouseIdle from "../../hooks/useIdle";
 
 interface Props {
   medias: Media[];
@@ -45,10 +52,27 @@ export default function MainContainer({
     setModalOpen,
   } = useContext(Context);
 
+  const [count, setCount] = useState(0);
+
+  const isIdle = useMouseIdle(3000);
   // select first movie of the slider as the default
   useEffect(() => {
     setSelectedMedia(medias[0]);
   }, []);
+
+  //slideshow
+  useEffect(() => {
+    isIdle && setSelectedMedia(medias[count]);
+    // if user is idle, select next media, like an slideshow
+    const interval = setInterval(() => {
+      setCount((prevCount) =>
+        prevCount + 1 > medias.length - 1 ? 0 : prevCount + 1
+      );
+    }, 10000);
+
+    if (!isIdle) clearInterval(interval);
+    return () => clearInterval(interval);
+  }, [count, isIdle]);
 
   //tmdb image url
   const BASE_URL = tmdbApiConfig.images.secure_base_url;

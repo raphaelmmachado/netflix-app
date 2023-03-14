@@ -12,7 +12,7 @@ export default function PlayButton({ showModal }: Props) {
         className="flex flex-row items-center justify-evenly
         gap-2 p-2 xs:px-4 xs:py-2 md:px-6
        rounded-md
-           bg-red text-smokewt font-normal"
+           bg-red hover:bg-red/80 active:scale-95 text-smokewt font-normal"
       >
         <PlayIcon className="text-smokewt h-6 w-6" />
         <>{"Play"}</>
