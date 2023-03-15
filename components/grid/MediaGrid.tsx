@@ -16,9 +16,8 @@ export default function MediaGrid({ medias, mediaType }: Props) {
     <>
       <section
         ref={gridRef}
-        className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4
-       lg:grid-cols-6 auto-cols-fr place-content-center
-       place-items-baseline gap-10 my-8"
+        className="grid sm:grid-cols-2 md:grid-cols-3 auto-cols-fr place-content-center
+       place-items-center gap-10 my-8"
       >
         {medias.map((media, i) => {
           return <Card key={media.id} media={media} mediaType={mediaType} />;

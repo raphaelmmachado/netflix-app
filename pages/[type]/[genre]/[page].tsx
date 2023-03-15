@@ -73,6 +73,9 @@ export default function App({ movies, page, genre, mediaType, path }: Props) {
           handleFoundMedia={handleFoundMedia}
           mediaType={mediaType}
         />
+        <h1 className="text-2xl font-bold flex-1 text-center">
+          {path.toUpperCase()}
+        </h1>
         <GenreSelect
           items={path === "filmes" ? movieGenres : tvGenres}
           path={path}

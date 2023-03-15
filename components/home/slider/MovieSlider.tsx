@@ -32,15 +32,13 @@ interface IMovieSlider {
 }
 
 export default function MovieSlider({ medias, title }: IMovieSlider) {
-  const [itemsPerScreen, setItemsPerScreen] = useState(5);
   const [sliderIndex, setSliderIndex] = useState(0);
-
   const [progressBarItems, setProgressBarItems] = useState(0);
   const [cardIndex, setCardIndex] = useState(0);
   const { selectedMedia, setSelectedMedia } = useContext(Context);
   const router = useRouter();
   const { width } = useWindowSize();
-  const memoWidth = useMemo(() => width, [width]);
+  const itemsPerScreen = useMemo(() => width, [width]);
   const [sliderRef] = useAutoAnimate<HTMLDivElement>();
 
   const selectAMedia = useCallback(
@@ -52,21 +50,23 @@ export default function MovieSlider({ medias, title }: IMovieSlider) {
 
   //set sliders items per screen based on screen width
   useEffect(() => {
-    if (memoWidth !== undefined) {
-      setItemsPerScreen(memoWidth);
+    if (itemsPerScreen !== undefined) {
+      // setItemsPerScreen(memoWidth);
       const math = Math.ceil(medias.length / itemsPerScreen);
       setProgressBarItems(math);
     }
+    //if mobile, select media when clicking on next
     if (itemsPerScreen === 1) {
       selectAMedia(medias[cardIndex]);
     }
-  }, [medias.length, memoWidth, cardIndex]);
+  }, [medias.length, cardIndex, itemsPerScreen]);
 
   const BASE_URL = apiConfiguration.images.secure_base_url;
   const BACKDROP_SIZE = apiConfiguration.images.backdrop_sizes;
+  const POSTER_SIZE = apiConfiguration.images.poster_sizes;
 
-  let image = `${BASE_URL}${BACKDROP_SIZE[0]}/`;
-
+  const poster = `${BASE_URL}${POSTER_SIZE[3]}/`;
+  const backdrop = `${BASE_URL}${BACKDROP_SIZE[0]}/`;
   // This component has css classes mixed with tailwind classes
   return (
     <section className="sm:py-2" id="slider-section">
@@ -101,7 +101,7 @@ export default function MovieSlider({ medias, title }: IMovieSlider) {
             onClick={() => {
               // mobile user can select slider media by sliding cards
               // if there is only one item per screen
-              if (itemsPerScreen < 2) {
+              if (itemsPerScreen && itemsPerScreen < 2) {
                 import("../../../utils/scrollSlider").then((module) =>
                   module.incrementSliderIndex(setCardIndex, medias.length)
                 );
@@ -155,22 +155,26 @@ export default function MovieSlider({ medias, title }: IMovieSlider) {
                   }}
                 >
                   <Image
-                    src={`${image}${media.backdrop_path}`}
+                    src={`${poster}${media.poster_path}`}
                     alt="movie-pic"
-                    width={315}
-                    height={177}
+                    width={150}
+                    height={150}
                     style={{ height: "auto" }}
                     title={media.title ?? media.name}
-                    className="hover:cursor-pointer rounded-md ring-black group-hover:ring-white ring-2"
+                    className={`hover:cursor-pointer rounded-md  group-hover:ring-white ring-2 ${
+                      selectedMedia?.id === media.id
+                        ? "ring-white"
+                        : "ring-black/20"
+                    }`}
                   />
-                  <span className="absolute w-[98%]">
+                  {/* <span className="absolute w-[98%]">
                     <h1
                       className=" text-center px-2 py-1 overflow-hidden
                      text-smokewt bg-black/40 rounded-md font-bold sm:font-thin uppercase text-xl  sm:text-base tall:text-base"
                     >
                       {media.name ?? media.title}
                     </h1>
-                  </span>
+                  </span> */}
                 </div>
               );
             })}

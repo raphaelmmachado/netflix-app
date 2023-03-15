@@ -6,17 +6,19 @@ interface Props {
   id: string | number;
   selectedMediaType: string;
   mediaType?: "tv" | "movie";
-  className: string;
+
   iconType: "solid" | "outline";
   slug: string;
+  minimalist: boolean;
 }
 export default function DefaultButton({
   id,
   mediaType,
   selectedMediaType,
-  className,
+
   iconType,
   slug,
+  minimalist,
 }: Props) {
   const checkMediaType = (): "filmes" | "series" => {
     if (mediaType && !selectedMediaType) {
@@ -31,6 +33,9 @@ export default function DefaultButton({
     <>
       {/* CHECKING MEDIA TYPE */}
       <Link
+        className={`flex flex-row items-center justify-evenly
+         gap-2 font-bold  ${minimalist ? "p-1" : "p-2 xs:px-4 xs:py-2  md:px-6"}
+         rounded-md bg-black text-smokewt`}
         href={{
           pathname: `/[type]/detalhes/${slugify(slug)}`,
           query: {
@@ -38,14 +43,13 @@ export default function DefaultButton({
             type: `${checkMediaType()}`,
           },
         }}
-        className={className}
       >
         {iconType === "solid" ? (
           <InfoIconSol className="text-smokewt  h-6 w-6" />
         ) : (
           <>
             <InfoIconOut className="text-smokewt h-6 w-6" />
-            <span className="font-normal">Detalhes</span>
+            {!minimalist && <span className="font-normal">Detalhes</span>}
           </>
         )}
       </Link>

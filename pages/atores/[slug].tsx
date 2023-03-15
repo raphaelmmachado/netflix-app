@@ -38,8 +38,8 @@ export default function App({ details, medias }: Props) {
           className="flex flex-col sm:flex-row justify-center text-4xl
          items-center gap-5 uppercase"
         >
-          <span>{name.slice(0, name.length - 1)}</span>
-          <span className="flex-shrink">
+          <span className="flex-shrink">{name.slice(0, name.length - 1)}</span>
+          <span>
             <Picture
               src={`${BASE_URL}${PROFILE_SIZE[2]}${details.profile_path}`}
               alt={details.name}
@@ -50,7 +50,7 @@ export default function App({ details, medias }: Props) {
               style={{ height: "auto" }}
             />
           </span>
-          <span className="">{name.slice(name.length - 1)}</span>
+          <span className="flex-shrink">{name.slice(name.length - 1)}</span>
         </section>
 
         <section className="my-8 sm:px-12 font-thin">

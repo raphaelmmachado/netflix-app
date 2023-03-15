@@ -55,23 +55,25 @@ export default function MainContainer({
 
   const [count, setCount] = useState(0);
 
-  const isIdle = useMouseIdle(3000);
+  const isIdle = useMouseIdle(1000);
   // select first movie of the slider as the default
   useEffect(() => {
     setSelectedMedia(medias[0]);
   }, []);
 
-  //slideshow
+  // //slideshow
   useEffect(() => {
-    isIdle && setSelectedMedia(medias[count]);
+    setTimeout(
+      () => isIdle && !modalOpen && setSelectedMedia(medias[count]),
+      2000
+    );
     // if user is idle, select next media, like an slideshow
-    const interval = setInterval(() => {
+    const interval = setTimeout(() => {
       setCount((prevCount) =>
         prevCount + 1 > medias.length - 1 ? 0 : prevCount + 1
       );
     }, 10000);
 
-    if (modalOpen || !isIdle) clearInterval(interval);
     return () => clearInterval(interval);
   }, [count, isIdle]);
 
@@ -121,9 +123,10 @@ export default function MainContainer({
 
                 <div
                   className="grid grid-flow-col place-content-center sm:place-content-start 
-                  text-sm sm:text-base gap-2 sm:gap-6"
+                  text-sm sm:text-base xs:gap-2 sm:gap-6"
                 >
                   <PlayButton
+                    minimalist={false}
                     showModal={() => {
                       setShowVideoModal(true);
                       setModalOpen(true);
@@ -131,6 +134,7 @@ export default function MainContainer({
                   />
 
                   <ListButton
+                    minimalist={false}
                     added={
                       myList &&
                       myList.some((item) => item.id === selectedMedia.id)
@@ -142,13 +146,11 @@ export default function MainContainer({
                     }}
                   />
                   <DetailsButton
+                    minimalist={false}
                     mediaType={mediaType!}
                     selectedMediaType={selectedMedia.title ? "movie" : "tv"}
                     id={selectedMedia.id}
                     slug={selectedMedia?.title ?? selectedMedia.name}
-                    className="flex flex-row items-center justify-evenly
-                    gap-2 font-bold p-2 xs:px-4 xs:py-2 md:px-6
-                   rounded-md bg-black text-smokewt"
                     iconType={"outline"}
                   />
                 </div>

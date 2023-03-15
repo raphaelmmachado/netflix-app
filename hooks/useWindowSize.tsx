@@ -10,7 +10,7 @@ export default function useWindowSize() {
   }
 
   const [windowSize, setWindowSize] = useState<IWidth>({
-    width: undefined,
+    width: 10,
   });
 
   const [mobile, setMobile] = useState(false);
@@ -21,25 +21,29 @@ export default function useWindowSize() {
       if (window !== undefined || typeof window !== "undefined") {
         // Set window width/height to state
         switch (true) {
-          case window.innerWidth < 500:
-            setWindowSize({ width: 1 });
-            break;
-          case window.innerWidth < 690:
+          case window.innerWidth < 450:
             setWindowSize({ width: 2 });
             break;
-          case window.innerWidth < 870:
-            setWindowSize({ width: 3 });
-            break;
-          case window.innerWidth < 1100:
+          case window.innerWidth < 640:
             setWindowSize({ width: 4 });
             break;
-          case window.innerWidth < 1440:
+          case window.innerWidth < 770:
             setWindowSize({ width: 5 });
             break;
-          case window.innerWidth > 1440:
-            setWindowSize({ width: 5 });
+          case window.innerWidth < 850:
+            setWindowSize({ width: 6 });
+            break;
+          case window.innerWidth < 980:
+            setWindowSize({ width: 7 });
+            break;
+          case window.innerWidth < 1080:
+            setWindowSize({ width: 8 });
+            break;
+          case window.innerWidth < 1440:
+            setWindowSize({ width: 10 });
             break;
           default:
+            setWindowSize({ width: 10 });
             break;
         }
       }

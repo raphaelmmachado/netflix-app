@@ -1,6 +1,5 @@
 import { useContext, useEffect, useState } from "react";
 import { Context } from "../../context/ContextProvider";
-import Image from "next/image";
 //components
 import MediaComponent from "./video/MediaComponent";
 import XMarkIcon from "@heroicons/react/24/solid/XMarkIcon";
@@ -12,9 +11,7 @@ import { IVideo, MediaType, YTIds } from "../../typing";
 import { getTrailers } from "../../utils/requests/getTrailers";
 import { searchYoutubeVideos } from "../../utils/requests/searchYoutubeVideos";
 import apiConfiguration from "../../constants/apiConfiguration";
-import VideoTags from "./video/VideoTags";
-const base_url = apiConfiguration.images.secure_base_url;
-const size = apiConfiguration.images.poster_sizes[2];
+
 interface Props {
   mediaType?: MediaType;
 }
@@ -159,7 +156,7 @@ export default function VideoModal({ mediaType }: Props) {
                 </button>
               </span>
             </header>
-            <main>
+            <section>
               {showVideo ? (
                 <MediaComponent
                   videoIndex={videoIndex}
@@ -167,24 +164,13 @@ export default function VideoModal({ mediaType }: Props) {
                   youtubeVideos={YTAPIVideos}
                 />
               ) : (
-                <article className="flex flex-col py-1 sm:flex-row gap-3 bg-black">
-                  <div className="font-extralight p-2">
-                    {" "}
-                    <p>{selectedMedia.overview}</p>
-                  </div>
-                  <div className="hidden sm:flex flex-col gap-1 items-center">
-                    <Image
-                      src={`${base_url}${size}/${selectedMedia?.poster_path}`}
-                      width={170}
-                      height={285}
-                      alt="poster image"
-                      className=""
-                    />
-                    <VideoTags mediaType={mediaType} />
-                  </div>
+                <article className="bg-black">
+                  <p className="font-extralight p-2">
+                    {selectedMedia.overview}
+                  </p>
                 </article>
               )}
-            </main>
+            </section>
             <footer className="w-full bg-black flex flex-wrap gap-4 border-t border-gray">
               <>
                 {DBVideos &&

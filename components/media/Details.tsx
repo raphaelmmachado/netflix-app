@@ -73,6 +73,7 @@ export default function Details({ details }: Props) {
           {/* ADD TO LIST BUTTON */}
           <div className="static md:absolute md:top-64 md:left-28">
             <ListButton
+              minimalist={false}
               added={myList && myList.some((item) => item.id === details.id)}
               addToList={() =>
                 import("../../utils/addMediaToList").then((module) => {
