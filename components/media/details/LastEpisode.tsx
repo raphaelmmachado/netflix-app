@@ -1,6 +1,5 @@
 import FormateDateToBR from "../../../utils/formatters/formatDate";
-import Picture from "../../Picture";
-
+import Image from "next/image";
 interface Props {
   title: string;
   image_path: string;
@@ -20,7 +19,7 @@ export default function LastEpisode({
       <h2 className="text-gray text-lg py-4">Último episódio ao ar</h2>
       <div className="flex flex-col md:flex-row items-start gap-4">
         <>
-          <Picture
+          <Image
             fill={false}
             priority={false}
             style={{ height: "auto" }}

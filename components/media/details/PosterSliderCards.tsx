@@ -1,6 +1,7 @@
 import apiConfiguration from "../../../constants/apiConfiguration";
 import { Season } from "../../../typing";
-import Picture from "../../Picture";
+import Image from "next/image";
+import placeholderImage from "../../../constants/placeholderImage";
 interface Props {
   media: Season;
   setDetails: () => void;
@@ -12,12 +13,14 @@ export default function PosterSliderCards({ media, setDetails }: Props) {
   return (
     <div
       onClick={() => setDetails()}
-      className="poster flex flex-col justify-end items-center"
+      className="card flex flex-col justify-end items-center"
     >
       {" "}
-      <Picture
+      <Image
         title={media.name}
         src={`${BASE_URL}${POSTER_SIZE[2]}/${media.poster_path}`}
+        blurDataURL={placeholderImage}
+        placeholder="blur"
         alt={media.name}
         width={100}
         height={0}

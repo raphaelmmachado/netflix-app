@@ -98,7 +98,7 @@ export default function PosterSlider({ posters, sliderTitle }: Props) {
                 "--posters-per-screen": itemsPerScreen,
               } as CSSProperties
             }
-            className="poster-slider relative"
+            className="slider relative"
           >
             {/* CARDS */}
             {posters.map((media: Season, i) => {

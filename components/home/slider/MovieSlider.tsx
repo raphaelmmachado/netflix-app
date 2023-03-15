@@ -9,22 +9,21 @@ import {
 } from "react";
 
 import { Context } from "../../../context/ContextProvider";
+//next
 import { useRouter } from "next/router";
+import Image from "next/image";
 
 //libraries
 import { useAutoAnimate } from "@formkit/auto-animate/react";
 
 //custom-hooks
 import useWindowSize from "../../../hooks/useWindowSize";
-//utils
+//constants
 import apiConfiguration from "../../../constants/apiConfiguration";
-
+import placeholderImage from "../../../constants/placeholderImage";
 //typing
 import { Media } from "../../../typing";
 import slugify from "../../../utils/formatters/slugfy";
-
-import Image from "next/image";
-//components
 
 interface IMovieSlider {
   medias: Media[];
@@ -62,11 +61,10 @@ export default function MovieSlider({ medias, title }: IMovieSlider) {
   }, [medias.length, cardIndex, itemsPerScreen]);
 
   const BASE_URL = apiConfiguration.images.secure_base_url;
-  const BACKDROP_SIZE = apiConfiguration.images.backdrop_sizes;
   const POSTER_SIZE = apiConfiguration.images.poster_sizes;
 
   const poster = `${BASE_URL}${POSTER_SIZE[3]}/`;
-  const backdrop = `${BASE_URL}${BACKDROP_SIZE[0]}/`;
+
   // This component has css classes mixed with tailwind classes
   return (
     <section className="sm:py-2" id="slider-section">
@@ -130,8 +128,7 @@ export default function MovieSlider({ medias, title }: IMovieSlider) {
                 <div
                   data-index={i}
                   id="media_slider-card"
-                  className="card max-h-fit relative flex
-                   justify-center items-end
+                  className="card max-h-max relative
                    hover:cursor-pointer group"
                   key={i}
                   onMouseEnter={() => selectAMedia(media)}
@@ -156,25 +153,19 @@ export default function MovieSlider({ medias, title }: IMovieSlider) {
                 >
                   <Image
                     src={`${poster}${media.poster_path}`}
+                    blurDataURL={placeholderImage}
+                    placeholder="blur"
                     alt="movie-pic"
                     width={150}
                     height={150}
                     style={{ height: "auto" }}
                     title={media.title ?? media.name}
-                    className={`hover:cursor-pointer rounded-md  group-hover:ring-white ring-2 ${
+                    className={`hover:cursor-pointer flex-1 rounded-md group-hover:ring-white ring-2 ${
                       selectedMedia?.id === media.id
                         ? "ring-white"
                         : "ring-black/20"
                     }`}
                   />
-                  {/* <span className="absolute w-[98%]">
-                    <h1
-                      className=" text-center px-2 py-1 overflow-hidden
-                     text-smokewt bg-black/40 rounded-md font-bold sm:font-thin uppercase text-xl  sm:text-base tall:text-base"
-                    >
-                      {media.name ?? media.title}
-                    </h1>
-                  </span> */}
                 </div>
               );
             })}

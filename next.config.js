@@ -9,7 +9,7 @@ const nextConfig = {
       "lh3.googleusercontent.com",
       "genotipia.com",
       "flagcdn.com",
-      "via.placeholder.com",
+      "https://placeholderimage.dev/",
     ],
   },
 };

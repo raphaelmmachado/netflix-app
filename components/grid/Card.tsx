@@ -10,7 +10,6 @@ import apiConfiguration from "../../constants/apiConfiguration";
 import FormateDateToBR from "../../utils/formatters/formatDate";
 import { movieGenres, tvGenres } from "../../constants/genres";
 //components
-import Picture from "../Picture";
 import Play from "../home/banner/PlayButton";
 import Add from "../home/banner/ListButton";
 import Details from "../home/banner/DetailsButton";
@@ -61,7 +60,7 @@ export default function Card({ media, mediaType }: Props) {
         )}
         {/* POSTER */}
         <section className="relative z-10">
-          <Picture
+          <Image
             title={media.title ?? media.name}
             priority={true}
             width={170}

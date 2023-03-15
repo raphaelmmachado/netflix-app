@@ -12,7 +12,6 @@ import FormateDateToBR from "../../utils/formatters/formatDate";
 import formatToCurrency from "../../utils/formatters/formatToCurrency";
 import calculateRuntime from "../../utils/formatters/calculateRuntime";
 
-import Picture from "../Picture";
 import ListButton from "../home/banner/ListButton";
 import Provider from "./details/Provider";
 
@@ -49,6 +48,11 @@ export default function Details({ details }: Props) {
 
   const langs = mostSpokenLanguages;
 
+  // cut recomendations movies to max 20 items
+  let recommendations;
+  if (details.recommendations) {
+    recommendations = details.recommendations.results.slice(0, 20);
+  }
   return (
     <>
       {/* BANNER */}
@@ -165,7 +169,7 @@ export default function Details({ details }: Props) {
           id="media-data-section"
         >
           {width && width < 2 ? (
-            <Picture
+            <Image
               src={`${BASE_URL}${POSTER_SIZE[3]}/${details.poster_path}`}
               title={details.title ?? details.name}
               alt="poster"
@@ -178,7 +182,7 @@ export default function Details({ details }: Props) {
             md:-top-28 md:left-16"
             />
           ) : (
-            <Picture
+            <Image
               src={`${BASE_URL}${POSTER_SIZE[3]}/${details.poster_path}`}
               title={details.title ?? details.name}
               alt="poster"
@@ -255,13 +259,9 @@ export default function Details({ details }: Props) {
         )}
         <br />
         {/* RECOMMENDED MEDIA SLIDER */}
-        {details.recommendations &&
-          details.recommendations.results.length > 0 && (
-            <MovieSlider
-              medias={details.recommendations.results}
-              title="Recomendados"
-            />
-          )}
+        {recommendations && recommendations.length > 0 && (
+          <MovieSlider medias={recommendations} title="Recomendados" />
+        )}
       </main>
     </>
   );

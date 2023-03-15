@@ -1,7 +1,7 @@
 import { MediaCast } from "../../../typing";
 import { useRouter } from "next/router";
 import apiConfiguration from "../../../constants/apiConfiguration";
-import Picture from "../../Picture";
+import Image from "next/image";
 import slugify from "../../../utils/formatters/slugfy";
 interface Props {
   cast: MediaCast[];
@@ -33,7 +33,7 @@ export default function Cast({ cast }: Props) {
               className="flex gap-2 bg-midgray/20 rounded-md
               cursor-pointer p-1"
             >
-              <Picture
+              <Image
                 alt={person.name}
                 src={`${BASE_URL}${PROFILE_SIZE[1]}${person.profile_path}`}
                 title={person.name}

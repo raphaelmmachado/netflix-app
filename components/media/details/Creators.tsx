@@ -1,6 +1,6 @@
 import { CreatedBy } from "../../../typing";
 import apiConfiguration from "../../../constants/apiConfiguration";
-import Picture from "../../Picture";
+import Image from "next/image";
 interface Props {
   creators: CreatedBy[];
 }
@@ -20,7 +20,7 @@ export default function Creators({ creators }: Props) {
                 key={i}
                 className="flex gap-3 justify-around items-center"
               >
-                <Picture
+                <Image
                   src={`${BASE_URL}${PROFILE_SIZE[1]}${item.profile_path}`}
                   title={item.name}
                   alt="profile"

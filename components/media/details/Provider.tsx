@@ -1,6 +1,6 @@
 import { useState } from "react";
+import Image from "next/image";
 import apiConfiguration from "../../../constants/apiConfiguration";
-import Picture from "../../Picture";
 interface Props {
   name?: string;
   path?: string;
@@ -17,7 +17,7 @@ export default function Provider({ name, path }: Props) {
         onMouseLeave={() => setShowName(false)}
       >
         {" "}
-        <Picture
+        <Image
           src={`${BASE_URL}${LOGO_SIZE[1]}${path}`}
           title={name!}
           width={50}

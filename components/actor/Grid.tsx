@@ -1,5 +1,6 @@
 import { useRouter } from "next/router";
-import Picture from "../Picture";
+
+import Image from "next/image";
 import slugify from "../../utils/formatters/slugfy";
 import apiConfiguration from "../../constants/apiConfiguration";
 import { MediaType } from "../../typing";
@@ -28,7 +29,7 @@ export default function Grid({ alt, img_path, title, id, type }: Props) {
         className="flex justify-start items-center
          bg-midgray/20 hover:bg-midgray/50 shadow-lg rounded-md cursor-pointer"
       >
-        <Picture
+        <Image
           alt={alt}
           src={`${BASE_URL}${POSTER_SIZES[1]}${img_path}`}
           width={55}

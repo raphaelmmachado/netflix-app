@@ -1,8 +1,8 @@
 //next / react
 import { GetServerSideProps } from "next";
 import dynamic from "next/dynamic";
+import Image from "next/image";
 import Head from "next/head";
-import Picture from "../../components/Picture";
 import { Actor, Media } from "../../typing";
 import getMoreDetails from "../../utils/requests/getMoreDetails";
 import apiConfiguration from "../../constants/apiConfiguration";
@@ -40,7 +40,7 @@ export default function App({ details, medias }: Props) {
         >
           <span className="flex-shrink">{name.slice(0, name.length - 1)}</span>
           <span>
-            <Picture
+            <Image
               src={`${BASE_URL}${PROFILE_SIZE[2]}${details.profile_path}`}
               alt={details.name}
               width={125}

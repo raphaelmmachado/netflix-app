@@ -37,22 +37,8 @@ body {
 .slider > .card {
   flex: 0 0 calc(100% / var(--items-per-screen));
   max-width: calc(100% / var(--items-per-screen));
-  aspect-ratio: 16 / 9;
   border-radius: var(--border-radius) !important;
   padding: var(--img-gap);
-}
-.poster-slider > .poster {
-  flex: 0 0 calc(100% / var(--posters-per-screen));
-  max-width: 120px;
-  border-radius: var(--border-radius) !important;
-  padding: var(--img-gap);
-}
-.poster-slider {
-  display: flex;
-  flex-grow: 1;
-  margin: 0;
-  transform: translateX(calc(var(--slider-index) * -100%));
-  transition: transform 250ms ease-in-out;
 }
 
 .handle {

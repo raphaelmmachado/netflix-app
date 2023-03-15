@@ -7,7 +7,7 @@ export default function Layout({ children }: Props) {
   return (
     <>
       <Nav />
-      <main>{children}</main>
+      <section>{children}</section>
     </>
   );
 }
