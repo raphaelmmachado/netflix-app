@@ -72,9 +72,7 @@ export default function Nav() {
                 <ul
                   id="nav-links"
                   ref={linksRef}
-                  className={`flex sm:flex-col items-start justify-around
-                   transition-colors duration-200 delay-100 ease-in-out
-                gap-3`}
+                  className={`flex sm:flex-col items-start justify-around gap-3`}
                 >
                   {" "}
                   <NavLinks

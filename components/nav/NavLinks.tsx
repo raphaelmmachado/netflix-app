@@ -13,11 +13,13 @@ export default function NavLinks({ title, path, children, navIsOpen }: Props) {
   return (
     <>
       <li
-        className={`${
-          activeTab ? "text-red " : "text-midgray  hover:text-smokewt"
-        } ${
-          navIsOpen && !activeTab ? "text-smokewt" : "text-midgray"
-        } cursor-pointer`}
+        className={`transition hover:underline underline-offset-4  ${
+          activeTab ? "text-red font-bold hover:text-red" : "text-midgray "
+        }  ${
+          navIsOpen && !activeTab
+            ? "text-smokewt font-light"
+            : "text-midgray hover:text-smokewt"
+        } cursor-pointer `}
       >
         <Link href={path} className="flex items-center gap-3">
           <>

@@ -1,7 +1,7 @@
-// function to change components when user scrolls
+// function to change increment media slider index
 import { Dispatch, SetStateAction } from "react";
 
-const decrementSliderIndex = (
+const decrementIndex = (
   setter: Dispatch<SetStateAction<number>>,
   length: number
 ) => {
@@ -11,7 +11,7 @@ const decrementSliderIndex = (
   });
 };
 
-const incrementSliderIndex = (
+const incrementIndex = (
   setter: Dispatch<SetStateAction<number>>,
   length: number
 ) => {
@@ -20,4 +20,4 @@ const incrementSliderIndex = (
     else return prev + 1;
   });
 };
-export { incrementSliderIndex, decrementSliderIndex };
+export { incrementIndex, decrementIndex };

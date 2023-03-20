@@ -27,7 +27,8 @@ export default function UserBox({
           onKeyDown={(e) =>
             import("../../utils/checkKeyboardKeys").then(
               (module) =>
-                module.default(e.code) && setShowLogoutModal((prev) => !prev)
+                module.enterKeyPressed(e.code) &&
+                setShowLogoutModal((prev) => !prev)
             )
           }
           className="flex flex-col sm:flex-row items-center gap-5 sm:gap-2  rounded-sm"
@@ -52,7 +53,7 @@ export default function UserBox({
               onClick={() => logout()}
               onKeyDown={(e) =>
                 import("../../utils/checkKeyboardKeys").then(
-                  (module) => module.default(e.code) && logout()
+                  (module) => module.enterKeyPressed(e.code) && logout()
                 )
               }
               tabIndex={0}

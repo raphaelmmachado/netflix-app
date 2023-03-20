@@ -24,6 +24,12 @@ import placeholderImage from "../../../constants/placeholderImage";
 //typing
 import { Media } from "../../../typing";
 import slugify from "../../../utils/formatters/slugfy";
+//utils
+import {
+  arrowRightKeyPressed,
+  arrowRightLeftPressed,
+} from "../../../utils/checkKeyboardKeys";
+import { decrementIndex, incrementIndex } from "../../../utils/indexCounter";
 
 interface IMovieSlider {
   medias: Media[];
@@ -41,8 +47,8 @@ export default function MovieSlider({ medias, title }: IMovieSlider) {
   const [sliderRef] = useAutoAnimate<HTMLDivElement>();
 
   const selectAMedia = useCallback(
-    (media: Media) => {
-      setSelectedMedia(media);
+    (media: Media, index: number) => {
+      setSelectedMedia({ ...media, index: index });
     },
     [selectedMedia]
   );
@@ -56,7 +62,7 @@ export default function MovieSlider({ medias, title }: IMovieSlider) {
     }
     //if mobile, select media when clicking on next
     if (itemsPerScreen === 1) {
-      selectAMedia(medias[cardIndex]);
+      selectAMedia(medias[cardIndex], cardIndex);
     }
   }, [medias.length, cardIndex, itemsPerScreen]);
 
@@ -99,13 +105,15 @@ export default function MovieSlider({ medias, title }: IMovieSlider) {
             onClick={() => {
               // mobile user can select slider media by sliding cards
               // if there is only one item per screen
+              // setCardIndex is basically a function that starts at zero that increments if clicked on arrow right
+              // or decrements if clicked on arrow left
               if (itemsPerScreen && itemsPerScreen < 2) {
-                import("../../../utils/scrollSlider").then((module) =>
-                  module.incrementSliderIndex(setCardIndex, medias.length)
+                import("../../../utils/indexCounter").then((module) =>
+                  module.incrementIndex(setCardIndex, medias.length)
                 );
               }
-              import("../../../utils/scrollSlider").then((module) => {
-                module.decrementSliderIndex(setSliderIndex, progressBarItems);
+              import("../../../utils/indexCounter").then((module) => {
+                module.decrementIndex(setSliderIndex, progressBarItems);
               });
             }}
             className={`handle left-handle`}
@@ -131,7 +139,7 @@ export default function MovieSlider({ medias, title }: IMovieSlider) {
                   className="card max-h-max relative
                    hover:cursor-pointer group"
                   key={i}
-                  onMouseEnter={() => selectAMedia(media)}
+                  onMouseEnter={() => selectAMedia(media, i)}
                   onClickCapture={() => {
                     //i dont want mobile users to navigate to media page
                     // only to highlight a media that have been clicked
@@ -147,7 +155,7 @@ export default function MovieSlider({ medias, title }: IMovieSlider) {
                         },
                       });
                     } else {
-                      selectAMedia(media);
+                      selectAMedia(media, i);
                     }
                   }}
                 >
@@ -177,12 +185,12 @@ export default function MovieSlider({ medias, title }: IMovieSlider) {
               // mobile users can select slider media by sliding cards
               // if there is only one item per screen
               if (itemsPerScreen === 1) {
-                import("../../../utils/scrollSlider").then((module) =>
-                  module.incrementSliderIndex(setCardIndex, medias.length)
+                import("../../../utils/indexCounter").then((module) =>
+                  module.incrementIndex(setCardIndex, medias.length)
                 );
               }
-              import("../../../utils/scrollSlider").then((module) =>
-                module.incrementSliderIndex(setSliderIndex, progressBarItems)
+              import("../../../utils/indexCounter").then((module) =>
+                module.incrementIndex(setSliderIndex, progressBarItems)
               );
             }}
             className={`handle right-handle`}

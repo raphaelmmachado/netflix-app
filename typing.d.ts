@@ -27,6 +27,7 @@ export interface Media {
   first_air_date?: Date | string;
   origin_country?: string[];
   original_name?: string;
+  index?: number;
 }
 export interface Person {
   profile_path: string | null;

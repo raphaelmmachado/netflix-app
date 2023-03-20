@@ -55,25 +55,29 @@ export default function MainContainer({
 
   const [count, setCount] = useState(0);
 
-  const isIdle = useMouseIdle(1000);
-  // select first movie of the slider as the default
+  const isIdle = useMouseIdle(3000);
+
+  //first item of the slider to be the default media
   useEffect(() => {
-    setSelectedMedia(medias[0]);
+    setSelectedMedia({ ...medias[0], index: 0 });
   }, []);
+
+  //slider counter continue from last selected media
+  useEffect(() => {
+    setCount((prev) => (selectedMedia?.index ? selectedMedia?.index : prev));
+  }, [selectedMedia]);
 
   // //slideshow
   useEffect(() => {
-    setTimeout(
-      () => isIdle && !modalOpen && setSelectedMedia(medias[count]),
-      2000
-    );
-    // if user is idle, select next media, like an slideshow
+    isIdle && !modalOpen && setSelectedMedia(medias[count]);
+
+    // if user is idle, select next media like an slideshow
     const interval = setTimeout(() => {
       setCount((prevCount) =>
         prevCount + 1 > medias.length - 1 ? 0 : prevCount + 1
       );
     }, 10000);
-
+    console.log({ count, isIdle, modalOpen });
     return () => clearInterval(interval);
   }, [count, isIdle]);
 

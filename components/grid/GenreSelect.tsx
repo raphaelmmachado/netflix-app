@@ -49,7 +49,7 @@ export default function GenreSelect({ items, path, genre }: Props) {
         </span>
 
         <div
-          className={`absolute grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 place-content-center gap-1 shadow-sm font-thin ${
+          className={`absolute z-50 grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 place-content-center gap-1 shadow-sm font-thin ${
             showSelect &&
             "border-2 border-midgray/30 transition-all duration-75"
           } rounded-md bg-black top-32 sm:top-20 sm:right-5 z-10  sm:mx-8 w-fit text-center`}
