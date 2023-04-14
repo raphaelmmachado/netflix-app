@@ -2,6 +2,7 @@
 const nextConfig = {
   reactStrictMode: true,
   images: {
+    unoptimized: true,
     domains: [
       "api.themoviedb.org",
       "image.tmdb.org",

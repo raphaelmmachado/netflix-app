@@ -1,0 +1,7 @@
+node_modules
+dis
+vercel
+.vscode
+.next
+.env
+.vercel
