@@ -86,4 +86,4 @@ Este é um clone da Netflix desenvolvido com Next.js e TypeScript como parte do 
 
 - Criar um slider de videos. Eu usei esse slider do Kyle do [webdev simplified](https://www.youtube.com/watch?v=yq4BeRtUHbk&t=10s) e passei para o react.
 
-- Entender como funciona TMDB API. Alguns endpoints retornam "movie" e "tv" misturados, mas "movie" e "tv" tem algumas propriedades diferentes, por exemplo, nome de "movie" vem como "title" e "tv" vem como name. Nem todo filme vem com videos, mas foi bom porque aprendi a usar api do youtube para buscar por videos que não veio na TMDB.
+- Entender como funciona TMDB API. Alguns endpoints retornam "movie" e "tv" misturados, mas "movie" e "tv" tem algumas propriedades diferentes, por exemplo, nome de "movie" vem como "title" e tv vem como "name". Nem todo filme vem com videos, mas foi bom porque aprendi a usar api do youtube para buscar por videos que não veio na TMDB.
