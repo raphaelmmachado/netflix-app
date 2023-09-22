@@ -3,7 +3,7 @@ import { Context } from "../../context/ContextProvider";
 //components
 import MediaComponent from "./video/MediaComponent";
 import XMarkIcon from "@heroicons/react/24/solid/XMarkIcon";
-import XMarkCircleIcon from "@heroicons/react/24/solid/XCircleIcon";
+import XMarkCircleIcon from "@heroicons/react/20/solid/ArrowDownTrayIcon";
 import VideoLinks from "./video/VideoLinks";
 // typing
 import { IVideo, MediaType, YTIds } from "../../typing";
