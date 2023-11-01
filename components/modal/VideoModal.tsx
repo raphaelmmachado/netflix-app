@@ -3,7 +3,7 @@ import { Context } from "../../context/ContextProvider";
 //components
 import MediaComponent from "./video/MediaComponent";
 import XMarkIcon from "@heroicons/react/24/solid/XMarkIcon";
-import XMarkCircleIcon from "@heroicons/react/20/solid/ArrowDownTrayIcon";
+import ChevronDownIcon from "@heroicons/react/20/solid/ChevronDownIcon";
 import VideoLinks from "./video/VideoLinks";
 // typing
 import { IVideo, MediaType, YTIds } from "../../typing";
@@ -138,7 +138,7 @@ export default function VideoModal({ mediaType }: Props) {
               <span className="flex items-center gap-3">
                 {showVideo && (
                   <button onClick={() => setShowVideo(false)}>
-                    <XMarkCircleIcon
+                    <ChevronDownIcon
                       className="w-7 h-7 text-white 
                     hover:bg-gray/30 rounded-md"
                     />
